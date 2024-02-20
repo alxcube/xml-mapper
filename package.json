@@ -1,0 +1,39 @@
+{
+  "name": "@alxcube/xml-mapper",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/xml-mapper.umd.cjs",
+  "module": "./dist/xml-mapper.js",
+  "types": "./dist/xml-mapper.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/xml-mapper.js",
+      "require": "./dist/xml-mapper.umd.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "test": "vitest --run",
+    "lint": "eslint ./src ./spec --ext .ts && npm run prettier",
+    "prettier": "prettier --write 'src/**/*.ts' && prettier --write 'spec/**/*.ts'"
+  },
+  "author": "Alexander Alexandrov <alxcube@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@xmldom/xmldom": "^0.8.10",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0",
+    "vite-plugin-banner": "^0.7.1",
+    "vite-plugin-dts": "^3.7.2",
+    "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "xpath": "^0.0.34"
+  }
+}
