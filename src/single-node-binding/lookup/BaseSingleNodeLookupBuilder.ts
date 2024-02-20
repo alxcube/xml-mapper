@@ -1,15 +1,15 @@
 import type { XPathSelect } from "xpath";
 import { BaseSingleNodeBindingBuilder } from "../BaseSingleNodeBindingBuilder";
-import type { ObjectBlueprint } from "../ObjectBlueprint";
-import { BooleanExtractorFactory } from "../single-node-data-extractors/BooleanExtractorFactory";
-import { CustomDataExtractorFactory } from "../single-node-data-extractors/CustomDataExtractorFactory";
-import { NumberExtractorFactory } from "../single-node-data-extractors/NumberExtractorFactory";
-import { ObjectExtractorFactory } from "../single-node-data-extractors/ObjectExtractorFactory";
+import type { ObjectBlueprint } from "../../ObjectBlueprint";
+import { BooleanExtractorFactory } from "../data-extractors/BooleanExtractorFactory";
+import { CustomDataExtractorFactory } from "../data-extractors/CustomDataExtractorFactory";
+import { NumberExtractorFactory } from "../data-extractors/NumberExtractorFactory";
+import { ObjectExtractorFactory } from "../data-extractors/ObjectExtractorFactory";
 import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
-} from "../single-node-data-extractors/RecursiveObjectExtractorFactory";
-import { StringExtractorFactory } from "../single-node-data-extractors/StringExtractorFactory";
+} from "../data-extractors/RecursiveObjectExtractorFactory";
+import { StringExtractorFactory } from "../data-extractors/StringExtractorFactory";
 import type { SingleNodeBindingBuilder } from "../SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
@@ -18,7 +18,7 @@ import type {
   SingleNodeLookupFn,
   SingleNodeLookupResult,
 } from "../SingleNodeLookupFn";
-import type { SingleNodeLookupFactory } from "./SingleNodeLookupFactory";
+import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
 
 export class BaseSingleNodeLookupBuilder<T extends SingleNodeLookupResult>
   implements SingleNodeLookupBuilder<T>

@@ -1,14 +1,14 @@
 import type { BindingInitializer } from "./BindingInitializer";
-import { AnyNodesArrayLookupFactory } from "./nodes-array-lookup-builder/AnyNodesArrayLookupFactory";
-import { AttributesArrayLookupFactory } from "./nodes-array-lookup-builder/AttributesArrayLookupFactory";
-import { BaseNodesArrayLookupBuilder } from "./nodes-array-lookup-builder/BaseNodesArrayLookupBuilder";
-import { ElementsArrayLookupFactory } from "./nodes-array-lookup-builder/ElementsArrayLookupFactory";
-import type { NodesArrayLookupBuilder } from "./NodesArrayLookupBuilder";
-import { AnyNodeLookupFactory } from "./single-node-lookup-builder/AnyNodeLookupFactory";
-import { AttributeLookupFactory } from "./single-node-lookup-builder/AttributeLookupFactory";
-import { BaseSingleNodeLookupBuilder } from "./single-node-lookup-builder/BaseSingleNodeLookupBuilder";
-import { ElementLookupFactory } from "./single-node-lookup-builder/ElementLookupFactory";
-import type { SingleNodeLookupBuilder } from "./SingleNodeLookupBuilder";
+import { AnyNodesArrayLookupFactory } from "./nodes-array-binding/lookup/AnyNodesArrayLookupFactory";
+import { AttributesArrayLookupFactory } from "./nodes-array-binding/lookup/AttributesArrayLookupFactory";
+import { BaseNodesArrayLookupBuilder } from "./nodes-array-binding/lookup/BaseNodesArrayLookupBuilder";
+import { ElementsArrayLookupFactory } from "./nodes-array-binding/lookup/ElementsArrayLookupFactory";
+import type { NodesArrayLookupBuilder } from "./nodes-array-binding/NodesArrayLookupBuilder";
+import { AnyNodeLookupFactory } from "./single-node-binding/lookup/AnyNodeLookupFactory";
+import { AttributeLookupFactory } from "./single-node-binding/lookup/AttributeLookupFactory";
+import { BaseSingleNodeLookupBuilder } from "./single-node-binding/lookup/BaseSingleNodeLookupBuilder";
+import { ElementLookupFactory } from "./single-node-binding/lookup/ElementLookupFactory";
+import type { SingleNodeLookupBuilder } from "./single-node-binding/SingleNodeLookupBuilder";
 
 export class BaseBindingInitializer implements BindingInitializer {
   toAttribute(path: string): SingleNodeLookupBuilder<Attr | undefined> {

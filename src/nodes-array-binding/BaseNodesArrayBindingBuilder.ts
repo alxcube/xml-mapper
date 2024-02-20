@@ -10,7 +10,7 @@ import type {
   NodesArrayLookupFn,
   NodesArrayLookupResult,
 } from "./NodesArrayLookupFn";
-import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
+import type { SingleNodeDataExtractorFn } from "../single-node-binding/SingleNodeDataExtractorFn";
 
 export class BaseNodesArrayBindingBuilder<
   L extends NodesArrayLookupResult,

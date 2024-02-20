@@ -1,5 +1,5 @@
 import type { XPathSelect } from "xpath";
-import type { ObjectBlueprint } from "../ObjectBlueprint";
+import type { ObjectBlueprint } from "../../ObjectBlueprint";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import { isSingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 

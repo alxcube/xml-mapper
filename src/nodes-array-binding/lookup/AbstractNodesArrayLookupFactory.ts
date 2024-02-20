@@ -1,8 +1,8 @@
 import type { SelectReturnType, XPathSelect } from "xpath";
 import type { NodesArrayLookupFn } from "../NodesArrayLookupFn";
-import { getTypeName } from "../utils/getTypeName";
-import { isArrayLike } from "../utils/isArrayLike";
-import type { NodesArrayLookupFactory } from "./NodesArrayLookupFactory";
+import { getTypeName } from "../../utils/getTypeName";
+import { isArrayLike } from "../../utils/isArrayLike";
+import type { NodesArrayLookupFactory } from "../NodesArrayLookupFactory";
 
 export abstract class AbstractNodesArrayLookupFactory<T extends Node>
   implements NodesArrayLookupFactory<T[] | undefined>

@@ -1,5 +1,5 @@
-import type { ObjectBlueprint } from "./ObjectBlueprint";
-import type { RecursiveObjectFactory } from "./single-node-data-extractors/RecursiveObjectExtractorFactory";
+import type { ObjectBlueprint } from "../ObjectBlueprint";
+import type { RecursiveObjectFactory } from "./data-extractors/RecursiveObjectExtractorFactory";
 import type { SingleNodeBindingBuilder } from "./SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "./SingleNodeDataExtractorFnFactory";

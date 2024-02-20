@@ -1,7 +1,7 @@
 import type {
   NodesArrayLookupFn,
   NodesArrayLookupResult,
-} from "../NodesArrayLookupFn";
+} from "./NodesArrayLookupFn";
 
 export interface NodesArrayLookupFactory<T extends NodesArrayLookupResult> {
   createNodesArrayLookup(path: string): NodesArrayLookupFn<T>;

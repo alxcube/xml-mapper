@@ -1,4 +1,4 @@
-import type { ObjectBlueprint } from "../ObjectBlueprint";
+import type { ObjectBlueprint } from "../../ObjectBlueprint";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 import { createObjectExtractor } from "./createObjectExtractor";

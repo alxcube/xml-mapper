@@ -1,9 +1,8 @@
-
 import type { XPathSelect } from "xpath";
 import { BaseNodesArrayBindingBuilder } from "../BaseNodesArrayBindingBuilder";
-import { CustomArrayDataExtractorFactory } from "../nodes-array-data-extractors/CustomArrayDataExtractorFactory";
+import { CustomArrayDataExtractorFactory } from "../data-extractors/CustomArrayDataExtractorFactory";
 import { BaseNodesArrayDataMapperBuilder } from "../nodes-array-data-mapper/BaseNodesArrayDataMapperBuilder";
-import type { NodesArrayDataMapperBuilder } from "../nodes-array-data-mapper/NodesArrayDataMapperBuilder";
+import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
 import type { NodesArrayBindingBuilder } from "../NodesArrayBindingBuilder";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "../NodesArrayDataExtractorFnFactory";
@@ -12,7 +11,7 @@ import type {
   NodesArrayLookupFn,
   NodesArrayLookupResult,
 } from "../NodesArrayLookupFn";
-import type { NodesArrayLookupFactory } from "./NodesArrayLookupFactory";
+import type { NodesArrayLookupFactory } from "../NodesArrayLookupFactory";
 
 export class BaseNodesArrayLookupBuilder<T extends NodesArrayLookupResult>
   implements NodesArrayLookupBuilder<T>

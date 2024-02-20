@@ -1,4 +1,4 @@
-import type { NodesArrayDataMapperBuilder } from "./nodes-array-data-mapper/NodesArrayDataMapperBuilder";
+import type { NodesArrayDataMapperBuilder } from "./NodesArrayDataMapperBuilder";
 import type { NodesArrayBindingBuilder } from "./NodesArrayBindingBuilder";
 import type { NodesArrayDataExtractorFn } from "./NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "./NodesArrayDataExtractorFnFactory";

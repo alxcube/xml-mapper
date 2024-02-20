@@ -1,5 +1,5 @@
-import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
-import type { SingleNodeDataExtractorFnFactory } from "./SingleNodeDataExtractorFnFactory";
+import type { SingleNodeDataExtractorFn } from "./single-node-binding/SingleNodeDataExtractorFn";
+import type { SingleNodeDataExtractorFnFactory } from "./single-node-binding/SingleNodeDataExtractorFnFactory";
 
 export type ObjectBlueprint<T extends object> = {
   [K in keyof T]:
