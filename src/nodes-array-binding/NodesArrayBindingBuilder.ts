@@ -1,6 +1,8 @@
 import type { NodesArrayLookupResult } from "./NodesArrayLookupFn";
-import type { DependentOfDefaultValue } from "../single-node-binding/SingleNodeBindingBuilder";
-import type { SingleNodeDataExtractorFnFactory } from "../single-node-binding/SingleNodeDataExtractorFnFactory";
+import type {
+  DependentOfDefaultValue,
+  SingleNodeDataExtractorFnFactory,
+} from "../single-node-binding";
 
 export type DependentOfNodesArrayLookupResult<
   L extends NodesArrayLookupResult,

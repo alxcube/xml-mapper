@@ -1,15 +1,17 @@
 import type { XPathSelect } from "xpath";
 import { BaseSingleNodeBindingBuilder } from "../BaseSingleNodeBindingBuilder";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
-import { BooleanExtractorFactory } from "../data-extractors/BooleanExtractorFactory";
-import { CustomDataExtractorFactory } from "../data-extractors/CustomDataExtractorFactory";
-import { NumberExtractorFactory } from "../data-extractors/NumberExtractorFactory";
-import { ObjectExtractorFactory } from "../data-extractors/ObjectExtractorFactory";
+import {
+  BooleanExtractorFactory,
+  CustomDataExtractorFactory,
+  NumberExtractorFactory,
+  ObjectExtractorFactory,
+  StringExtractorFactory,
+} from "../data-extractors";
 import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
-} from "../data-extractors/RecursiveObjectExtractorFactory";
-import { StringExtractorFactory } from "../data-extractors/StringExtractorFactory";
+} from "../data-extractors";
 import type { SingleNodeBindingBuilder } from "../SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";

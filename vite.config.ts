@@ -7,8 +7,8 @@ import packageInfo from "./package.json";
 export default defineConfig({
   plugins: [
     dts({
-      insertTypesEntry: true,
-      outDir: "./dist/types",
+      rollupTypes: true,
+      //outDir: "./dist/types",
       strictOutput: false,
       include: "./src",
     }),

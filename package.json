@@ -20,6 +20,7 @@
   "author": "Alexander Alexandrov <alxcube@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@xmldom/xmldom": "^0.8.10",
     "eslint": "^8.56.0",

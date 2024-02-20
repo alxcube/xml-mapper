@@ -1,7 +1,7 @@
 import type { XPathSelect } from "xpath";
 import { BaseNodesArrayBindingBuilder } from "../BaseNodesArrayBindingBuilder";
-import { CustomArrayDataExtractorFactory } from "../data-extractors/CustomArrayDataExtractorFactory";
-import { BaseNodesArrayDataMapperBuilder } from "../nodes-array-data-mapper/BaseNodesArrayDataMapperBuilder";
+import { CustomArrayDataExtractorFactory } from "../data-extractors";
+import { BaseNodesArrayDataMapperBuilder } from "../nodes-array-data-mapper";
 import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
 import type { NodesArrayBindingBuilder } from "../NodesArrayBindingBuilder";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";

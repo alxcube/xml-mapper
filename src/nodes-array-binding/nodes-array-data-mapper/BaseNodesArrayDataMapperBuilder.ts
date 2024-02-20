@@ -3,16 +3,18 @@ import type { NodesArrayBindingBuilder } from "../NodesArrayBindingBuilder";
 import type { NodesArrayLookupBuilder } from "../NodesArrayLookupBuilder";
 import type { NodesArrayLookupResult } from "../NodesArrayLookupFn";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
-import { BooleanExtractorFactory } from "../../single-node-binding/data-extractors/BooleanExtractorFactory";
-import { NumberExtractorFactory } from "../../single-node-binding/data-extractors/NumberExtractorFactory";
-import { ObjectExtractorFactory } from "../../single-node-binding/data-extractors/ObjectExtractorFactory";
+import {
+  BooleanExtractorFactory,
+  NumberExtractorFactory,
+  ObjectExtractorFactory,
+  StringExtractorFactory,
+} from "../../single-node-binding";
 import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
-} from "../../single-node-binding/data-extractors/RecursiveObjectExtractorFactory";
-import { StringExtractorFactory } from "../../single-node-binding/data-extractors/StringExtractorFactory";
-import type { SingleNodeDataExtractorFn } from "../../single-node-binding/SingleNodeDataExtractorFn";
-import type { SingleNodeDataExtractorFnFactory } from "../../single-node-binding/SingleNodeDataExtractorFnFactory";
+  type SingleNodeDataExtractorFn,
+  type SingleNodeDataExtractorFnFactory,
+} from "../../single-node-binding";
 import { NodesArrayDataMapper } from "./NodesArrayDataMapper";
 import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
 

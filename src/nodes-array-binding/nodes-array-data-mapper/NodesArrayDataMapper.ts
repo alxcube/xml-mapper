@@ -1,11 +1,11 @@
 import type { XPathSelect } from "xpath";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "../NodesArrayDataExtractorFnFactory";
-import type { SingleNodeDataExtractorFn } from "../../single-node-binding/SingleNodeDataExtractorFn";
 import {
+  type SingleNodeDataExtractorFn,
   isSingleNodeDataExtractorFnFactory,
   type SingleNodeDataExtractorFnFactory,
-} from "../../single-node-binding/SingleNodeDataExtractorFnFactory";
+} from "../../single-node-binding";
 
 export class NodesArrayDataMapper<T>
   implements NodesArrayDataExtractorFnFactory<T[]>

@@ -4,8 +4,7 @@ import {
   type XPathSelect,
 } from "xpath";
 import type { SingleNodeLookupFn } from "../SingleNodeLookupFn";
-import { getNodeTypeName } from "../../utils/getNodeTypeName";
-import { getTypeName } from "../../utils/getTypeName";
+import { getNodeTypeName, getTypeName } from "../../utils";
 import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
 
 export abstract class AbstractSingleNodeLookupFactory<T extends Node>

@@ -1,9 +1,11 @@
 import type { NodesArrayBindingBuilder } from "./NodesArrayBindingBuilder";
 import type { NodesArrayLookupResult } from "./NodesArrayLookupFn";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
-import type { RecursiveObjectFactory } from "../single-node-binding/data-extractors/RecursiveObjectExtractorFactory";
-import type { SingleNodeDataExtractorFn } from "../single-node-binding/SingleNodeDataExtractorFn";
-import type { SingleNodeDataExtractorFnFactory } from "../single-node-binding/SingleNodeDataExtractorFnFactory";
+import type {
+  RecursiveObjectFactory,
+  SingleNodeDataExtractorFn,
+  SingleNodeDataExtractorFnFactory,
+} from "../single-node-binding";
 
 export interface NodesArrayDataMapperBuilder<L extends NodesArrayLookupResult> {
   ofStrings(): NodesArrayBindingBuilder<L, string[]>;

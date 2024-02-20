@@ -1,5 +1,5 @@
-import type { NodesArrayLookupBuilder } from "./nodes-array-binding/NodesArrayLookupBuilder";
-import type { SingleNodeLookupBuilder } from "./single-node-binding/SingleNodeLookupBuilder";
+import type { NodesArrayLookupBuilder } from "./nodes-array-binding";
+import type { SingleNodeLookupBuilder } from "./single-node-binding";
 
 export interface BindingInitializer {
   toNode(path: string): SingleNodeLookupBuilder<Node | undefined>;
