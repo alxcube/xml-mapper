@@ -1,5 +1,8 @@
 import type { ObjectBlueprint } from "../ObjectBlueprint";
-import type { RecursiveObjectFactory } from "./data-extractors";
+import type {
+  RecursiveObjectFactory,
+  RecursiveObjectFactoryScope,
+} from "./data-extractors";
 import type { SingleNodeBindingBuilder } from "./SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "./SingleNodeDataExtractorFnFactory";
@@ -26,7 +29,9 @@ export interface SingleNodeLookupBuilder<T extends SingleNodeLookupResult> {
   ): SingleNodeBindingBuilder<T, OT>;
 
   asRecursiveObject<RO extends object>(
-    factory: RecursiveObjectFactory<RO>
+    recursiveObjectFactoryOrScope:
+      | RecursiveObjectFactory<RO>
+      | RecursiveObjectFactoryScope<RO>
   ): SingleNodeBindingBuilder<T, RO>;
 
   callback<CB>(

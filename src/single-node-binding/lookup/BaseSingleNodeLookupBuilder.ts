@@ -6,9 +6,8 @@ import {
   CustomDataExtractorFactory,
   NumberExtractorFactory,
   ObjectExtractorFactory,
+  type RecursiveObjectFactoryScope,
   StringExtractorFactory,
-} from "../data-extractors";
-import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
 } from "../data-extractors";
@@ -86,11 +85,13 @@ export class BaseSingleNodeLookupBuilder<T extends SingleNodeLookupResult>
   }
 
   asRecursiveObject<RO extends object>(
-    factory: RecursiveObjectFactory<RO>
+    recursiveObjectFactoryOrScope:
+      | RecursiveObjectFactory<RO>
+      | RecursiveObjectFactoryScope<RO>
   ): SingleNodeBindingBuilder<T, RO> {
     return new BaseSingleNodeBindingBuilder(
       this,
-      new RecursiveObjectExtractorFactory(factory)
+      new RecursiveObjectExtractorFactory(recursiveObjectFactoryOrScope)
     );
   }
 

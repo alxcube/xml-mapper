@@ -3,6 +3,7 @@ import type { NodesArrayLookupResult } from "./NodesArrayLookupFn";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
 import type {
   RecursiveObjectFactory,
+  RecursiveObjectFactoryScope,
   SingleNodeDataExtractorFn,
   SingleNodeDataExtractorFnFactory,
 } from "../single-node-binding";
@@ -19,7 +20,7 @@ export interface NodesArrayDataMapperBuilder<L extends NodesArrayLookupResult> {
   ): NodesArrayBindingBuilder<L, OT[]>;
 
   ofRecursiveObjects<RO extends object>(
-    factory: RecursiveObjectFactory<RO>
+    factoryOrScope: RecursiveObjectFactory<RO> | RecursiveObjectFactoryScope<RO>
   ): NodesArrayBindingBuilder<L, RO[]>;
 
   usingMapper<CB>(

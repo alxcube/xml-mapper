@@ -7,9 +7,8 @@ import {
   BooleanExtractorFactory,
   NumberExtractorFactory,
   ObjectExtractorFactory,
+  type RecursiveObjectFactoryScope,
   StringExtractorFactory,
-} from "../../single-node-binding";
-import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
   type SingleNodeDataExtractorFn,
@@ -54,11 +53,13 @@ export class BaseNodesArrayDataMapperBuilder<L extends NodesArrayLookupResult>
   }
 
   ofRecursiveObjects<RO extends object>(
-    factory: RecursiveObjectFactory<RO>
+    factoryOrScope: RecursiveObjectFactory<RO> | RecursiveObjectFactoryScope<RO>
   ): NodesArrayBindingBuilder<L, RO[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(new RecursiveObjectExtractorFactory(factory))
+      new NodesArrayDataMapper(
+        new RecursiveObjectExtractorFactory(factoryOrScope)
+      )
     );
   }
 
