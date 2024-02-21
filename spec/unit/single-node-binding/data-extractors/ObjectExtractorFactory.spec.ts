@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import xpath from "xpath";
-import { ObjectExtractorFactory } from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+import { ObjectExtractorFactory } from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("ObjectExtractorFactory class", () => {
   it("should accept ObjectBlueprint in constructor and create function, that will create objects of given shape", () => {

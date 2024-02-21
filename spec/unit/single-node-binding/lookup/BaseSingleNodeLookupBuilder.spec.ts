@@ -7,8 +7,8 @@ import {
   RecursiveObjectExtractorFactory,
   type SingleNodeLookupFactory,
   StringExtractorFactory,
-} from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+} from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("BaseSingleNodeLookupBuilder class", () => {
   const xml = `

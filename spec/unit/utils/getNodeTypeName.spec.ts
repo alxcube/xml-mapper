@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { getNodeTypeName } from "../../src";
-import { parseXml } from "../helper/parseXml";
+import { getNodeTypeName } from "../../../src";
+import { parseXml } from "../../helper/parseXml";
 import xpath from "xpath";
 
 describe("getNodeTypeName() function", () => {

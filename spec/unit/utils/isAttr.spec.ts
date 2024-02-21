@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isAttr } from "../../src";
+import { isAttr } from "../../../src";
 
 describe("isAttr() function", () => {
   it("should return true when passed with 'nodeType' prop and 'ATTRIBUTE_NODE' prop to equal each other", () => {

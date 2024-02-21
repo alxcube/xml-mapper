@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isText } from "../../src";
+import { isText } from "../../../src";
 
 describe("isText() function", () => {
   it("should return true when passed object with 'nodeType' prop and 'TEXT_NODE' prop equal each other", () => {

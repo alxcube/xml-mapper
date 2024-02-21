@@ -4,8 +4,8 @@ import {
   CustomDataExtractorFactory,
   type SingleNodeDataExtractorFn,
   type SingleNodeDataExtractorFnFactory,
-} from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+} from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("CustomDataExtractorFactory class", () => {
   it("should accept SingleNodeDataExtractorFn in constructor and create SingleNodeDataExtractorFn, that calls passed function and returns call result", () => {

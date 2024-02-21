@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isElement } from "../../src";
+import { isElement } from "../../../src";
 
 describe("isElement() function", () => {
   it("should return true when passed object with 'nodeType' prop and 'ELEMENT_NODE' prop equal each other", () => {

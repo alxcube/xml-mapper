@@ -6,8 +6,8 @@ import {
   ElementLookupFactory,
   type SingleNodeLookupBuilder,
   StringExtractorFactory,
-} from "../../src";
-import { parseXml } from "../helper/parseXml";
+} from "../../../src";
+import { parseXml } from "../../helper/parseXml";
 
 describe("BaseSingleNodeBindingBuilder class", () => {
   const xml = `

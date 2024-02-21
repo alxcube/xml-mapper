@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
-import { AnyNodeLookupFactory } from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+import { AnyNodeLookupFactory } from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("AnyNodeLookupFactory class", () => {
   const xml = `

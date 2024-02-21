@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
-import { extractNumber } from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+import { extractNumber } from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("extractNumber() function", () => {
   const xml = `

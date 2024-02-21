@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getTypeName } from "../../src";
+import { getTypeName } from "../../../src";
 
 describe("getTypeName() function", () => {
   it("should return type name of passed data", () => {

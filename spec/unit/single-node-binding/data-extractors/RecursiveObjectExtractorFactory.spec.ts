@@ -3,8 +3,8 @@ import xpath from "xpath";
 import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
-} from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+} from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("RecursiveObjectExtractorFactory class", () => {
   interface TestRecursiveObject {

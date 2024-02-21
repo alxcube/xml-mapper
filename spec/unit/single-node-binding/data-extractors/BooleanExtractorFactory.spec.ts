@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { BooleanExtractorFactory, extractBoolean } from "../../../src";
+import { BooleanExtractorFactory, extractBoolean } from "../../../../src";
 
 describe("BooleanExtractorFactory class", () => {
   let factory: BooleanExtractorFactory;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isArrayLike } from "../../src";
+import { isArrayLike } from "../../../src";
 
 describe("isArrayLike() function", () => {
   it("should return true when passed object with length property of type number", () => {

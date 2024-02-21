@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stringToBoolean } from "../../src";
+import { stringToBoolean } from "../../../src";
 
 describe("stringToBoolean() function", () => {
   it("should return true when passed any text except 'false', 'null' in any case and except when string is numeric and equals to 0", () => {

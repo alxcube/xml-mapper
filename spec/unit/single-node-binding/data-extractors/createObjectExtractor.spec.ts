@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
-import { createObjectExtractor } from "../../../src";
-import { parseXml } from "../../helper/parseXml";
+import { createObjectExtractor } from "../../../../src";
+import { parseXml } from "../../../helper/parseXml";
 
 describe("createObjectExtractor() function", () => {
   let dummyDoc: Document;

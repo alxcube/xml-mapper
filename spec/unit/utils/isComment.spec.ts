@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isComment } from "../../src";
+import { isComment } from "../../../src";
 
 describe("isComment() function", () => {
   it("should return true when passed object with 'nodeType' prop and 'COMMENT_NODE' prop eaual each other", () => {

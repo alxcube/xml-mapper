@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { extractNumber, NumberExtractorFactory } from "../../../src";
+import { extractNumber, NumberExtractorFactory } from "../../../../src";
 
 describe("NumberExtractorFactory class", () => {
   let factory: NumberExtractorFactory;
