@@ -1,4 +1,5 @@
-import { isElement, type SelectReturnType } from "xpath";
+import type { SelectReturnType } from "xpath";
+import { isElement } from "../../utils";
 import { AbstractNodesArrayLookupFactory } from "./AbstractNodesArrayLookupFactory";
 
 export class ElementsArrayLookupFactory extends AbstractNodesArrayLookupFactory<Element> {

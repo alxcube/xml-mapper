@@ -1,4 +1,5 @@
-import { isAttribute, type SelectSingleReturnType } from "xpath";
+import type { SelectSingleReturnType } from "xpath";
+import { isAttr } from "../../utils";
 import { AbstractSingleNodeLookupFactory } from "./AbstractSingleNodeLookupFactory";
 
 export class AttributeLookupFactory extends AbstractSingleNodeLookupFactory<Attr> {
@@ -10,7 +11,7 @@ export class AttributeLookupFactory extends AbstractSingleNodeLookupFactory<Attr
     xpathResult: SelectSingleReturnType
   ) => xpathResult is Attr {
     return (result: SelectSingleReturnType): result is Attr => {
-      return isAttribute(result);
+      return isAttr(result);
     };
   }
 }

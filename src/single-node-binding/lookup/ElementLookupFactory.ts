@@ -1,4 +1,5 @@
-import { isElement, type SelectSingleReturnType } from "xpath";
+import type { SelectSingleReturnType } from "xpath";
+import { isElement } from "../../utils";
 import { AbstractSingleNodeLookupFactory } from "./AbstractSingleNodeLookupFactory";
 
 export class ElementLookupFactory extends AbstractSingleNodeLookupFactory<Element> {
