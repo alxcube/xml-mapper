@@ -1,4 +1,3 @@
-import type { XPathSelect } from "xpath";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";
 import {
   isNodesArrayDataExtractorFnFactory,
@@ -15,10 +14,8 @@ export class CustomArrayDataExtractorFactory<T>
   ) {}
 
   createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<T> {
-    const callback = isNodesArrayDataExtractorFnFactory(this.callback)
+    return isNodesArrayDataExtractorFnFactory(this.callback)
       ? this.callback.createNodesArrayDataExtractor()
       : this.callback;
-    return (nodes: Node[], xpathSelect: XPathSelect) =>
-      callback(nodes, xpathSelect);
   }
 }
