@@ -17,41 +17,89 @@ export type DependentOfDefaultValue<
     : DefaultValueType
   : DataExtractorReturnType;
 
-export type DependentOfNodeLookupResultAndDefaultValue<
-  LookupResultType extends SingleNodeLookupResult,
+export type ConversionFn<InputType, OutputType> = (
+  input: InputType
+) => OutputType;
+
+export type DependentOfConversionFnType<
   DataExtractorReturnType,
-  DefaultValueType extends DataExtractorReturnType | undefined,
+  ConversionFnType extends
+    | ConversionFn<DataExtractorReturnType, unknown>
+    | undefined,
+> =
+  ConversionFnType extends ConversionFn<
+    DataExtractorReturnType,
+    infer ConversionFnReturnType
+  >
+    ? ConversionFnReturnType
+    : DataExtractorReturnType;
+
+export type DependentOfLookupResultAndConversionFnAndDefaultValue<
+  LookupResult extends SingleNodeLookupResult,
+  DataExtractorReturnType,
+  ConversionFnType extends
+    | ConversionFn<DataExtractorReturnType, unknown>
+    | undefined = undefined,
+  DefaultValueType extends
+    | DependentOfConversionFnType<DataExtractorReturnType, ConversionFnType>
+    | undefined = undefined,
 > = DependentOfDefaultValue<
-  DependentOfNodeLookupResult<LookupResultType, DataExtractorReturnType>,
+  DependentOfNodeLookupResult<
+    LookupResult,
+    DependentOfConversionFnType<DataExtractorReturnType, ConversionFnType>
+  >,
   DefaultValueType
 >;
-
 export interface SingleNodeBindingBuilder<
-  LookupResultType extends SingleNodeLookupResult,
+  LookupResult extends SingleNodeLookupResult,
   DataExtractorReturnType,
-  DefaultValueType extends DataExtractorReturnType | undefined = undefined,
+  ConversionFnType extends
+    | ConversionFn<DataExtractorReturnType, unknown>
+    | undefined = undefined,
+  DefaultValueType extends
+    | DependentOfConversionFnType<DataExtractorReturnType, ConversionFnType>
+    | undefined = undefined,
 > extends SingleNodeDataExtractorFnFactory<
-    DependentOfNodeLookupResultAndDefaultValue<
-      LookupResultType,
+    DependentOfLookupResultAndConversionFnAndDefaultValue<
+      LookupResult,
       DataExtractorReturnType,
+      ConversionFnType,
       DefaultValueType
     >
   > {
   withDefault<
-    GivenDefaultValueType extends DataExtractorReturnType | undefined,
+    GivenDefaultValueType extends
+      | DependentOfConversionFnType<DataExtractorReturnType, ConversionFnType>
+      | undefined,
   >(
     defaultValue: GivenDefaultValueType
   ): SingleNodeBindingBuilder<
-    LookupResultType,
+    LookupResult,
     DataExtractorReturnType,
+    ConversionFnType,
     GivenDefaultValueType
   >;
 
   named(
     name: string
   ): SingleNodeBindingBuilder<
-    LookupResultType,
+    LookupResult,
     DataExtractorReturnType,
+    ConversionFnType,
     DefaultValueType
+  >;
+
+  withConversion<
+    GivenConversionFnType extends ConversionFn<
+      DataExtractorReturnType,
+      unknown
+    >,
+  >(
+    conversionCallback: GivenConversionFnType
+  ): SingleNodeBindingBuilder<
+    LookupResult,
+    DataExtractorReturnType,
+    GivenConversionFnType,
+    undefined
   >;
 }
