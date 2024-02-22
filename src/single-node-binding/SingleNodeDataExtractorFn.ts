@@ -1,5 +1,5 @@
 import type { XPathSelect } from "xpath";
 
-export interface SingleNodeDataExtractorFn<T> {
-  (node: Node, xpathSelect: XPathSelect): T;
+export interface SingleNodeDataExtractorFn<DataExtractorReturnType> {
+  (node: Node, xpathSelect: XPathSelect): DataExtractorReturnType;
 }

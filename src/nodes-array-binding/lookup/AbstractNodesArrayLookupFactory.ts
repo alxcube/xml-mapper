@@ -3,19 +3,25 @@ import type { NodesArrayLookupFn } from "../NodesArrayLookupFn";
 import { getTypeName, isArrayLike } from "../../utils";
 import type { NodesArrayLookupFactory } from "../NodesArrayLookupFactory";
 
-export abstract class AbstractNodesArrayLookupFactory<T extends Node>
-  implements NodesArrayLookupFactory<T[] | undefined>
+export abstract class AbstractNodesArrayLookupFactory<
+  ArrayLookupResult extends Node,
+> implements NodesArrayLookupFactory<ArrayLookupResult[] | undefined>
 {
   protected abstract getTypeCheckFn(): (
     xpathResult: SelectReturnType
-  ) => xpathResult is T[];
+  ) => xpathResult is ArrayLookupResult[];
 
   protected abstract getArrayItemTypeName(): string;
 
-  createNodesArrayLookup(path: string): NodesArrayLookupFn<T[] | undefined> {
+  createNodesArrayLookup(
+    path: string
+  ): NodesArrayLookupFn<ArrayLookupResult[] | undefined> {
     const checkType = this.getTypeCheckFn();
 
-    return (contextNode: Node, xpathSelect: XPathSelect): T[] | undefined => {
+    return (
+      contextNode: Node,
+      xpathSelect: XPathSelect
+    ): ArrayLookupResult[] | undefined => {
       const result = xpathSelect(path, contextNode);
       if (isArrayLike(result) && !result.length) {
         return undefined;

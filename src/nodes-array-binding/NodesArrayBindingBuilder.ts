@@ -5,25 +5,49 @@ import type {
 } from "../single-node-binding";
 
 export type DependentOfNodesArrayLookupResult<
-  L extends NodesArrayLookupResult,
-  T,
-> = L extends undefined ? T | undefined : T;
+  ArrayLookupResult extends NodesArrayLookupResult,
+  ArrayDataExtractorReturnType,
+> = ArrayLookupResult extends undefined
+  ? ArrayDataExtractorReturnType | undefined
+  : ArrayDataExtractorReturnType;
 
 export type DependentOfNodesArrayLookupResultAndDefaultValue<
-  L extends NodesArrayLookupResult,
-  T,
-  D extends T | undefined,
-> = DependentOfDefaultValue<DependentOfNodesArrayLookupResult<L, T>, D>;
+  ArrayLookupResult extends NodesArrayLookupResult,
+  ArrayDataExtractorReturnType,
+  DefaultValueType extends ArrayDataExtractorReturnType | undefined,
+> = DependentOfDefaultValue<
+  DependentOfNodesArrayLookupResult<
+    ArrayLookupResult,
+    ArrayDataExtractorReturnType
+  >,
+  DefaultValueType
+>;
 export interface NodesArrayBindingBuilder<
-  L extends NodesArrayLookupResult,
-  T,
-  D extends T | undefined = undefined,
+  ArrayLookupResult extends NodesArrayLookupResult,
+  ArrayDataExtractorReturnType,
+  DefaultValueType extends ArrayDataExtractorReturnType | undefined = undefined,
 > extends SingleNodeDataExtractorFnFactory<
-    DependentOfNodesArrayLookupResultAndDefaultValue<L, T, D>
+    DependentOfNodesArrayLookupResultAndDefaultValue<
+      ArrayLookupResult,
+      ArrayDataExtractorReturnType,
+      DefaultValueType
+    >
   > {
-  withDefault<DT extends T | undefined>(
-    defaultValue: DT
-  ): NodesArrayBindingBuilder<L, T, DT>;
+  withDefault<
+    GivenDefaultValueType extends ArrayDataExtractorReturnType | undefined,
+  >(
+    defaultValue: GivenDefaultValueType
+  ): NodesArrayBindingBuilder<
+    ArrayLookupResult,
+    ArrayDataExtractorReturnType,
+    GivenDefaultValueType
+  >;
 
-  named(name: string): NodesArrayBindingBuilder<L, T, D>;
+  named(
+    name: string
+  ): NodesArrayBindingBuilder<
+    ArrayLookupResult,
+    ArrayDataExtractorReturnType,
+    DefaultValueType
+  >;
 }

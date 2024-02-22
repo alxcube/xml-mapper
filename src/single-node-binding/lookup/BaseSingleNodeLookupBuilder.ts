@@ -21,21 +21,22 @@ import type {
 } from "../SingleNodeLookupFn";
 import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
 
-export class BaseSingleNodeLookupBuilder<T extends SingleNodeLookupResult>
-  implements SingleNodeLookupBuilder<T>
+export class BaseSingleNodeLookupBuilder<
+  NodeLookupResult extends SingleNodeLookupResult,
+> implements SingleNodeLookupBuilder<NodeLookupResult>
 {
   constructor(
-    private readonly factory: SingleNodeLookupFactory<T>,
+    private readonly factory: SingleNodeLookupFactory<NodeLookupResult>,
     private readonly path: string,
     private readonly isMandatory = false
   ) {}
 
-  buildNodeLookup(): SingleNodeLookupFn<T> {
+  buildNodeLookup(): SingleNodeLookupFn<NodeLookupResult> {
     const isMandatory = this.isMandatory;
     const path = this.path;
     const lookupFn = this.factory.createSingleNodeLookup(path);
 
-    return (contextNode: Node, xpathSelect: XPathSelect): T => {
+    return (contextNode: Node, xpathSelect: XPathSelect): NodeLookupResult => {
       const result = lookupFn(contextNode, xpathSelect);
       if (isMandatory && (result === undefined || result === null)) {
         throw new RangeError(`Mandatory node was not found by path: ${path}`);
@@ -44,60 +45,62 @@ export class BaseSingleNodeLookupBuilder<T extends SingleNodeLookupResult>
     };
   }
 
-  mandatory(): SingleNodeLookupBuilder<NonNullable<T>> {
+  mandatory(): SingleNodeLookupBuilder<NonNullable<NodeLookupResult>> {
     return new BaseSingleNodeLookupBuilder(
       this.factory,
       this.path,
       true
-    ) as SingleNodeLookupBuilder<NonNullable<T>>;
+    ) as SingleNodeLookupBuilder<NonNullable<NodeLookupResult>>;
   }
 
-  optional(): SingleNodeLookupBuilder<T | undefined> {
+  optional(): SingleNodeLookupBuilder<NodeLookupResult | undefined> {
     return new BaseSingleNodeLookupBuilder(
       this.factory,
       this.path,
       false
-    ) as SingleNodeLookupBuilder<T | undefined>;
+    ) as SingleNodeLookupBuilder<NodeLookupResult | undefined>;
   }
 
-  asString(): SingleNodeBindingBuilder<T, string> {
+  asString(): SingleNodeBindingBuilder<NodeLookupResult, string> {
     return new BaseSingleNodeBindingBuilder(this, new StringExtractorFactory());
   }
 
-  asNumber(): SingleNodeBindingBuilder<T, number> {
+  asNumber(): SingleNodeBindingBuilder<NodeLookupResult, number> {
     return new BaseSingleNodeBindingBuilder(this, new NumberExtractorFactory());
   }
 
-  asBoolean(): SingleNodeBindingBuilder<T, boolean> {
+  asBoolean(): SingleNodeBindingBuilder<NodeLookupResult, boolean> {
     return new BaseSingleNodeBindingBuilder(
       this,
       new BooleanExtractorFactory()
     );
   }
 
-  asObject<OT extends object>(
-    blueprint: ObjectBlueprint<OT>
-  ): SingleNodeBindingBuilder<T, OT> {
+  asObject<ObjectType extends object>(
+    blueprint: ObjectBlueprint<ObjectType>
+  ): SingleNodeBindingBuilder<NodeLookupResult, ObjectType> {
     return new BaseSingleNodeBindingBuilder(
       this,
       new ObjectExtractorFactory(blueprint)
     );
   }
 
-  asRecursiveObject<RO extends object>(
+  asRecursiveObject<RecursiveObjectType extends object>(
     recursiveObjectFactoryOrScope:
-      | RecursiveObjectFactory<RO>
-      | RecursiveObjectFactoryScope<RO>
-  ): SingleNodeBindingBuilder<T, RO> {
+      | RecursiveObjectFactory<RecursiveObjectType>
+      | RecursiveObjectFactoryScope<RecursiveObjectType>
+  ): SingleNodeBindingBuilder<NodeLookupResult, RecursiveObjectType> {
     return new BaseSingleNodeBindingBuilder(
       this,
       new RecursiveObjectExtractorFactory(recursiveObjectFactoryOrScope)
     );
   }
 
-  callback<CB>(
-    cb: SingleNodeDataExtractorFn<CB> | SingleNodeDataExtractorFnFactory<CB>
-  ): SingleNodeBindingBuilder<T, CB> {
+  callback<CallbackReturnType>(
+    cb:
+      | SingleNodeDataExtractorFn<CallbackReturnType>
+      | SingleNodeDataExtractorFnFactory<CallbackReturnType>
+  ): SingleNodeBindingBuilder<NodeLookupResult, CallbackReturnType> {
     return new BaseSingleNodeBindingBuilder(
       this,
       new CustomDataExtractorFactory(cb)

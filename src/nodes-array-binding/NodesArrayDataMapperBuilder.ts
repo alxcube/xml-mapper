@@ -8,22 +8,31 @@ import type {
   SingleNodeDataExtractorFnFactory,
 } from "../single-node-binding";
 
-export interface NodesArrayDataMapperBuilder<L extends NodesArrayLookupResult> {
-  ofStrings(): NodesArrayBindingBuilder<L, string[]>;
+export interface NodesArrayDataMapperBuilder<
+  NodesLookupResult extends NodesArrayLookupResult,
+> {
+  ofStrings(): NodesArrayBindingBuilder<NodesLookupResult, string[]>;
 
-  ofNumbers(): NodesArrayBindingBuilder<L, number[]>;
+  ofNumbers(): NodesArrayBindingBuilder<NodesLookupResult, number[]>;
 
-  ofBooleans(): NodesArrayBindingBuilder<L, boolean[]>;
+  ofBooleans(): NodesArrayBindingBuilder<NodesLookupResult, boolean[]>;
 
-  ofObjects<OT extends object>(
-    blueprint: ObjectBlueprint<OT>
-  ): NodesArrayBindingBuilder<L, OT[]>;
+  ofObjects<ObjectType extends object>(
+    blueprint: ObjectBlueprint<ObjectType>
+  ): NodesArrayBindingBuilder<NodesLookupResult, ObjectType[]>;
 
-  ofRecursiveObjects<RO extends object>(
-    factoryOrScope: RecursiveObjectFactory<RO> | RecursiveObjectFactoryScope<RO>
-  ): NodesArrayBindingBuilder<L, RO[]>;
+  ofRecursiveObjects<RecursiveObjectType extends object>(
+    factoryOrScope:
+      | RecursiveObjectFactory<RecursiveObjectType>
+      | RecursiveObjectFactoryScope<RecursiveObjectType>
+  ): NodesArrayBindingBuilder<NodesLookupResult, RecursiveObjectType[]>;
 
-  usingMapper<CB>(
-    cb: SingleNodeDataExtractorFn<CB> | SingleNodeDataExtractorFnFactory<CB>
-  ): NodesArrayBindingBuilder<L, NonNullable<CB>[]>;
+  usingMapper<MappingFunctionReturnType>(
+    cb:
+      | SingleNodeDataExtractorFn<MappingFunctionReturnType>
+      | SingleNodeDataExtractorFnFactory<MappingFunctionReturnType>
+  ): NodesArrayBindingBuilder<
+    NodesLookupResult,
+    NonNullable<MappingFunctionReturnType>[]
+  >;
 }

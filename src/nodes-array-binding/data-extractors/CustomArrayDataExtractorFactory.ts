@@ -4,16 +4,16 @@ import {
   type NodesArrayDataExtractorFnFactory,
 } from "../NodesArrayDataExtractorFnFactory";
 
-export class CustomArrayDataExtractorFactory<T>
-  implements NodesArrayDataExtractorFnFactory<T>
+export class CustomArrayDataExtractorFactory<CallbackReturnType>
+  implements NodesArrayDataExtractorFnFactory<CallbackReturnType>
 {
   constructor(
     private readonly callback:
-      | NodesArrayDataExtractorFnFactory<T>
-      | NodesArrayDataExtractorFn<T>
+      | NodesArrayDataExtractorFnFactory<CallbackReturnType>
+      | NodesArrayDataExtractorFn<CallbackReturnType>
   ) {}
 
-  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<T> {
+  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<CallbackReturnType> {
     return isNodesArrayDataExtractorFnFactory(this.callback)
       ? this.callback.createNodesArrayDataExtractor()
       : this.callback;

@@ -11,30 +11,34 @@ import type {
   SingleNodeLookupResult,
 } from "./SingleNodeLookupFn";
 
-export interface SingleNodeLookupBuilder<T extends SingleNodeLookupResult> {
-  buildNodeLookup(): SingleNodeLookupFn<T>;
+export interface SingleNodeLookupBuilder<
+  LookupResultType extends SingleNodeLookupResult,
+> {
+  buildNodeLookup(): SingleNodeLookupFn<LookupResultType>;
 
-  mandatory(): SingleNodeLookupBuilder<NonNullable<T>>;
+  mandatory(): SingleNodeLookupBuilder<NonNullable<LookupResultType>>;
 
-  optional(): SingleNodeLookupBuilder<T | undefined>;
+  optional(): SingleNodeLookupBuilder<LookupResultType | undefined>;
 
-  asString(): SingleNodeBindingBuilder<T, string>;
+  asString(): SingleNodeBindingBuilder<LookupResultType, string>;
 
-  asNumber(): SingleNodeBindingBuilder<T, number>;
+  asNumber(): SingleNodeBindingBuilder<LookupResultType, number>;
 
-  asBoolean(): SingleNodeBindingBuilder<T, boolean>;
+  asBoolean(): SingleNodeBindingBuilder<LookupResultType, boolean>;
 
-  asObject<OT extends object>(
-    blueprint: ObjectBlueprint<OT>
-  ): SingleNodeBindingBuilder<T, OT>;
+  asObject<ObjectType extends object>(
+    blueprint: ObjectBlueprint<ObjectType>
+  ): SingleNodeBindingBuilder<LookupResultType, ObjectType>;
 
-  asRecursiveObject<RO extends object>(
+  asRecursiveObject<RecursiveObjectType extends object>(
     recursiveObjectFactoryOrScope:
-      | RecursiveObjectFactory<RO>
-      | RecursiveObjectFactoryScope<RO>
-  ): SingleNodeBindingBuilder<T, RO>;
+      | RecursiveObjectFactory<RecursiveObjectType>
+      | RecursiveObjectFactoryScope<RecursiveObjectType>
+  ): SingleNodeBindingBuilder<LookupResultType, RecursiveObjectType>;
 
-  callback<CB>(
-    cb: SingleNodeDataExtractorFn<CB> | SingleNodeDataExtractorFnFactory<CB>
-  ): SingleNodeBindingBuilder<T, CB>;
+  callback<CallbackReturnType>(
+    cb:
+      | SingleNodeDataExtractorFn<CallbackReturnType>
+      | SingleNodeDataExtractorFnFactory<CallbackReturnType>
+  ): SingleNodeBindingBuilder<LookupResultType, CallbackReturnType>;
 }

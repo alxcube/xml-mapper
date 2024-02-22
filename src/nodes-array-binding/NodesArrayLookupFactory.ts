@@ -3,6 +3,8 @@ import type {
   NodesArrayLookupResult,
 } from "./NodesArrayLookupFn";
 
-export interface NodesArrayLookupFactory<T extends NodesArrayLookupResult> {
-  createNodesArrayLookup(path: string): NodesArrayLookupFn<T>;
+export interface NodesArrayLookupFactory<
+  NodesLookupResult extends NodesArrayLookupResult,
+> {
+  createNodesArrayLookup(path: string): NodesArrayLookupFn<NodesLookupResult>;
 }

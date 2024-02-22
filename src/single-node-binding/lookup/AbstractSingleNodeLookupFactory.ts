@@ -7,18 +7,24 @@ import type { SingleNodeLookupFn } from "../SingleNodeLookupFn";
 import { getNodeTypeName, getTypeName } from "../../utils";
 import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
 
-export abstract class AbstractSingleNodeLookupFactory<T extends Node>
-  implements SingleNodeLookupFactory<T | undefined>
+export abstract class AbstractSingleNodeLookupFactory<
+  NodeLookupResult extends Node,
+> implements SingleNodeLookupFactory<NodeLookupResult | undefined>
 {
   protected abstract getTypeCheckFn(): (
     xpathResult: SelectSingleReturnType
-  ) => xpathResult is T;
+  ) => xpathResult is NodeLookupResult;
 
   protected abstract getReturnTypeName(): string;
-  createSingleNodeLookup(path: string): SingleNodeLookupFn<T | undefined> {
+  createSingleNodeLookup(
+    path: string
+  ): SingleNodeLookupFn<NodeLookupResult | undefined> {
     const checkType = this.getTypeCheckFn();
 
-    return (contextNode: Node, xpathSelect: XPathSelect): T | undefined => {
+    return (
+      contextNode: Node,
+      xpathSelect: XPathSelect
+    ): NodeLookupResult | undefined => {
       const result = xpathSelect(path, contextNode, true);
       if (result === undefined || result === null) {
         return undefined;

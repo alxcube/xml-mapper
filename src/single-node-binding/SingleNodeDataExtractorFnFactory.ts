@@ -1,7 +1,7 @@
 import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
 
-export interface SingleNodeDataExtractorFnFactory<T> {
-  createNodeDataExtractor(): SingleNodeDataExtractorFn<T>;
+export interface SingleNodeDataExtractorFnFactory<DataExtractorReturnType> {
+  createNodeDataExtractor(): SingleNodeDataExtractorFn<DataExtractorReturnType>;
 }
 
 export function isSingleNodeDataExtractorFnFactory(

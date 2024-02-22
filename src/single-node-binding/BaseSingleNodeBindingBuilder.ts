@@ -12,31 +12,40 @@ import type {
 } from "./SingleNodeLookupFn";
 
 export class BaseSingleNodeBindingBuilder<
-  L extends SingleNodeLookupResult,
-  T,
-  D extends T | undefined = undefined,
-> implements SingleNodeBindingBuilder<L, T, D>
+  NodeLookupResultType extends SingleNodeLookupResult,
+  DataExtractorReturnType,
+  DefaultValueType extends DataExtractorReturnType | undefined = undefined,
+> implements
+    SingleNodeBindingBuilder<
+      NodeLookupResultType,
+      DataExtractorReturnType,
+      DefaultValueType
+    >
 {
   constructor(
-    private readonly lookupBuilder: SingleNodeLookupBuilder<L>,
-    private readonly dataExtractorFactory: SingleNodeDataExtractorFnFactory<T>,
-    private readonly defaultValue?: D,
+    private readonly lookupBuilder: SingleNodeLookupBuilder<NodeLookupResultType>,
+    private readonly dataExtractorFactory: SingleNodeDataExtractorFnFactory<DataExtractorReturnType>,
+    private readonly defaultValue?: DefaultValueType,
     private readonly name = ""
   ) {}
   createNodeDataExtractor(): SingleNodeDataExtractorFn<
-    DependentOfNodeLookupResultAndDefaultValue<L, T, D>
+    DependentOfNodeLookupResultAndDefaultValue<
+      NodeLookupResultType,
+      DataExtractorReturnType,
+      DefaultValueType
+    >
   > {
     const name = this.name;
     const defaultValue = this.defaultValue;
 
-    let lookupFn: SingleNodeLookupFn<L>;
+    let lookupFn: SingleNodeLookupFn<NodeLookupResultType>;
     try {
       lookupFn = this.lookupBuilder.buildNodeLookup();
     } catch (e) {
       throw new Error(`Error in ${name} binding lookup builder: ${e}`);
     }
 
-    let dataExtractor: SingleNodeDataExtractorFn<T>;
+    let dataExtractor: SingleNodeDataExtractorFn<DataExtractorReturnType>;
     try {
       dataExtractor = this.dataExtractorFactory.createNodeDataExtractor();
     } catch (e) {
@@ -46,22 +55,26 @@ export class BaseSingleNodeBindingBuilder<
     return (
       node: Node,
       xpathSelect: XPathSelect
-    ): DependentOfNodeLookupResultAndDefaultValue<L, T, D> => {
-      let lookupResult: L;
+    ): DependentOfNodeLookupResultAndDefaultValue<
+      NodeLookupResultType,
+      DataExtractorReturnType,
+      DefaultValueType
+    > => {
+      let lookupResult: NodeLookupResultType;
       try {
         lookupResult = lookupFn(node, xpathSelect);
         if (!lookupResult) {
           return defaultValue as DependentOfNodeLookupResultAndDefaultValue<
-            L,
-            T,
-            D
+            NodeLookupResultType,
+            DataExtractorReturnType,
+            DefaultValueType
           >;
         }
       } catch (e) {
         throw new Error(`Error in ${name} binding lookup: ${e}`);
       }
 
-      let extractedValue: T;
+      let extractedValue: DataExtractorReturnType;
       try {
         extractedValue = dataExtractor(lookupResult, xpathSelect);
       } catch (e) {
@@ -70,11 +83,21 @@ export class BaseSingleNodeBindingBuilder<
 
       return (
         extractedValue === undefined ? defaultValue : extractedValue
-      ) as DependentOfNodeLookupResultAndDefaultValue<L, T, D>;
+      ) as DependentOfNodeLookupResultAndDefaultValue<
+        NodeLookupResultType,
+        DataExtractorReturnType,
+        DefaultValueType
+      >;
     };
   }
 
-  named(name: string): SingleNodeBindingBuilder<L, T, D> {
+  named(
+    name: string
+  ): SingleNodeBindingBuilder<
+    NodeLookupResultType,
+    DataExtractorReturnType,
+    DefaultValueType
+  > {
     return new BaseSingleNodeBindingBuilder(
       this.lookupBuilder,
       this.dataExtractorFactory,
@@ -83,9 +106,15 @@ export class BaseSingleNodeBindingBuilder<
     );
   }
 
-  withDefault<DT extends T | undefined>(
-    defaultValue: DT
-  ): SingleNodeBindingBuilder<L, T, DT> {
+  withDefault<
+    GivenDefaultValueType extends DataExtractorReturnType | undefined,
+  >(
+    defaultValue: GivenDefaultValueType
+  ): SingleNodeBindingBuilder<
+    NodeLookupResultType,
+    DataExtractorReturnType,
+    GivenDefaultValueType
+  > {
     return new BaseSingleNodeBindingBuilder(
       this.lookupBuilder,
       this.dataExtractorFactory,

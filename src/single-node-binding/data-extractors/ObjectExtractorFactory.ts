@@ -3,12 +3,12 @@ import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 import { createObjectExtractor } from "./createObjectExtractor";
 
-export class ObjectExtractorFactory<T extends object>
-  implements SingleNodeDataExtractorFnFactory<T>
+export class ObjectExtractorFactory<ObjectType extends object>
+  implements SingleNodeDataExtractorFnFactory<ObjectType>
 {
-  constructor(private readonly blueprint: ObjectBlueprint<T>) {}
+  constructor(private readonly blueprint: ObjectBlueprint<ObjectType>) {}
 
-  createNodeDataExtractor(): SingleNodeDataExtractorFn<T> {
+  createNodeDataExtractor(): SingleNodeDataExtractorFn<ObjectType> {
     return createObjectExtractor(this.blueprint);
   }
 }

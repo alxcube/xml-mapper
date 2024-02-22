@@ -1,7 +1,9 @@
 import type { NodesArrayDataExtractorFn } from "./NodesArrayDataExtractorFn";
 
-export interface NodesArrayDataExtractorFnFactory<T> {
-  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<T>;
+export interface NodesArrayDataExtractorFnFactory<
+  ArrayDataExtractorReturnType,
+> {
+  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<ArrayDataExtractorReturnType>;
 }
 
 export function isNodesArrayDataExtractorFnFactory(

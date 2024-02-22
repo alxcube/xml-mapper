@@ -13,21 +13,22 @@ import type {
 } from "../NodesArrayLookupFn";
 import type { NodesArrayLookupFactory } from "../NodesArrayLookupFactory";
 
-export class BaseNodesArrayLookupBuilder<T extends NodesArrayLookupResult>
-  implements NodesArrayLookupBuilder<T>
+export class BaseNodesArrayLookupBuilder<
+  ArrayLookupResult extends NodesArrayLookupResult,
+> implements NodesArrayLookupBuilder<ArrayLookupResult>
 {
   constructor(
-    private readonly factory: NodesArrayLookupFactory<T>,
+    private readonly factory: NodesArrayLookupFactory<ArrayLookupResult>,
     private readonly path: string,
     private readonly isMandatory = false
   ) {}
 
-  buildNodesArrayLookup(): NodesArrayLookupFn<T> {
+  buildNodesArrayLookup(): NodesArrayLookupFn<ArrayLookupResult> {
     const isMandatory = this.isMandatory;
     const path = this.path;
     const lookupFn = this.factory.createNodesArrayLookup(path);
 
-    return (contextNode: Node, xpathSelect: XPathSelect): T => {
+    return (contextNode: Node, xpathSelect: XPathSelect): ArrayLookupResult => {
       const result = lookupFn(contextNode, xpathSelect);
       if (isMandatory && (result === undefined || result === null)) {
         throw new RangeError(
@@ -38,29 +39,31 @@ export class BaseNodesArrayLookupBuilder<T extends NodesArrayLookupResult>
     };
   }
 
-  mandatory(): NodesArrayLookupBuilder<NonNullable<T>> {
+  mandatory(): NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>> {
     return new BaseNodesArrayLookupBuilder(
       this.factory,
       this.path,
       true
-    ) as NodesArrayLookupBuilder<NonNullable<T>>;
+    ) as NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>>;
   }
 
-  optional(): NodesArrayLookupBuilder<T | undefined> {
+  optional(): NodesArrayLookupBuilder<ArrayLookupResult | undefined> {
     return new BaseNodesArrayLookupBuilder(
       this.factory,
       this.path,
       false
-    ) as NodesArrayLookupBuilder<T | undefined>;
+    ) as NodesArrayLookupBuilder<ArrayLookupResult | undefined>;
   }
 
-  asArray(): NodesArrayDataMapperBuilder<T> {
+  asArray(): NodesArrayDataMapperBuilder<ArrayLookupResult> {
     return new BaseNodesArrayDataMapperBuilder(this);
   }
 
-  callback<C>(
-    cb: NodesArrayDataExtractorFn<C> | NodesArrayDataExtractorFnFactory<C>
-  ): NodesArrayBindingBuilder<T, C> {
+  callback<CallbackReturnType>(
+    cb:
+      | NodesArrayDataExtractorFn<CallbackReturnType>
+      | NodesArrayDataExtractorFnFactory<CallbackReturnType>
+  ): NodesArrayBindingBuilder<ArrayLookupResult, CallbackReturnType> {
     return new BaseNodesArrayBindingBuilder(
       this,
       new CustomArrayDataExtractorFactory(cb)

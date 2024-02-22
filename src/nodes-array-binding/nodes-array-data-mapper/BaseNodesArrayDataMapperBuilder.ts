@@ -17,44 +17,49 @@ import {
 import { NodesArrayDataMapper } from "./NodesArrayDataMapper";
 import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
 
-export class BaseNodesArrayDataMapperBuilder<L extends NodesArrayLookupResult>
-  implements NodesArrayDataMapperBuilder<L>
+export class BaseNodesArrayDataMapperBuilder<
+  ArrayLookupResult extends NodesArrayLookupResult,
+> implements NodesArrayDataMapperBuilder<ArrayLookupResult>
 {
-  constructor(private readonly lookupBuilder: NodesArrayLookupBuilder<L>) {}
+  constructor(
+    private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>
+  ) {}
 
-  ofBooleans(): NodesArrayBindingBuilder<L, boolean[]> {
+  ofBooleans(): NodesArrayBindingBuilder<ArrayLookupResult, boolean[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(new BooleanExtractorFactory())
     );
   }
 
-  ofNumbers(): NodesArrayBindingBuilder<L, number[]> {
+  ofNumbers(): NodesArrayBindingBuilder<ArrayLookupResult, number[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(new NumberExtractorFactory())
     );
   }
 
-  ofObjects<OT extends object>(
-    blueprint: ObjectBlueprint<OT>
-  ): NodesArrayBindingBuilder<L, OT[]> {
+  ofObjects<ObjectType extends object>(
+    blueprint: ObjectBlueprint<ObjectType>
+  ): NodesArrayBindingBuilder<ArrayLookupResult, ObjectType[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(new ObjectExtractorFactory(blueprint))
     );
   }
 
-  ofStrings(): NodesArrayBindingBuilder<L, string[]> {
+  ofStrings(): NodesArrayBindingBuilder<ArrayLookupResult, string[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(new StringExtractorFactory())
     );
   }
 
-  ofRecursiveObjects<RO extends object>(
-    factoryOrScope: RecursiveObjectFactory<RO> | RecursiveObjectFactoryScope<RO>
-  ): NodesArrayBindingBuilder<L, RO[]> {
+  ofRecursiveObjects<RecursiveObjectType extends object>(
+    factoryOrScope:
+      | RecursiveObjectFactory<RecursiveObjectType>
+      | RecursiveObjectFactoryScope<RecursiveObjectType>
+  ): NodesArrayBindingBuilder<ArrayLookupResult, RecursiveObjectType[]> {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(
@@ -63,12 +68,20 @@ export class BaseNodesArrayDataMapperBuilder<L extends NodesArrayLookupResult>
     );
   }
 
-  usingMapper<CB>(
-    cb: SingleNodeDataExtractorFn<CB> | SingleNodeDataExtractorFnFactory<CB>
-  ): NodesArrayBindingBuilder<L, NonNullable<CB>[]> {
+  usingMapper<MappingFunctionReturnType>(
+    cb:
+      | SingleNodeDataExtractorFn<MappingFunctionReturnType>
+      | SingleNodeDataExtractorFnFactory<MappingFunctionReturnType>
+  ): NodesArrayBindingBuilder<
+    ArrayLookupResult,
+    NonNullable<MappingFunctionReturnType>[]
+  > {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(cb)
-    ) as NodesArrayBindingBuilder<L, NonNullable<CB>[]>;
+    ) as NodesArrayBindingBuilder<
+      ArrayLookupResult,
+      NonNullable<MappingFunctionReturnType>[]
+    >;
   }
 }

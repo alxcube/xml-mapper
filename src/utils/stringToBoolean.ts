@@ -5,7 +5,6 @@ export function stringToBoolean(str: string): boolean {
     !!upperStr.length &&
     upperStr !== "FALSE" &&
     upperStr !== "NULL" &&
-    numericValue !== +0 &&
-    numericValue !== -0
+    numericValue !== 0
   );
 }

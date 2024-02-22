@@ -4,16 +4,16 @@ import {
   type SingleNodeDataExtractorFnFactory,
 } from "../SingleNodeDataExtractorFnFactory";
 
-export class CustomDataExtractorFactory<T>
-  implements SingleNodeDataExtractorFnFactory<T>
+export class CustomDataExtractorFactory<CallbackReturnType>
+  implements SingleNodeDataExtractorFnFactory<CallbackReturnType>
 {
   constructor(
     private readonly extractor:
-      | SingleNodeDataExtractorFn<T>
-      | SingleNodeDataExtractorFnFactory<T>
+      | SingleNodeDataExtractorFn<CallbackReturnType>
+      | SingleNodeDataExtractorFnFactory<CallbackReturnType>
   ) {}
 
-  createNodeDataExtractor(): SingleNodeDataExtractorFn<T> {
+  createNodeDataExtractor(): SingleNodeDataExtractorFn<CallbackReturnType> {
     return isSingleNodeDataExtractorFnFactory(this.extractor)
       ? this.extractor.createNodeDataExtractor()
       : this.extractor;

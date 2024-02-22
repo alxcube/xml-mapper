@@ -3,6 +3,8 @@ import type {
   SingleNodeLookupResult,
 } from "./SingleNodeLookupFn";
 
-export interface SingleNodeLookupFactory<T extends SingleNodeLookupResult> {
-  createSingleNodeLookup(path: string): SingleNodeLookupFn<T>;
+export interface SingleNodeLookupFactory<
+  LookupResultType extends SingleNodeLookupResult,
+> {
+  createSingleNodeLookup(path: string): SingleNodeLookupFn<LookupResultType>;
 }

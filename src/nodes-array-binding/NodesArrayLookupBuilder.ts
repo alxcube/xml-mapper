@@ -8,16 +8,18 @@ import type {
   NodesArrayLookupResult,
 } from "./NodesArrayLookupFn";
 
-export interface NodesArrayLookupBuilder<T extends NodesArrayLookupResult> {
-  buildNodesArrayLookup(): NodesArrayLookupFn<T>;
+export interface NodesArrayLookupBuilder<
+  NodesLookupResult extends NodesArrayLookupResult,
+> {
+  buildNodesArrayLookup(): NodesArrayLookupFn<NodesLookupResult>;
 
-  mandatory(): NodesArrayLookupBuilder<NonNullable<T>>;
+  mandatory(): NodesArrayLookupBuilder<NonNullable<NodesLookupResult>>;
 
-  optional(): NodesArrayLookupBuilder<T | undefined>;
+  optional(): NodesArrayLookupBuilder<NodesLookupResult | undefined>;
 
-  asArray(): NodesArrayDataMapperBuilder<T>;
+  asArray(): NodesArrayDataMapperBuilder<NodesLookupResult>;
 
   callback<C>(
     cb: NodesArrayDataExtractorFn<C> | NodesArrayDataExtractorFnFactory<C>
-  ): NodesArrayBindingBuilder<T, C>;
+  ): NodesArrayBindingBuilder<NodesLookupResult, C>;
 }

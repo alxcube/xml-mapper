@@ -4,13 +4,17 @@ import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 import { ObjectExtractorFactory } from "./ObjectExtractorFactory";
 
-export interface RecursiveObjectFactory<T extends object> {
-  (recursion: RecursiveObjectFactoryScope<T>): ObjectBlueprint<T>;
+export interface RecursiveObjectFactory<RecursiveObjectType extends object> {
+  (
+    recursion: RecursiveObjectFactoryScope<RecursiveObjectType>
+  ): ObjectBlueprint<RecursiveObjectType>;
 }
 
-export interface RecursiveObjectFactoryScope<T extends object> {
+export interface RecursiveObjectFactoryScope<
+  RecursiveObjectType extends object,
+> {
   getDepth(): number;
-  getRecursiveObjectFactory(): RecursiveObjectFactory<T>;
+  getRecursiveObjectFactory(): RecursiveObjectFactory<RecursiveObjectType>;
 }
 
 export function isRecursiveObjectFactoryScope<T extends object>(
@@ -22,25 +26,25 @@ export function isRecursiveObjectFactoryScope<T extends object>(
     typeof obj.getRecursiveObjectFactory === "function"
   );
 }
-export class RecursiveObjectExtractorFactory<T extends object>
+export class RecursiveObjectExtractorFactory<RecursiveObjectType extends object>
   implements
-    SingleNodeDataExtractorFnFactory<T>,
-    RecursiveObjectFactoryScope<T>
+    SingleNodeDataExtractorFnFactory<RecursiveObjectType>,
+    RecursiveObjectFactoryScope<RecursiveObjectType>
 {
   private readonly depth: number;
   constructor(
     private readonly blueprintFactoryOrScope:
-      | RecursiveObjectFactory<T>
-      | RecursiveObjectFactoryScope<T>
+      | RecursiveObjectFactory<RecursiveObjectType>
+      | RecursiveObjectFactoryScope<RecursiveObjectType>
   ) {
     this.depth = isRecursiveObjectFactoryScope(blueprintFactoryOrScope)
       ? blueprintFactoryOrScope.getDepth() + 1
       : 0;
   }
 
-  createNodeDataExtractor(): SingleNodeDataExtractorFn<T> {
+  createNodeDataExtractor(): SingleNodeDataExtractorFn<RecursiveObjectType> {
     const recursiveObjectFactory = this.getRecursiveObjectFactory();
-    return (node: Node, xpathSelect: XPathSelect): T => {
+    return (node: Node, xpathSelect: XPathSelect): RecursiveObjectType => {
       const objectExtractor = new ObjectExtractorFactory(
         recursiveObjectFactory(this)
       );
@@ -52,7 +56,7 @@ export class RecursiveObjectExtractorFactory<T extends object>
     return this.depth;
   }
 
-  getRecursiveObjectFactory(): RecursiveObjectFactory<T> {
+  getRecursiveObjectFactory(): RecursiveObjectFactory<RecursiveObjectType> {
     return isRecursiveObjectFactoryScope(this.blueprintFactoryOrScope)
       ? this.blueprintFactoryOrScope.getRecursiveObjectFactory()
       : this.blueprintFactoryOrScope;

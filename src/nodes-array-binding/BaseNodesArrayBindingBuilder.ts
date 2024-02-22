@@ -13,32 +13,41 @@ import type {
 import type { SingleNodeDataExtractorFn } from "../single-node-binding";
 
 export class BaseNodesArrayBindingBuilder<
-  L extends NodesArrayLookupResult,
-  T,
-  D extends T | undefined = undefined,
-> implements NodesArrayBindingBuilder<L, T, D>
+  ArrayLookupResult extends NodesArrayLookupResult,
+  ArrayDataExtractorReturnType,
+  DefaultValueType extends ArrayDataExtractorReturnType | undefined = undefined,
+> implements
+    NodesArrayBindingBuilder<
+      ArrayLookupResult,
+      ArrayDataExtractorReturnType,
+      DefaultValueType
+    >
 {
   constructor(
-    private readonly lookupBuilder: NodesArrayLookupBuilder<L>,
-    private readonly dataExtractorFactory: NodesArrayDataExtractorFnFactory<T>,
-    private readonly defaultValue?: D,
+    private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>,
+    private readonly dataExtractorFactory: NodesArrayDataExtractorFnFactory<ArrayDataExtractorReturnType>,
+    private readonly defaultValue?: DefaultValueType,
     private readonly name = ""
   ) {}
 
   createNodeDataExtractor(): SingleNodeDataExtractorFn<
-    DependentOfNodesArrayLookupResultAndDefaultValue<L, T, D>
+    DependentOfNodesArrayLookupResultAndDefaultValue<
+      ArrayLookupResult,
+      ArrayDataExtractorReturnType,
+      DefaultValueType
+    >
   > {
     const name = this.name;
     const defaultValue = this.defaultValue;
 
-    let lookupFn: NodesArrayLookupFn<L>;
+    let lookupFn: NodesArrayLookupFn<ArrayLookupResult>;
     try {
       lookupFn = this.lookupBuilder.buildNodesArrayLookup();
     } catch (e) {
       throw new Error(`Error in ${name} binding array lookup builder: ${e}`);
     }
 
-    let dataExtractor: NodesArrayDataExtractorFn<T>;
+    let dataExtractor: NodesArrayDataExtractorFn<ArrayDataExtractorReturnType>;
     try {
       dataExtractor = this.dataExtractorFactory.createNodesArrayDataExtractor();
     } catch (e) {
@@ -50,22 +59,26 @@ export class BaseNodesArrayBindingBuilder<
     return (
       node: Node,
       xpathSelect: XPathSelect
-    ): DependentOfNodesArrayLookupResultAndDefaultValue<L, T, D> => {
-      let lookupResult: L;
+    ): DependentOfNodesArrayLookupResultAndDefaultValue<
+      ArrayLookupResult,
+      ArrayDataExtractorReturnType,
+      DefaultValueType
+    > => {
+      let lookupResult: ArrayLookupResult;
       try {
         lookupResult = lookupFn(node, xpathSelect);
         if (!lookupResult) {
           return defaultValue as DependentOfNodesArrayLookupResultAndDefaultValue<
-            L,
-            T,
-            D
+            ArrayLookupResult,
+            ArrayDataExtractorReturnType,
+            DefaultValueType
           >;
         }
       } catch (e) {
         throw new Error(`Error in ${name} binding array lookup: ${e}`);
       }
 
-      let extractedValue: T;
+      let extractedValue: ArrayDataExtractorReturnType;
       try {
         extractedValue = dataExtractor(lookupResult, xpathSelect);
       } catch (e) {
@@ -74,11 +87,21 @@ export class BaseNodesArrayBindingBuilder<
 
       return (
         extractedValue === undefined ? defaultValue : extractedValue
-      ) as DependentOfNodesArrayLookupResultAndDefaultValue<L, T, D>;
+      ) as DependentOfNodesArrayLookupResultAndDefaultValue<
+        ArrayLookupResult,
+        ArrayDataExtractorReturnType,
+        DefaultValueType
+      >;
     };
   }
 
-  named(name: string): NodesArrayBindingBuilder<L, T, D> {
+  named(
+    name: string
+  ): NodesArrayBindingBuilder<
+    ArrayLookupResult,
+    ArrayDataExtractorReturnType,
+    DefaultValueType
+  > {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       this.dataExtractorFactory,
@@ -87,9 +110,15 @@ export class BaseNodesArrayBindingBuilder<
     );
   }
 
-  withDefault<DT extends T | undefined>(
-    defaultValue: DT
-  ): NodesArrayBindingBuilder<L, T, DT> {
+  withDefault<
+    GivenDefaultValueType extends ArrayDataExtractorReturnType | undefined,
+  >(
+    defaultValue: GivenDefaultValueType
+  ): NodesArrayBindingBuilder<
+    ArrayLookupResult,
+    ArrayDataExtractorReturnType,
+    GivenDefaultValueType
+  > {
     return new BaseNodesArrayBindingBuilder(
       this.lookupBuilder,
       this.dataExtractorFactory,
