@@ -8,7 +8,7 @@ import {
 } from "../../single-node-binding";
 
 export class NodesArrayDataMapper<T>
-  implements NodesArrayDataExtractorFnFactory<T[]>
+  implements NodesArrayDataExtractorFnFactory<NonNullable<T>[]>
 {
   constructor(
     private readonly mapper:
@@ -16,16 +16,18 @@ export class NodesArrayDataMapper<T>
       | SingleNodeDataExtractorFnFactory<T>
   ) {}
 
-  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<T[]> {
+  createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<NonNullable<T>[]> {
     const mapper = this.mapper;
     const mappingFn = isSingleNodeDataExtractorFnFactory(mapper)
       ? mapper.createNodeDataExtractor()
       : mapper;
 
-    return (nodes: Node[], xpathSelect: XPathSelect): T[] => {
+    return (nodes: Node[], xpathSelect: XPathSelect): NonNullable<T>[] => {
       return nodes
         .map((node) => mappingFn(node, xpathSelect))
-        .filter((value) => value !== undefined);
+        .filter(
+          (value) => value !== undefined && value !== null
+        ) as NonNullable<T>[];
     };
   }
 }

@@ -25,5 +25,5 @@ export interface NodesArrayDataMapperBuilder<L extends NodesArrayLookupResult> {
 
   usingMapper<CB>(
     cb: SingleNodeDataExtractorFn<CB> | SingleNodeDataExtractorFnFactory<CB>
-  ): NodesArrayBindingBuilder<L, CB[]>;
+  ): NodesArrayBindingBuilder<L, NonNullable<CB>[]>;
 }
