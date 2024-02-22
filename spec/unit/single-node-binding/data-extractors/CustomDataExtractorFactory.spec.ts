@@ -13,7 +13,7 @@ describe("CustomDataExtractorFactory class", () => {
     const factory = new CustomDataExtractorFactory(spy);
     const customExtractor = factory.createNodeDataExtractor();
     expect(customExtractor).toBeTypeOf("function");
-    expect(customExtractor).not.toBe(spy);
+    expect(customExtractor).toBe(spy);
     const dummyDoc = parseXml("<Root/>");
     expect(customExtractor(dummyDoc, xpath.select)).toBe(123);
     expect(spy).toHaveBeenCalledOnce();
@@ -30,7 +30,6 @@ describe("CustomDataExtractorFactory class", () => {
     const factory = new CustomDataExtractorFactory(spyFactory);
     const customExtractor = factory.createNodeDataExtractor();
     expect(customExtractor).toBeTypeOf("function");
-    expect(customExtractor).not.toBe(spy);
     const dummyDoc = parseXml("<Root/>");
     expect(customExtractor(dummyDoc, xpath.select)).toBe(123);
     expect(spy).toHaveBeenCalledOnce();

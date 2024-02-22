@@ -1,4 +1,3 @@
-import type { XPathSelect } from "xpath";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import {
   isSingleNodeDataExtractorFnFactory,
@@ -15,10 +14,8 @@ export class CustomDataExtractorFactory<T>
   ) {}
 
   createNodeDataExtractor(): SingleNodeDataExtractorFn<T> {
-    const extractorFn = isSingleNodeDataExtractorFnFactory(this.extractor)
+    return isSingleNodeDataExtractorFnFactory(this.extractor)
       ? this.extractor.createNodeDataExtractor()
       : this.extractor;
-    return (node: Node, xpathSelect: XPathSelect): T =>
-      extractorFn(node, xpathSelect);
   }
 }
