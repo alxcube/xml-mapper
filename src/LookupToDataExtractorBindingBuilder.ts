@@ -4,22 +4,22 @@ export type LookupResult = Node | Node[] | undefined;
 
 export type DependentOfLookupResult<
   LookupResultType extends LookupResult,
-  ReturnType,
-> = LookupResultType extends undefined ? ReturnType | undefined : ReturnType;
+  DependentType,
+> = LookupResultType extends undefined
+  ? DependentType | undefined
+  : DependentType;
 
 export type DependentOfDefaultValueType<
-  ReturnType,
-  DefaultValueType extends ReturnType | undefined,
-> = ReturnType extends undefined
-  ? DefaultValueType extends undefined
-    ? ReturnType | DefaultValueType
-    : DefaultValueType
-  : ReturnType;
+  MainType,
+  DefaultValueType extends MainType | undefined,
+> = MainType extends undefined
+  ? NonNullable<MainType> | DefaultValueType
+  : MainType;
 
 export type DependentOfConvertedType<
   ConvertedType extends unknown | never,
-  ReturnType,
-> = [ConvertedType] extends [never] ? ReturnType : ConvertedType;
+  SourceType,
+> = [ConvertedType] extends [never] ? SourceType : ConvertedType;
 
 export type DependentOfLookupResultAndConvertedTypeAndDefaultValueType<
   LookupResultType extends LookupResult,

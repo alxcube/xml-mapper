@@ -13,7 +13,9 @@
   },
   "scripts": {
     "build": "tsc && vite build",
-    "test": "vitest --run",
+    "test": "vitest --typecheck --run",
+    "test:code": "vitest --run",
+    "test:types": "vitest --typecheck.only --run",
     "lint": "eslint ./src ./spec --ext .ts && npm run prettier",
     "prettier": "prettier --write 'src/**/*.ts' && prettier --write 'spec/**/*.ts'"
   },

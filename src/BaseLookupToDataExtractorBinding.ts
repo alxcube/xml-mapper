@@ -34,7 +34,7 @@ export type LookupReturnTypeDependentOfLookupBuilder<
       ? NodesArrayLookupReturnType
       : never;
 
-export type DataExtractorFactoryTypeDependentOnLookupResult<
+export type DataExtractorFactoryTypeDependentOfLookupResult<
   LookupResult extends Node | Node[] | undefined,
   ReturnType,
 > = LookupResult extends Node
@@ -49,7 +49,7 @@ export class BaseLookupToDataExtractorBinding<
   LookupReturnType extends
     LookupReturnTypeDependentOfLookupBuilder<LookupBuilderType>,
   DataExtractorReturnType,
-  DataExtractorType extends DataExtractorFactoryTypeDependentOnLookupResult<
+  DataExtractorType extends DataExtractorFactoryTypeDependentOfLookupResult<
     LookupReturnType,
     DataExtractorReturnType
   >,
