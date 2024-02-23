@@ -23,3 +23,22 @@ export interface NodesArrayLookupBuilder<
     cb: NodesArrayDataExtractorFn<C> | NodesArrayDataExtractorFnFactory<C>
   ): NodesArrayBindingBuilder<NodesLookupResult, C>;
 }
+
+export function isNodesArrayLookupBuilder(
+  obj: unknown
+): obj is NodesArrayLookupBuilder<NodesArrayLookupResult> {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    "buildNodesArrayLookup" in obj &&
+    typeof obj.buildNodesArrayLookup === "function" &&
+    "mandatory" in obj &&
+    typeof obj.mandatory === "function" &&
+    "optional" in obj &&
+    typeof obj.optional === "function" &&
+    "asArray" in obj &&
+    typeof obj.asArray === "function" &&
+    "callback" in obj &&
+    typeof obj.callback === "function"
+  );
+}

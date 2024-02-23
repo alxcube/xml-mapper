@@ -42,3 +42,31 @@ export interface SingleNodeLookupBuilder<
       | SingleNodeDataExtractorFnFactory<CallbackReturnType>
   ): SingleNodeBindingBuilder<LookupResultType, CallbackReturnType>;
 }
+
+export function isSingleNodeLookupBuilder(
+  obj: unknown
+): obj is SingleNodeLookupBuilder<SingleNodeLookupResult> {
+  return (
+    typeof obj === "object" &&
+    obj !== null &&
+    (
+      [
+        "buildNodeLookup",
+        "mandatory",
+        "optional",
+        "asString",
+        "asNumber",
+        "asBoolean",
+        "asObject",
+        "asRecursiveObject",
+        "callback",
+      ] as (keyof SingleNodeLookupBuilder<SingleNodeLookupResult>)[]
+    ).every(
+      (key) =>
+        key in obj &&
+        typeof (
+          obj as Partial<SingleNodeLookupBuilder<SingleNodeLookupResult>>
+        )[key] === "function"
+    )
+  );
+}
