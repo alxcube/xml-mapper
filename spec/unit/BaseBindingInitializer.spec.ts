@@ -1,27 +1,27 @@
 import { describe, expect, it } from "vitest";
 import {
-  BaseBindingInitializer,
+  BaseMappingBuilder,
   BaseNodesArrayLookupBuilder,
   BaseSingleNodeLookupBuilder,
-  bind,
+  map,
 } from "../../src";
 
-describe("bind() function", () => {
-  it("should return BaseBindingInitializer instance", () => {
-    expect(bind()).toBeInstanceOf(BaseBindingInitializer);
+describe("map() function", () => {
+  it("should return BaseMappingBuilder instance", () => {
+    expect(map()).toBeInstanceOf(BaseMappingBuilder);
   });
 });
 
-describe("BaseBindingInitializer class", () => {
+describe("BaseMappingBuilder class", () => {
   describe("toNode() method", () => {
     it("should return instance of BaseSingleNodeLookupBuilder", () => {
-      expect(bind().toNode("/")).toBeInstanceOf(BaseSingleNodeLookupBuilder);
+      expect(map().toNode("/")).toBeInstanceOf(BaseSingleNodeLookupBuilder);
     });
   });
 
   describe("toAttribute() method", () => {
     it("should return instance of BaseSingleNodeLookupBuilder", () => {
-      expect(bind().toAttribute("/")).toBeInstanceOf(
+      expect(map().toAttribute("/")).toBeInstanceOf(
         BaseSingleNodeLookupBuilder
       );
     });
@@ -29,13 +29,13 @@ describe("BaseBindingInitializer class", () => {
 
   describe("toElement() method", () => {
     it("should return instance of BaseSingleNodeLookupBuilder", () => {
-      expect(bind().toElement("/")).toBeInstanceOf(BaseSingleNodeLookupBuilder);
+      expect(map().toElement("/")).toBeInstanceOf(BaseSingleNodeLookupBuilder);
     });
   });
 
   describe("toNodesArray() method", () => {
     it("should return instance of BaseNodesArrayLookupBuilder", () => {
-      expect(bind().toNodesArray("/")).toBeInstanceOf(
+      expect(map().toNodesArray("/")).toBeInstanceOf(
         BaseNodesArrayLookupBuilder
       );
     });
@@ -43,7 +43,7 @@ describe("BaseBindingInitializer class", () => {
 
   describe("toAttributesArray() method", () => {
     it("should return instance of BaseNodesArrayLookupBuilder", () => {
-      expect(bind().toAttributesArray("/")).toBeInstanceOf(
+      expect(map().toAttributesArray("/")).toBeInstanceOf(
         BaseNodesArrayLookupBuilder
       );
     });
@@ -51,7 +51,7 @@ describe("BaseBindingInitializer class", () => {
 
   describe("toElementsArray() method", () => {
     it("should return instance of BaseNodesArrayLookupBuilder", () => {
-      expect(bind().toElementsArray("/")).toBeInstanceOf(
+      expect(map().toElementsArray("/")).toBeInstanceOf(
         BaseNodesArrayLookupBuilder
       );
     });

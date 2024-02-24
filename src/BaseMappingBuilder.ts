@@ -1,4 +1,4 @@
-import type { BindingInitializer } from "./BindingInitializer";
+import type { MappingBuilder } from "./MappingBuilder";
 import {
   AnyNodesArrayLookupFactory,
   AttributesArrayLookupFactory,
@@ -14,7 +14,7 @@ import {
 } from "./single-node-binding";
 import type { SingleNodeLookupBuilder } from "./single-node-binding";
 
-export class BaseBindingInitializer implements BindingInitializer {
+export class BaseMappingBuilder implements MappingBuilder {
   toAttribute(path: string): SingleNodeLookupBuilder<Attr | undefined> {
     return new BaseSingleNodeLookupBuilder(new AttributeLookupFactory(), path);
   }
@@ -51,6 +51,6 @@ export class BaseBindingInitializer implements BindingInitializer {
   }
 }
 
-export function bind(): BindingInitializer {
-  return new BaseBindingInitializer();
+export function map(): MappingBuilder {
+  return new BaseMappingBuilder();
 }
