@@ -1,5 +1,8 @@
-import { BaseNodesArrayBindingBuilder } from "../BaseNodesArrayBindingBuilder";
-import type { NodesArrayBindingBuilder } from "../NodesArrayBindingBuilder";
+import {
+  BaseLookupToDataExtractorBindingBuilder,
+  type DataExtractorFactoryTypeDependentOfLookupResult,
+} from "../../BaseLookupToDataExtractorBindingBuilder";
+import type { LookupToDataExtractorBindingBuilder } from "../../LookupToDataExtractorBindingBuilder";
 import type { NodesArrayLookupBuilder } from "../NodesArrayLookupBuilder";
 import type { NodesArrayLookupResult } from "../NodesArrayLookupFn";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
@@ -25,33 +28,62 @@ export class BaseNodesArrayDataMapperBuilder<
     private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>
   ) {}
 
-  ofBooleans(): NodesArrayBindingBuilder<ArrayLookupResult, boolean[]> {
-    return new BaseNodesArrayBindingBuilder(
+  ofBooleans(): LookupToDataExtractorBindingBuilder<
+    ArrayLookupResult,
+    boolean[]
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(new BooleanExtractorFactory())
+      new NodesArrayDataMapper(
+        new BooleanExtractorFactory()
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        boolean[]
+      >
     );
   }
 
-  ofNumbers(): NodesArrayBindingBuilder<ArrayLookupResult, number[]> {
-    return new BaseNodesArrayBindingBuilder(
+  ofNumbers(): LookupToDataExtractorBindingBuilder<
+    ArrayLookupResult,
+    number[]
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(new NumberExtractorFactory())
+      new NodesArrayDataMapper(
+        new NumberExtractorFactory()
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        number[]
+      >
     );
   }
 
   ofObjects<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
-  ): NodesArrayBindingBuilder<ArrayLookupResult, ObjectType[]> {
-    return new BaseNodesArrayBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<ArrayLookupResult, ObjectType[]> {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(new ObjectExtractorFactory(blueprint))
+      new NodesArrayDataMapper(
+        new ObjectExtractorFactory(blueprint)
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        ObjectType[]
+      >
     );
   }
 
-  ofStrings(): NodesArrayBindingBuilder<ArrayLookupResult, string[]> {
-    return new BaseNodesArrayBindingBuilder(
+  ofStrings(): LookupToDataExtractorBindingBuilder<
+    ArrayLookupResult,
+    string[]
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(new StringExtractorFactory())
+      new NodesArrayDataMapper(
+        new StringExtractorFactory()
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        string[]
+      >
     );
   }
 
@@ -59,12 +91,18 @@ export class BaseNodesArrayDataMapperBuilder<
     factoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
       | RecursiveObjectFactoryScope<RecursiveObjectType>
-  ): NodesArrayBindingBuilder<ArrayLookupResult, RecursiveObjectType[]> {
-    return new BaseNodesArrayBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<
+    ArrayLookupResult,
+    RecursiveObjectType[]
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
       new NodesArrayDataMapper(
         new RecursiveObjectExtractorFactory(factoryOrScope)
-      )
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        RecursiveObjectType[]
+      >
     );
   }
 
@@ -72,16 +110,18 @@ export class BaseNodesArrayDataMapperBuilder<
     cb:
       | SingleNodeDataExtractorFn<MappingFunctionReturnType>
       | SingleNodeDataExtractorFnFactory<MappingFunctionReturnType>
-  ): NodesArrayBindingBuilder<
+  ): LookupToDataExtractorBindingBuilder<
     ArrayLookupResult,
     NonNullable<MappingFunctionReturnType>[]
   > {
-    return new BaseNodesArrayBindingBuilder(
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
-      new NodesArrayDataMapper(cb)
-    ) as NodesArrayBindingBuilder<
-      ArrayLookupResult,
-      NonNullable<MappingFunctionReturnType>[]
-    >;
+      new NodesArrayDataMapper(
+        cb
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        NonNullable<MappingFunctionReturnType>[]
+      >
+    );
   }
 }

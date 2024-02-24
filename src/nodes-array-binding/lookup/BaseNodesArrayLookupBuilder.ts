@@ -1,9 +1,12 @@
 import type { XPathSelect } from "xpath";
-import { BaseNodesArrayBindingBuilder } from "../BaseNodesArrayBindingBuilder";
+import {
+  BaseLookupToDataExtractorBindingBuilder,
+  type DataExtractorFactoryTypeDependentOfLookupResult,
+} from "../../BaseLookupToDataExtractorBindingBuilder";
+import type { LookupToDataExtractorBindingBuilder } from "../../LookupToDataExtractorBindingBuilder";
 import { CustomArrayDataExtractorFactory } from "../data-extractors";
 import { BaseNodesArrayDataMapperBuilder } from "../nodes-array-data-mapper";
 import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
-import type { NodesArrayBindingBuilder } from "../NodesArrayBindingBuilder";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "../NodesArrayDataExtractorFnFactory";
 import type { NodesArrayLookupBuilder } from "../NodesArrayLookupBuilder";
@@ -63,10 +66,18 @@ export class BaseNodesArrayLookupBuilder<
     cb:
       | NodesArrayDataExtractorFn<CallbackReturnType>
       | NodesArrayDataExtractorFnFactory<CallbackReturnType>
-  ): NodesArrayBindingBuilder<ArrayLookupResult, CallbackReturnType> {
-    return new BaseNodesArrayBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<
+    ArrayLookupResult,
+    CallbackReturnType
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this,
-      new CustomArrayDataExtractorFactory(cb)
+      new CustomArrayDataExtractorFactory(
+        cb
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        ArrayLookupResult,
+        CallbackReturnType
+      >
     );
   }
 }

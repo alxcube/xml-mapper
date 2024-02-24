@@ -1,4 +1,4 @@
-import type { NodesArrayBindingBuilder } from "./NodesArrayBindingBuilder";
+import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import type { NodesArrayLookupResult } from "./NodesArrayLookupFn";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
 import type {
@@ -11,27 +11,33 @@ import type {
 export interface NodesArrayDataMapperBuilder<
   NodesLookupResult extends NodesArrayLookupResult,
 > {
-  ofStrings(): NodesArrayBindingBuilder<NodesLookupResult, string[]>;
+  ofStrings(): LookupToDataExtractorBindingBuilder<NodesLookupResult, string[]>;
 
-  ofNumbers(): NodesArrayBindingBuilder<NodesLookupResult, number[]>;
+  ofNumbers(): LookupToDataExtractorBindingBuilder<NodesLookupResult, number[]>;
 
-  ofBooleans(): NodesArrayBindingBuilder<NodesLookupResult, boolean[]>;
+  ofBooleans(): LookupToDataExtractorBindingBuilder<
+    NodesLookupResult,
+    boolean[]
+  >;
 
   ofObjects<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
-  ): NodesArrayBindingBuilder<NodesLookupResult, ObjectType[]>;
+  ): LookupToDataExtractorBindingBuilder<NodesLookupResult, ObjectType[]>;
 
   ofRecursiveObjects<RecursiveObjectType extends object>(
     factoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
       | RecursiveObjectFactoryScope<RecursiveObjectType>
-  ): NodesArrayBindingBuilder<NodesLookupResult, RecursiveObjectType[]>;
+  ): LookupToDataExtractorBindingBuilder<
+    NodesLookupResult,
+    RecursiveObjectType[]
+  >;
 
   usingMapper<MappingFunctionReturnType>(
     cb:
       | SingleNodeDataExtractorFn<MappingFunctionReturnType>
       | SingleNodeDataExtractorFnFactory<MappingFunctionReturnType>
-  ): NodesArrayBindingBuilder<
+  ): LookupToDataExtractorBindingBuilder<
     NodesLookupResult,
     NonNullable<MappingFunctionReturnType>[]
   >;

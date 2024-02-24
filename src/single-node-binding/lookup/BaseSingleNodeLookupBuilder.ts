@@ -1,5 +1,9 @@
 import type { XPathSelect } from "xpath";
-import { BaseSingleNodeBindingBuilder } from "../BaseSingleNodeBindingBuilder";
+import {
+  BaseLookupToDataExtractorBindingBuilder,
+  type DataExtractorFactoryTypeDependentOfLookupResult,
+} from "../../BaseLookupToDataExtractorBindingBuilder";
+import type { LookupToDataExtractorBindingBuilder } from "../../LookupToDataExtractorBindingBuilder";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
 import {
   BooleanExtractorFactory,
@@ -11,7 +15,6 @@ import {
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
 } from "../data-extractors";
-import type { SingleNodeBindingBuilder } from "../SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 import type { SingleNodeLookupBuilder } from "../SingleNodeLookupBuilder";
@@ -61,27 +64,47 @@ export class BaseSingleNodeLookupBuilder<
     ) as SingleNodeLookupBuilder<NodeLookupResult | undefined>;
   }
 
-  asString(): SingleNodeBindingBuilder<NodeLookupResult, string> {
-    return new BaseSingleNodeBindingBuilder(this, new StringExtractorFactory());
+  asString(): LookupToDataExtractorBindingBuilder<NodeLookupResult, string> {
+    return new BaseLookupToDataExtractorBindingBuilder(
+      this as SingleNodeLookupBuilder<NodeLookupResult>,
+      new StringExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        string
+      >
+    );
   }
 
-  asNumber(): SingleNodeBindingBuilder<NodeLookupResult, number> {
-    return new BaseSingleNodeBindingBuilder(this, new NumberExtractorFactory());
-  }
-
-  asBoolean(): SingleNodeBindingBuilder<NodeLookupResult, boolean> {
-    return new BaseSingleNodeBindingBuilder(
+  asNumber(): LookupToDataExtractorBindingBuilder<NodeLookupResult, number> {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this,
-      new BooleanExtractorFactory()
+      new NumberExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        number
+      >
+    );
+  }
+
+  asBoolean(): LookupToDataExtractorBindingBuilder<NodeLookupResult, boolean> {
+    return new BaseLookupToDataExtractorBindingBuilder(
+      this,
+      new BooleanExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        boolean
+      >
     );
   }
 
   asObject<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
-  ): SingleNodeBindingBuilder<NodeLookupResult, ObjectType> {
-    return new BaseSingleNodeBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<NodeLookupResult, ObjectType> {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this,
-      new ObjectExtractorFactory(blueprint)
+      new ObjectExtractorFactory(
+        blueprint
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        ObjectType
+      >
     );
   }
 
@@ -89,10 +112,18 @@ export class BaseSingleNodeLookupBuilder<
     recursiveObjectFactoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
       | RecursiveObjectFactoryScope<RecursiveObjectType>
-  ): SingleNodeBindingBuilder<NodeLookupResult, RecursiveObjectType> {
-    return new BaseSingleNodeBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<
+    NodeLookupResult,
+    RecursiveObjectType
+  > {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this,
-      new RecursiveObjectExtractorFactory(recursiveObjectFactoryOrScope)
+      new RecursiveObjectExtractorFactory(
+        recursiveObjectFactoryOrScope
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        RecursiveObjectType
+      >
     );
   }
 
@@ -100,10 +131,15 @@ export class BaseSingleNodeLookupBuilder<
     cb:
       | SingleNodeDataExtractorFn<CallbackReturnType>
       | SingleNodeDataExtractorFnFactory<CallbackReturnType>
-  ): SingleNodeBindingBuilder<NodeLookupResult, CallbackReturnType> {
-    return new BaseSingleNodeBindingBuilder(
+  ): LookupToDataExtractorBindingBuilder<NodeLookupResult, CallbackReturnType> {
+    return new BaseLookupToDataExtractorBindingBuilder(
       this,
-      new CustomDataExtractorFactory(cb)
+      new CustomDataExtractorFactory(
+        cb
+      ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
+        NodeLookupResult,
+        CallbackReturnType
+      >
     );
   }
 }

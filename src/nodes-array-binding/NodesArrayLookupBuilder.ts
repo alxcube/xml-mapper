@@ -1,5 +1,5 @@
+import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import type { NodesArrayDataMapperBuilder } from "./NodesArrayDataMapperBuilder";
-import type { NodesArrayBindingBuilder } from "./NodesArrayBindingBuilder";
 import type { NodesArrayDataExtractorFn } from "./NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "./NodesArrayDataExtractorFnFactory";
 
@@ -21,7 +21,7 @@ export interface NodesArrayLookupBuilder<
 
   callback<C>(
     cb: NodesArrayDataExtractorFn<C> | NodesArrayDataExtractorFnFactory<C>
-  ): NodesArrayBindingBuilder<NodesLookupResult, C>;
+  ): LookupToDataExtractorBindingBuilder<NodesLookupResult, C>;
 }
 
 export function isNodesArrayLookupBuilder(

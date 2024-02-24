@@ -17,7 +17,7 @@ import {
   type SingleNodeLookupBuilder,
   StringExtractorFactory,
 } from "../../src";
-import { BaseLookupToDataExtractorBindingBuilder } from "../../src/BaseLookupToDataExtractorBindingBuilder";
+import { BaseLookupToDataExtractorBindingBuilder } from "../../src";
 import { parseXml } from "../helper/parseXml";
 
 describe("BaseLookupToDataExtractorBindingBuilder class", () => {

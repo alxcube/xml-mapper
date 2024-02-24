@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import {
-  BaseNodesArrayBindingBuilder,
   BaseNodesArrayDataMapperBuilder,
   BaseNodesArrayLookupBuilder,
   ElementsArrayLookupFactory,
   StringExtractorFactory,
 } from "../../../../src";
+import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
 
 describe("BaseNodesArrayDataMapperBuilder class", () => {
   let lookupBuilder: BaseNodesArrayLookupBuilder<Element[] | undefined>;
@@ -24,7 +24,7 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
   describe("ofBooleans() method", () => {
     it("should return instance of BaseNodesArrayBindingBuilder", () => {
       expect(dataMapperBuilder.ofBooleans()).toBeInstanceOf(
-        BaseNodesArrayBindingBuilder
+        BaseLookupToDataExtractorBindingBuilder
       );
     });
   });
@@ -32,7 +32,7 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
   describe("ofNumbers() method", () => {
     it("should return instance of BaseNodesArrayBindingBuilder", () => {
       expect(dataMapperBuilder.ofNumbers()).toBeInstanceOf(
-        BaseNodesArrayBindingBuilder
+        BaseLookupToDataExtractorBindingBuilder
       );
     });
   });
@@ -40,7 +40,7 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
   describe("ofStrings() method", () => {
     it("should return instance of BaseNodesArrayBindingBuilder", () => {
       expect(dataMapperBuilder.ofStrings()).toBeInstanceOf(
-        BaseNodesArrayBindingBuilder
+        BaseLookupToDataExtractorBindingBuilder
       );
     });
   });
@@ -51,7 +51,7 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
         dataMapperBuilder.ofObjects({
           title: () => "",
         })
-      ).toBeInstanceOf(BaseNodesArrayBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
   });
 
@@ -59,7 +59,7 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
     it("should take RecursiveObjectFactory and return instance of BaseNodesArrayBindingBuilder", () => {
       expect(
         dataMapperBuilder.ofRecursiveObjects(() => ({ title: () => "" }))
-      ).toBeInstanceOf(BaseNodesArrayBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
   });
 
@@ -69,13 +69,13 @@ describe("BaseNodesArrayDataMapperBuilder class", () => {
         dataMapperBuilder.usingMapper(
           new StringExtractorFactory().createNodeDataExtractor()
         )
-      ).toBeInstanceOf(BaseNodesArrayBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
 
     it("should take SingleNodeDataExtractorFnFactory and return instance of BaseNodesArrayBindingBuilder", () => {
       expect(
         dataMapperBuilder.usingMapper(new StringExtractorFactory())
-      ).toBeInstanceOf(BaseNodesArrayBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
   });
 });

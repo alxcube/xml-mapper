@@ -1,11 +1,10 @@
 import { describe, expectTypeOf, it } from "vitest";
-import type { DependentOfNodeLookupResult } from "../../src";
 import type {
   DependentOfConvertedType,
   DependentOfDefaultValueType,
   DependentOfLookupResult,
   DependentOfLookupResultAndConvertedTypeAndDefaultValueType,
-} from "../../src/LookupToDataExtractorBindingBuilder";
+} from "../../src";
 
 describe("DependentOfLookupResult type", () => {
   it("should return DependentType | undefined when lookup result extends undefined", () => {
@@ -92,18 +91,18 @@ describe("DependentOfLookupResultAndConvertedTypeAndDefaultValueType type", () =
         Node | undefined,
         string
       >
-    >().toEqualTypeOf<DependentOfNodeLookupResult<Node | undefined, string>>();
+    >().toEqualTypeOf<DependentOfLookupResult<Node | undefined, string>>();
 
     expectTypeOf<
       DependentOfLookupResultAndConvertedTypeAndDefaultValueType<Node, string>
-    >().toEqualTypeOf<DependentOfNodeLookupResult<Node, string>>();
+    >().toEqualTypeOf<DependentOfLookupResult<Node, string>>();
 
     expectTypeOf<
       DependentOfLookupResultAndConvertedTypeAndDefaultValueType<
         Node,
         string | undefined
       >
-    >().toEqualTypeOf<DependentOfNodeLookupResult<Node, string | undefined>>();
+    >().toEqualTypeOf<DependentOfLookupResult<Node, string | undefined>>();
   });
 
   it("should return ConvertedType, unless it is 'never'", () => {

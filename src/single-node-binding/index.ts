@@ -1,7 +1,5 @@
 export * from "./data-extractors";
 export * from "./lookup";
-export * from "./BaseSingleNodeBindingBuilder";
-export * from "./SingleNodeBindingBuilder";
 export * from "./SingleNodeDataExtractorFn";
 export * from "./SingleNodeDataExtractorFnFactory";
 export * from "./SingleNodeLookupBuilder";

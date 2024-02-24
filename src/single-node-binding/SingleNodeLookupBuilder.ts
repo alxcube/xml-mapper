@@ -1,9 +1,9 @@
+import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
 import type {
   RecursiveObjectFactory,
   RecursiveObjectFactoryScope,
 } from "./data-extractors";
-import type { SingleNodeBindingBuilder } from "./SingleNodeBindingBuilder";
 import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "./SingleNodeDataExtractorFnFactory";
 import type {
@@ -20,27 +20,27 @@ export interface SingleNodeLookupBuilder<
 
   optional(): SingleNodeLookupBuilder<LookupResultType | undefined>;
 
-  asString(): SingleNodeBindingBuilder<LookupResultType, string>;
+  asString(): LookupToDataExtractorBindingBuilder<LookupResultType, string>;
 
-  asNumber(): SingleNodeBindingBuilder<LookupResultType, number>;
+  asNumber(): LookupToDataExtractorBindingBuilder<LookupResultType, number>;
 
-  asBoolean(): SingleNodeBindingBuilder<LookupResultType, boolean>;
+  asBoolean(): LookupToDataExtractorBindingBuilder<LookupResultType, boolean>;
 
   asObject<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
-  ): SingleNodeBindingBuilder<LookupResultType, ObjectType>;
+  ): LookupToDataExtractorBindingBuilder<LookupResultType, ObjectType>;
 
   asRecursiveObject<RecursiveObjectType extends object>(
     recursiveObjectFactoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
       | RecursiveObjectFactoryScope<RecursiveObjectType>
-  ): SingleNodeBindingBuilder<LookupResultType, RecursiveObjectType>;
+  ): LookupToDataExtractorBindingBuilder<LookupResultType, RecursiveObjectType>;
 
   callback<CallbackReturnType>(
     cb:
       | SingleNodeDataExtractorFn<CallbackReturnType>
       | SingleNodeDataExtractorFnFactory<CallbackReturnType>
-  ): SingleNodeBindingBuilder<LookupResultType, CallbackReturnType>;
+  ): LookupToDataExtractorBindingBuilder<LookupResultType, CallbackReturnType>;
 }
 
 export function isSingleNodeLookupBuilder(

@@ -4,11 +4,9 @@ import type {
   NodesArrayLookupBuilder,
   SingleNodeDataExtractorFnFactory,
   SingleNodeLookupBuilder,
-} from "../../src";
-import type {
   DataExtractorFactoryTypeDependentOfLookupResult,
   LookupReturnTypeDependentOfLookupBuilder,
-} from "../../src/BaseLookupToDataExtractorBindingBuilder";
+} from "../../src";
 
 describe("LookupReturnTypeDependentOfLookupBuilder type", () => {
   it("should infer return type of lookup builder", () => {

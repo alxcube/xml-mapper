@@ -3,13 +3,13 @@ import xpath from "xpath";
 import {
   AnyNodesArrayLookupFactory,
   AttributesArrayLookupFactory,
-  BaseNodesArrayBindingBuilder,
   BaseNodesArrayDataMapperBuilder,
   BaseNodesArrayLookupBuilder,
   ElementsArrayLookupFactory,
   type NodesArrayDataExtractorFn,
   type NodesArrayDataExtractorFnFactory,
 } from "../../../../src";
+import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
 import { parseXml } from "../../../helper/parseXml";
 
 describe("BaseNodesArrayLookupBuilder class", () => {
@@ -95,7 +95,7 @@ describe("BaseNodesArrayLookupBuilder class", () => {
         textNodesLookupBuilder.callback((nodes: Node[]) => {
           nodes.map((node) => node.nodeType);
         })
-      ).toBeInstanceOf(BaseNodesArrayBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
 
     it("should take NodesArrayDataExtractorFnFactory callback and return instance of BaseNodesArrayBindingBuilder", () => {
@@ -106,7 +106,7 @@ describe("BaseNodesArrayLookupBuilder class", () => {
         },
       };
       expect(attributesArrayLookupBuilder.callback(factory)).toBeInstanceOf(
-        BaseNodesArrayBindingBuilder
+        BaseLookupToDataExtractorBindingBuilder
       );
     });
   });

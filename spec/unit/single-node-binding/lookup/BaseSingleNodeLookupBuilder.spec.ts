@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
 import {
   AnyNodeLookupFactory,
-  BaseSingleNodeBindingBuilder,
   BaseSingleNodeLookupBuilder,
   RecursiveObjectExtractorFactory,
   type SingleNodeLookupFactory,
   StringExtractorFactory,
 } from "../../../../src";
+import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
 import { parseXml } from "../../../helper/parseXml";
 
 describe("BaseSingleNodeLookupBuilder class", () => {
@@ -79,19 +79,25 @@ describe("BaseSingleNodeLookupBuilder class", () => {
 
   describe("asString() method", () => {
     it("should return instance of BaseSingleNodeBindingBuilder", () => {
-      expect(builder.asString()).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      expect(builder.asString()).toBeInstanceOf(
+        BaseLookupToDataExtractorBindingBuilder
+      );
     });
   });
 
   describe("asNumber() method", () => {
     it("should return instance of BaseSingleNodeBindingBuilder", () => {
-      expect(builder.asNumber()).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      expect(builder.asNumber()).toBeInstanceOf(
+        BaseLookupToDataExtractorBindingBuilder
+      );
     });
   });
 
   describe("asBoolean() method", () => {
     it("should return instance of BaseSingleNodeBindingBuilder", () => {
-      expect(builder.asBoolean()).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      expect(builder.asBoolean()).toBeInstanceOf(
+        BaseLookupToDataExtractorBindingBuilder
+      );
     });
   });
 
@@ -101,7 +107,7 @@ describe("BaseSingleNodeLookupBuilder class", () => {
         builder.asObject({
           numberValue: () => 1,
         })
-      ).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
   });
 
@@ -111,7 +117,7 @@ describe("BaseSingleNodeLookupBuilder class", () => {
         builder.asRecursiveObject(() => ({
           title: () => "title",
         }))
-      ).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
 
     it("should accept instance of RecursiveObjectExtractorFactory and return instance of BaseSingleNodeBindingBuilder", () => {
@@ -119,7 +125,7 @@ describe("BaseSingleNodeLookupBuilder class", () => {
         new RecursiveObjectExtractorFactory(() => ({ title: () => "title" }));
       expect(
         builder.asRecursiveObject(recursiveObjectExtractorFactory)
-      ).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
   });
 
@@ -127,12 +133,12 @@ describe("BaseSingleNodeLookupBuilder class", () => {
     it("should accept SingleNodeDataExtractorFn callback and return instance of BaseSingleNodeBindingBuilder", () => {
       expect(
         builder.callback((node, xs) => xs("string(.)", node, true) as string)
-      ).toBeInstanceOf(BaseSingleNodeBindingBuilder);
+      ).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
     });
 
     it("should accept SingleNodeDataExtractorFnFactory instance and return instance of BaseSingleNodeBindingBuilder", () => {
       expect(builder.callback(new StringExtractorFactory())).toBeInstanceOf(
-        BaseSingleNodeBindingBuilder
+        BaseLookupToDataExtractorBindingBuilder
       );
     });
   });
