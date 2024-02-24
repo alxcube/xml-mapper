@@ -42,7 +42,7 @@ export type DataExtractorFactoryTypeDependentOfLookupResult<
   : LookupResult extends Node[]
     ? NodesArrayDataExtractorFnFactory<ReturnType>
     : never;
-export class BaseLookupToDataExtractorBinding<
+export class BaseLookupToDataExtractorBindingBuilder<
   LookupBuilderType extends
     | SingleNodeLookupBuilder<Node | undefined>
     | NodesArrayLookupBuilder<Node[] | undefined>,
@@ -142,7 +142,7 @@ export class BaseLookupToDataExtractorBinding<
     ConversionFnReturnType,
     DefaultValueType
   > {
-    return new BaseLookupToDataExtractorBinding(
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
       this.extractorFactory,
       this.conversionFn,
@@ -161,7 +161,7 @@ export class BaseLookupToDataExtractorBinding<
     DataExtractorReturnType,
     GivenConversionFnReturnType
   > {
-    return new BaseLookupToDataExtractorBinding(
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
       this.extractorFactory,
       conversionCallback,
@@ -185,7 +185,7 @@ export class BaseLookupToDataExtractorBinding<
     ConversionFnReturnType,
     GivenDefaultValueType
   > {
-    return new BaseLookupToDataExtractorBinding(
+    return new BaseLookupToDataExtractorBindingBuilder(
       this.lookupBuilder,
       this.extractorFactory,
       this.conversionFn,

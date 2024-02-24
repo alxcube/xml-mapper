@@ -8,7 +8,7 @@ import type {
 import type {
   DataExtractorFactoryTypeDependentOfLookupResult,
   LookupReturnTypeDependentOfLookupBuilder,
-} from "../../src/BaseLookupToDataExtractorBinding";
+} from "../../src/BaseLookupToDataExtractorBindingBuilder";
 
 describe("LookupReturnTypeDependentOfLookupBuilder type", () => {
   it("should infer return type of lookup builder", () => {
