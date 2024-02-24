@@ -13,7 +13,7 @@ export default defineConfig({
       include: "./src",
     }),
     banner(
-      `${packageInfo.name} ${packageInfo.version}\n© 2023 ${packageInfo.author}\nLicense: ${packageInfo.license}`
+      `${packageInfo.name} ${packageInfo.version}\n© ${new Date().getFullYear()} ${packageInfo.author}\nLicense: ${packageInfo.license}`
     ),
   ],
   build: {
