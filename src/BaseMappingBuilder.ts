@@ -11,8 +11,9 @@ import {
   AttributeLookupFactory,
   BaseSingleNodeLookupBuilder,
   ElementLookupFactory,
+  type SingleNodeDataExtractorFn,
+  type SingleNodeLookupBuilder,
 } from "./single-node-binding";
-import type { SingleNodeLookupBuilder } from "./single-node-binding";
 
 export class BaseMappingBuilder implements MappingBuilder {
   toAttribute(path: string): SingleNodeLookupBuilder<Attr | undefined> {
@@ -48,6 +49,10 @@ export class BaseMappingBuilder implements MappingBuilder {
       new AnyNodesArrayLookupFactory(),
       path
     );
+  }
+
+  constant<T>(value: T): SingleNodeDataExtractorFn<T> {
+    return () => value;
   }
 }
 

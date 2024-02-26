@@ -1,5 +1,8 @@
 import type { NodesArrayLookupBuilder } from "./nodes-array-binding";
-import type { SingleNodeLookupBuilder } from "./single-node-binding";
+import type {
+  SingleNodeDataExtractorFn,
+  SingleNodeLookupBuilder,
+} from "./single-node-binding";
 
 export interface MappingBuilder {
   toNode(path: string): SingleNodeLookupBuilder<Node | undefined>;
@@ -13,4 +16,6 @@ export interface MappingBuilder {
   toElementsArray(path: string): NodesArrayLookupBuilder<Element[] | undefined>;
 
   toAttributesArray(path: string): NodesArrayLookupBuilder<Attr[] | undefined>;
+
+  constant<T>(value: T): SingleNodeDataExtractorFn<T>;
 }
