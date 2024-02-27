@@ -112,7 +112,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
         throw new Error(`Error in ${name} binding data extractor: ${e}`);
       }
 
-      if (conversionFn) {
+      if (conversionFn && extractedResult !== undefined) {
         let convertedResult: ConversionFnReturnType;
         try {
           convertedResult = conversionFn(extractedResult);
