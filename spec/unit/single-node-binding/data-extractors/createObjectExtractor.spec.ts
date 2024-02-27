@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import xpath from "xpath";
 import { createObjectExtractor } from "../../../../src";
 import { parseXml } from "../../../helper/parseXml";
 
@@ -23,7 +22,7 @@ describe("createObjectExtractor() function", () => {
 
     expect(objectExtractor).toBeTypeOf("function");
 
-    expect(objectExtractor(dummyDoc, xpath.select)).toEqual({
+    expect(objectExtractor(dummyDoc)).toEqual({
       stringValue: "returns string",
       numberValue: 123,
       booleanValue: true,
@@ -36,7 +35,7 @@ describe("createObjectExtractor() function", () => {
       undefinedValue: () => undefined,
     });
 
-    const obj = objectExtractor(dummyDoc, xpath.select);
+    const obj = objectExtractor(dummyDoc);
     expect(obj).toEqual({
       stringValue: "str",
     });

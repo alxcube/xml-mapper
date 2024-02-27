@@ -1,6 +1,5 @@
-import type { XPathSelect } from "xpath";
+import xpath, { type XPathSelect } from "xpath";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
-import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import { isSingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 
 /**
@@ -12,8 +11,8 @@ import { isSingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFn
  */
 export function createObjectExtractor<ObjectType extends object>(
   blueprint: ObjectBlueprint<ObjectType>
-): SingleNodeDataExtractorFn<ObjectType> {
-  return (node: Node, xpathSelect: XPathSelect): ObjectType => {
+): (node: Node, xpathSelect?: XPathSelect) => ObjectType {
+  return (node: Node, xpathSelect: XPathSelect = xpath.select): ObjectType => {
     const result = {} as Partial<ObjectType>;
     const keys = Object.keys(blueprint) as (keyof ObjectType)[];
     for (const key of keys) {
