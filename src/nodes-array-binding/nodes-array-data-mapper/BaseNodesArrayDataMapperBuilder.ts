@@ -20,14 +20,25 @@ import {
 import { NodesArrayDataMapper } from "./NodesArrayDataMapper";
 import type { NodesArrayDataMapperBuilder } from "../NodesArrayDataMapperBuilder";
 
+/**
+ * Implementation of NodesArrayDataMapperBuilder interface.
+ */
 export class BaseNodesArrayDataMapperBuilder<
   ArrayLookupResult extends NodesArrayLookupResult,
 > implements NodesArrayDataMapperBuilder<ArrayLookupResult>
 {
+  /**
+   * BaseNodesArrayDataMapperBuilder constructor.
+   *
+   * @param lookupBuilder
+   */
   constructor(
     private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>
   ) {}
 
+  /**
+   * @inheritDoc
+   */
   ofBooleans(): LookupToDataExtractorBindingBuilder<
     ArrayLookupResult,
     boolean[]
@@ -43,6 +54,9 @@ export class BaseNodesArrayDataMapperBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   ofNumbers(): LookupToDataExtractorBindingBuilder<
     ArrayLookupResult,
     number[]
@@ -58,6 +72,9 @@ export class BaseNodesArrayDataMapperBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   ofObjects<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
   ): LookupToDataExtractorBindingBuilder<ArrayLookupResult, ObjectType[]> {
@@ -72,6 +89,9 @@ export class BaseNodesArrayDataMapperBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   ofStrings(): LookupToDataExtractorBindingBuilder<
     ArrayLookupResult,
     string[]
@@ -87,6 +107,9 @@ export class BaseNodesArrayDataMapperBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   ofRecursiveObjects<RecursiveObjectType extends object>(
     factoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
@@ -106,6 +129,9 @@ export class BaseNodesArrayDataMapperBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   usingMapper<MappingFunctionReturnType>(
     cb:
       | SingleNodeDataExtractorFn<MappingFunctionReturnType>

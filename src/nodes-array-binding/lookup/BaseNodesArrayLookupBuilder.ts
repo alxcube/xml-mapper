@@ -16,16 +16,29 @@ import type {
 } from "../NodesArrayLookupFn";
 import type { NodesArrayLookupFactory } from "../NodesArrayLookupFactory";
 
+/**
+ * Implementation of NodesArrayLookupBuilder interface.
+ */
 export class BaseNodesArrayLookupBuilder<
   ArrayLookupResult extends NodesArrayLookupResult,
 > implements NodesArrayLookupBuilder<ArrayLookupResult>
 {
+  /**
+   * BaseNodesArrayLookupBuilder constructor.
+   *
+   * @param factory
+   * @param path
+   * @param isMandatory
+   */
   constructor(
     private readonly factory: NodesArrayLookupFactory<ArrayLookupResult>,
     private readonly path: string,
     private readonly isMandatory = false
   ) {}
 
+  /**
+   * @inheritDoc
+   */
   buildNodesArrayLookup(): NodesArrayLookupFn<ArrayLookupResult> {
     const isMandatory = this.isMandatory;
     const path = this.path;
@@ -42,6 +55,9 @@ export class BaseNodesArrayLookupBuilder<
     };
   }
 
+  /**
+   * @inheritDoc
+   */
   mandatory(): NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>> {
     return new BaseNodesArrayLookupBuilder(
       this.factory,
@@ -50,6 +66,9 @@ export class BaseNodesArrayLookupBuilder<
     ) as NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>>;
   }
 
+  /**
+   * @inheritDoc
+   */
   optional(): NodesArrayLookupBuilder<ArrayLookupResult | undefined> {
     return new BaseNodesArrayLookupBuilder(
       this.factory,
@@ -58,10 +77,16 @@ export class BaseNodesArrayLookupBuilder<
     ) as NodesArrayLookupBuilder<ArrayLookupResult | undefined>;
   }
 
+  /**
+   * @inheritDoc
+   */
   asArray(): NodesArrayDataMapperBuilder<ArrayLookupResult> {
     return new BaseNodesArrayDataMapperBuilder(this);
   }
 
+  /**
+   * @inheritDoc
+   */
   callback<CallbackReturnType>(
     cb:
       | NodesArrayDataExtractorFn<CallbackReturnType>

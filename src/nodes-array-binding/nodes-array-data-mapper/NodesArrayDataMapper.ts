@@ -7,16 +7,28 @@ import {
   type SingleNodeDataExtractorFnFactory,
 } from "../../single-node-binding";
 
+/**
+ * Nodes array data mapper. Creates NodesArrayDataExtractorFn, which calls given SingleNodeDataExtractorFn for each
+ * node, and returns mapped array, filtered of undefined values.
+ */
 export class NodesArrayDataMapper<MappingFunctionReturnType>
   implements
     NodesArrayDataExtractorFnFactory<NonNullable<MappingFunctionReturnType>[]>
 {
+  /**
+   * NodesArrayDataMapper constructor.
+   *
+   * @param mapper
+   */
   constructor(
     private readonly mapper:
       | SingleNodeDataExtractorFn<MappingFunctionReturnType>
       | SingleNodeDataExtractorFnFactory<MappingFunctionReturnType>
   ) {}
 
+  /**
+   * @inheritDoc
+   */
   createNodesArrayDataExtractor(): NodesArrayDataExtractorFn<
     NonNullable<MappingFunctionReturnType>[]
   > {

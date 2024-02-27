@@ -19,6 +19,14 @@ import {
   type SingleNodeLookupBuilder,
 } from "./single-node-binding";
 
+/**
+ * Utility type. Returns inferred lookup return type, depending on lookup builder type.
+ *
+ * @example
+ * LookupReturnTypeDependentOfLookupBuilder<SingleNodeLookupBuilder<Node | undefined>> ---> Node | undefined;
+ * LookupReturnTypeDependentOfLookupBuilder<SingleNodeLookupBuilder<Element>> ---> Element;
+ * LookupReturnTypeDependentOfLookupBuilder<NodesArrayLookupBuilder<Attr[] | undefined>> ---> Attr[] | undefined;
+ */
 export type LookupReturnTypeDependentOfLookupBuilder<
   LookupBuilderType extends
     | SingleNodeLookupBuilder<Node | undefined>
@@ -34,6 +42,15 @@ export type LookupReturnTypeDependentOfLookupBuilder<
       ? NodesArrayLookupReturnType
       : never;
 
+/**
+ * Utility type. Returns data extractor factory type, depending on node lookup result type -- either
+ * SingleNodeDataExtractorFnFactory, or NodesArrayDataExtractorFnFactory.
+ *
+ * @example
+ * DataExtractorFactoryTypeDependentOfLookupResult<Node> ---> SingleNodeDataExtractorFnFactory;
+ * DataExtractorFactoryTypeDependentOfLookupResult<Element | undefined> ---> SingleNodeDataExtractorFnFactory;
+ * DataExtractorFactoryTypeDependentOfLookupResult<Node[]> ---> NodesArrayDataExtractorFnFactory
+ */
 export type DataExtractorFactoryTypeDependentOfLookupResult<
   LookupResult extends Node | Node[] | undefined,
   ReturnType,
@@ -42,6 +59,10 @@ export type DataExtractorFactoryTypeDependentOfLookupResult<
   : LookupResult extends Node[]
     ? NodesArrayDataExtractorFnFactory<ReturnType>
     : never;
+
+/**
+ * Implementation of LookupToDataExtractorBindingBuilder interface.
+ */
 export class BaseLookupToDataExtractorBindingBuilder<
   LookupBuilderType extends
     | SingleNodeLookupBuilder<Node | undefined>
@@ -65,6 +86,15 @@ export class BaseLookupToDataExtractorBindingBuilder<
       DefaultValueType
     >
 {
+  /**
+   * BaseLookupToDataExtractorBindingBuilder constructor.
+   *
+   * @param lookupBuilder
+   * @param extractorFactory
+   * @param conversionFn
+   * @param defaultValue
+   * @param name
+   */
   constructor(
     private readonly lookupBuilder: LookupBuilderType,
     private readonly extractorFactory: DataExtractorType,
@@ -75,6 +105,10 @@ export class BaseLookupToDataExtractorBindingBuilder<
     private readonly defaultValue?: DefaultValueType,
     private readonly name?: string
   ) {}
+
+  /**
+   * @inheritDoc
+   */
   createNodeDataExtractor(): SingleNodeDataExtractorFn<
     DependentOfLookupResultAndConvertedTypeAndDefaultValueType<
       LookupReturnType,
@@ -92,16 +126,19 @@ export class BaseLookupToDataExtractorBindingBuilder<
     const conversionFn = this.conversionFn;
 
     return ((node: Node, xpathSelect: XPathSelect) => {
+      // Get lookup result
       let lookupResult: LookupReturnType;
       try {
         lookupResult = lookupFn(node, xpathSelect) as LookupReturnType;
         if (!lookupResult) {
+          // When reference node(s) not found, return default value.
           return defaultValue;
         }
       } catch (e) {
         throw new Error(`Error in ${name} binding lookup: ${e}`);
       }
 
+      // Extract data from reference node(s).
       let extractedResult: DataExtractorReturnType;
       try {
         extractedResult = dataExtractorFn(
@@ -113,6 +150,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       }
 
       if (conversionFn && extractedResult !== undefined) {
+        // Convert extracted data, if conversion callback is set and extracted result is not undefined.
         let convertedResult: ConversionFnReturnType;
         try {
           convertedResult = conversionFn(extractedResult);
@@ -120,9 +158,11 @@ export class BaseLookupToDataExtractorBindingBuilder<
           throw new Error(`Error in ${name} binding conversion callback: ${e}`);
         }
 
+        // Return converted result or default value, if converted result is undefined.
         return convertedResult === undefined ? defaultValue : convertedResult;
       }
 
+      // Return extracted data, or default value, is extracted data is undefined.
       return extractedResult === undefined ? defaultValue : extractedResult;
     }) as SingleNodeDataExtractorFn<
       DependentOfLookupResultAndConvertedTypeAndDefaultValueType<
@@ -134,6 +174,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
     >;
   }
 
+  /**
+   * @inheritDoc
+   */
   named(
     name: string
   ): LookupToDataExtractorBindingBuilder<
@@ -151,6 +194,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   withConversion<GivenConversionFnReturnType>(
     conversionCallback: ConversionFn<
       DataExtractorReturnType,
@@ -170,6 +216,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   withDefault<
     GivenDefaultValueType extends
       | DependentOfConvertedType<
@@ -194,6 +243,10 @@ export class BaseLookupToDataExtractorBindingBuilder<
     );
   }
 
+  /**
+   * Returns lookup function with error handling.
+   * @private
+   */
   private getLookupFn() {
     try {
       const lookupBuilder = this.lookupBuilder;
@@ -206,6 +259,10 @@ export class BaseLookupToDataExtractorBindingBuilder<
     }
   }
 
+  /**
+   * Returns data extractor function with error handling.
+   * @private
+   */
   private getDataExtractorFn() {
     try {
       const dataExtractorFactory = this.extractorFactory;
@@ -220,6 +277,12 @@ export class BaseLookupToDataExtractorBindingBuilder<
     }
   }
 
+  /**
+   * Checks if lookup builder is compatible with data extractor function factory:
+   * single node lookup result must be handled with single node data extractor only, and
+   * array of nodes lookup should be handled with nodes array data extractor only.
+   * @private
+   */
   private ensureIsValidBinding() {
     if (
       (isSingleNodeLookupBuilder(this.lookupBuilder) &&

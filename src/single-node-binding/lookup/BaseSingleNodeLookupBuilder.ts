@@ -24,16 +24,29 @@ import type {
 } from "../SingleNodeLookupFn";
 import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
 
+/**
+ * Implementation of SingleNodeLookupBuilder interface.
+ */
 export class BaseSingleNodeLookupBuilder<
   NodeLookupResult extends SingleNodeLookupResult,
 > implements SingleNodeLookupBuilder<NodeLookupResult>
 {
+  /**
+   * BaseSingleNodeLookupBuilder constructor.
+   *
+   * @param factory
+   * @param path
+   * @param isMandatory
+   */
   constructor(
     private readonly factory: SingleNodeLookupFactory<NodeLookupResult>,
     private readonly path: string,
     private readonly isMandatory = false
   ) {}
 
+  /**
+   * @inheritDoc
+   */
   buildNodeLookup(): SingleNodeLookupFn<NodeLookupResult> {
     const isMandatory = this.isMandatory;
     const path = this.path;
@@ -48,6 +61,9 @@ export class BaseSingleNodeLookupBuilder<
     };
   }
 
+  /**
+   * @inheritDoc
+   */
   mandatory(): SingleNodeLookupBuilder<NonNullable<NodeLookupResult>> {
     return new BaseSingleNodeLookupBuilder(
       this.factory,
@@ -56,6 +72,9 @@ export class BaseSingleNodeLookupBuilder<
     ) as SingleNodeLookupBuilder<NonNullable<NodeLookupResult>>;
   }
 
+  /**
+   * @inheritDoc
+   */
   optional(): SingleNodeLookupBuilder<NodeLookupResult | undefined> {
     return new BaseSingleNodeLookupBuilder(
       this.factory,
@@ -64,6 +83,9 @@ export class BaseSingleNodeLookupBuilder<
     ) as SingleNodeLookupBuilder<NodeLookupResult | undefined>;
   }
 
+  /**
+   * @inheritDoc
+   */
   asString(): LookupToDataExtractorBindingBuilder<NodeLookupResult, string> {
     return new BaseLookupToDataExtractorBindingBuilder(
       this as SingleNodeLookupBuilder<NodeLookupResult>,
@@ -74,6 +96,9 @@ export class BaseSingleNodeLookupBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   asNumber(): LookupToDataExtractorBindingBuilder<NodeLookupResult, number> {
     return new BaseLookupToDataExtractorBindingBuilder(
       this,
@@ -84,6 +109,9 @@ export class BaseSingleNodeLookupBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   asBoolean(): LookupToDataExtractorBindingBuilder<NodeLookupResult, boolean> {
     return new BaseLookupToDataExtractorBindingBuilder(
       this,
@@ -94,6 +122,9 @@ export class BaseSingleNodeLookupBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   asObject<ObjectType extends object>(
     blueprint: ObjectBlueprint<ObjectType>
   ): LookupToDataExtractorBindingBuilder<NodeLookupResult, ObjectType> {
@@ -108,6 +139,9 @@ export class BaseSingleNodeLookupBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   asRecursiveObject<RecursiveObjectType extends object>(
     recursiveObjectFactoryOrScope:
       | RecursiveObjectFactory<RecursiveObjectType>
@@ -127,6 +161,9 @@ export class BaseSingleNodeLookupBuilder<
     );
   }
 
+  /**
+   * @inheritDoc
+   */
   callback<CallbackReturnType>(
     cb:
       | SingleNodeDataExtractorFn<CallbackReturnType>
