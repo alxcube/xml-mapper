@@ -1,5 +1,5 @@
 export * from "./BooleanExtractorFactory";
-export * from "./createObjectExtractor";
+export * from "./createObjectMapper";
 export * from "./CustomDataExtractorFactory";
 export * from "./extractBoolean";
 export * from "./extractNumber";

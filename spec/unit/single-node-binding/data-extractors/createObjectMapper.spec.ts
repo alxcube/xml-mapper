@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createObjectExtractor } from "../../../../src";
+import { createObjectMapper } from "../../../../src";
 import { parseXml } from "../../../helper/parseXml";
 
-describe("createObjectExtractor() function", () => {
+describe("createObjectMapper() function", () => {
   let dummyDoc: Document;
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe("createObjectExtractor() function", () => {
       createNodeDataExtractor: () => () => "returns string",
     };
 
-    const objectExtractor = createObjectExtractor({
+    const objectExtractor = createObjectMapper({
       stringValue: factory,
       numberValue: () => 123,
       booleanValue: () => true,
@@ -30,7 +30,7 @@ describe("createObjectExtractor() function", () => {
   });
 
   it("should not include undefined keys in result object", () => {
-    const objectExtractor = createObjectExtractor({
+    const objectExtractor = createObjectMapper({
       stringValue: () => "str",
       undefinedValue: () => undefined,
     });

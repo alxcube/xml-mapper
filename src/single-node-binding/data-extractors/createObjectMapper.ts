@@ -9,7 +9,7 @@ import { isSingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFn
  *
  * @param blueprint
  */
-export function createObjectExtractor<ObjectType extends object>(
+export function createObjectMapper<ObjectType extends object>(
   blueprint: ObjectBlueprint<ObjectType>
 ): (node: Node, xpathSelect?: XPathSelect) => ObjectType {
   return (node: Node, xpathSelect: XPathSelect = xpath.select): ObjectType => {

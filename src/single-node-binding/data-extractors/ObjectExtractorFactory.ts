@@ -1,7 +1,7 @@
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
 import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
 import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
-import { createObjectExtractor } from "./createObjectExtractor";
+import { createObjectMapper } from "./createObjectMapper";
 
 /**
  * Factory of object SingleNodeDataExtractorFn. Takes Object blueprint and creates SingleNodeDataExtractorFn,
@@ -21,6 +21,6 @@ export class ObjectExtractorFactory<ObjectType extends object>
    * @inheritDoc
    */
   createNodeDataExtractor(): SingleNodeDataExtractorFn<ObjectType> {
-    return createObjectExtractor(this.blueprint);
+    return createObjectMapper(this.blueprint);
   }
 }
