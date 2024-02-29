@@ -28,10 +28,12 @@ export class BaseNodesArrayLookupBuilder<
    *
    * @param path
    * @param isMandatory
+   * @param mappingName
    */
   constructor(
     private readonly path: string,
-    private readonly isMandatory = false
+    private readonly isMandatory = false,
+    private readonly mappingName = ""
   ) {}
 
   /**
@@ -80,7 +82,8 @@ export class BaseNodesArrayLookupBuilder<
   mandatory(): NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>> {
     return new BaseNodesArrayLookupBuilder(
       this.path,
-      true
+      true,
+      this.mappingName
     ) as NodesArrayLookupBuilder<NonNullable<ArrayLookupResult>>;
   }
 
@@ -90,7 +93,8 @@ export class BaseNodesArrayLookupBuilder<
   optional(): NodesArrayLookupBuilder<ArrayLookupResult | undefined> {
     return new BaseNodesArrayLookupBuilder(
       this.path,
-      false
+      false,
+      this.mappingName
     ) as NodesArrayLookupBuilder<ArrayLookupResult | undefined>;
   }
 
@@ -98,7 +102,7 @@ export class BaseNodesArrayLookupBuilder<
    * @inheritDoc
    */
   asArray(): NodesArrayDataMapperBuilder<ArrayLookupResult> {
-    return new BaseNodesArrayDataMapperBuilder(this);
+    return new BaseNodesArrayDataMapperBuilder(this, this.mappingName);
   }
 
   /**
@@ -119,7 +123,10 @@ export class BaseNodesArrayLookupBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         CallbackReturnType
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 }

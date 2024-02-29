@@ -36,10 +36,12 @@ export class BaseSingleNodeLookupBuilder<
    *
    * @param path
    * @param isMandatory
+   * @param mappingName
    */
   constructor(
     private readonly path: string,
-    private readonly isMandatory = false
+    private readonly isMandatory = false,
+    private readonly mappingName = ""
   ) {}
 
   /**
@@ -72,7 +74,8 @@ export class BaseSingleNodeLookupBuilder<
   mandatory(): SingleNodeLookupBuilder<NonNullable<NodeLookupResult>> {
     return new BaseSingleNodeLookupBuilder(
       this.path,
-      true
+      true,
+      this.mappingName
     ) as SingleNodeLookupBuilder<NonNullable<NodeLookupResult>>;
   }
 
@@ -82,7 +85,8 @@ export class BaseSingleNodeLookupBuilder<
   optional(): SingleNodeLookupBuilder<NodeLookupResult | undefined> {
     return new BaseSingleNodeLookupBuilder(
       this.path,
-      false
+      false,
+      this.mappingName
     ) as SingleNodeLookupBuilder<NodeLookupResult | undefined>;
   }
 
@@ -95,7 +99,10 @@ export class BaseSingleNodeLookupBuilder<
       new StringExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         string
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 
@@ -108,7 +115,10 @@ export class BaseSingleNodeLookupBuilder<
       new NumberExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         number
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 
@@ -121,7 +131,10 @@ export class BaseSingleNodeLookupBuilder<
       new BooleanExtractorFactory() as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         boolean
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 
@@ -138,7 +151,10 @@ export class BaseSingleNodeLookupBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         ObjectType
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 
@@ -160,7 +176,10 @@ export class BaseSingleNodeLookupBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         RecursiveObjectType
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 
@@ -179,7 +198,10 @@ export class BaseSingleNodeLookupBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         NodeLookupResult,
         CallbackReturnType
-      >
+      >,
+      undefined,
+      undefined,
+      this.mappingName
     );
   }
 }

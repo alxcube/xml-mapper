@@ -12,17 +12,24 @@ import {
  */
 export class BaseMappingBuilder implements MappingBuilder {
   /**
+   * BaseMappingBuilder constructor
+   *
+   * @param mappingName
+   */
+  constructor(private readonly mappingName = "") {}
+
+  /**
    * @inheritDoc
    */
   toNode(path: string): SingleNodeLookupBuilder<Node | undefined> {
-    return new BaseSingleNodeLookupBuilder(path);
+    return new BaseSingleNodeLookupBuilder(path, false, this.mappingName);
   }
 
   /**
    * @inheritDoc
    */
   toNodesArray(path: string): NodesArrayLookupBuilder<Node[] | undefined> {
-    return new BaseNodesArrayLookupBuilder(path);
+    return new BaseNodesArrayLookupBuilder(path, false, this.mappingName);
   }
 
   /**
@@ -36,6 +43,6 @@ export class BaseMappingBuilder implements MappingBuilder {
 /**
  * Returns MappingBuilder interface for shorthand mapping.
  */
-export function map(): MappingBuilder {
-  return new BaseMappingBuilder();
+export function map(mappingName = ""): MappingBuilder {
+  return new BaseMappingBuilder(mappingName);
 }
