@@ -1,5 +1,5 @@
 import type { XPathSelect } from "xpath";
-import { MappingError } from "./error";
+import { BindingError, MappingError } from "./error";
 import type {
   ConversionFn,
   DependentOfConvertedType,
@@ -120,7 +120,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
   > {
     this.ensureIsValidBinding();
 
-    const name = this.getBindingName();
+    const fullBindingName = this.getBindingName();
     const defaultValue = this.defaultValue;
     const lookupFn = this.getLookupFn();
     const dataExtractorFn = this.getDataExtractorFn();
@@ -136,7 +136,11 @@ export class BaseLookupToDataExtractorBindingBuilder<
           return defaultValue;
         }
       } catch (e) {
-        throw new MappingError(`Error in "${name}" binding lookup.`, e);
+        throw new BindingError(
+          `Error in "${fullBindingName}" binding lookup.`,
+          fullBindingName,
+          e
+        );
       }
 
       // Extract data from reference node(s).
@@ -147,7 +151,17 @@ export class BaseLookupToDataExtractorBindingBuilder<
           xpathSelect
         );
       } catch (e) {
-        throw new MappingError(`Error in "${name}" binding data extractor.`, e);
+        const initialErrorMessage = this.getInitialErrorMessage(e);
+        if (e instanceof BindingError) {
+          const bindingNamePath = `${fullBindingName} > ${e.bindingName}`;
+          const message = `Error in binding "${bindingNamePath}": ${initialErrorMessage}`;
+          throw new BindingError(message, bindingNamePath, e);
+        }
+        throw new BindingError(
+          `Error in "${fullBindingName}" binding data extractor: ${initialErrorMessage}`,
+          fullBindingName,
+          e
+        );
       }
 
       if (conversionFn && extractedResult !== undefined) {
@@ -156,8 +170,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
         try {
           convertedResult = conversionFn(extractedResult);
         } catch (e) {
-          throw new MappingError(
-            `Error in "${name}" binding conversion callback.`,
+          throw new BindingError(
+            `Error in "${fullBindingName}" binding conversion callback.`,
+            fullBindingName,
             e
           );
         }
@@ -259,8 +274,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
       }
       return lookupBuilder.buildNodesArrayLookup();
     } catch (e) {
-      throw new MappingError(
+      throw new BindingError(
         `Error in "${this.getBindingName()}" binding lookup builder.`,
+        this.getBindingName(),
         e
       );
     }
@@ -278,8 +294,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
       }
       return dataExtractorFactory.createNodesArrayDataExtractor();
     } catch (e) {
-      throw new MappingError(
+      throw new BindingError(
         `Error in "${this.getBindingName()}" binding data extractor factory.`,
+        this.getBindingName(),
         e
       );
     }
@@ -298,8 +315,9 @@ export class BaseLookupToDataExtractorBindingBuilder<
       (isNodesArrayLookupBuilder(this.lookupBuilder) &&
         isSingleNodeDataExtractorFnFactory(this.extractorFactory))
     ) {
-      throw new MappingError(
-        `Node(s) lookup and data extractor types mismatch in binding "${this.getBindingName()}".`
+      throw new BindingError(
+        `Node(s) lookup and data extractor types mismatch in binding "${this.getBindingName()}".`,
+        this.getBindingName()
       );
     }
   }
@@ -312,5 +330,23 @@ export class BaseLookupToDataExtractorBindingBuilder<
   private getBindingName(): string {
     const name = this.name ? this.name : "Unnamed";
     return `${name}: ${this.lookupBuilder.getPath()}`;
+  }
+
+  /**
+   * Returns initial error message for error.
+   *
+   * @param e
+   * @private
+   */
+  private getInitialErrorMessage(e: Error | unknown): string {
+    let initialError;
+    if (e instanceof MappingError) {
+      initialError = e.getInitialCause() || e;
+    } else {
+      initialError = e;
+    }
+    return initialError instanceof Error
+      ? initialError.message
+      : String(initialError);
   }
 }

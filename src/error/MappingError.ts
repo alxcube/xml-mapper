@@ -15,4 +15,23 @@ export class MappingError extends Error {
     super(message);
     this.name = "MappingError";
   }
+
+  /**
+   * Returns initial error in bindings hierarchy.
+   */
+  getInitialCause(): Error | unknown | undefined {
+    if (!this.cause) {
+      return undefined;
+    }
+
+    if (this.cause instanceof MappingError) {
+      const initialCause = this.cause.getInitialCause();
+      if (initialCause === undefined) {
+        return this.cause;
+      }
+      return initialCause;
+    }
+
+    return this.cause;
+  }
 }
