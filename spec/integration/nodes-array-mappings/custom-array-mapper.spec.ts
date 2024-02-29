@@ -47,7 +47,7 @@ describe("custom array mappings", () => {
     test("using callback, from attributes", () => {
       expect(
         map()
-          .toElementsArray("/Dates/Date")
+          .toNodesArray("/Dates/Date")
           .asArray()
           .usingMapper(getDateFromAttributes)
           .createNodeDataExtractor()(doc, xs)
@@ -57,7 +57,7 @@ describe("custom array mappings", () => {
     test("using SingleNodeDataExtractorFnFactory, from elements", () => {
       expect(
         map()
-          .toElementsArray("/Dates/Date")
+          .toNodesArray("/Dates/Date")
           .asArray()
           .usingMapper(new TestDateExtractor())
           .createNodeDataExtractor()(doc, xs)
@@ -69,7 +69,7 @@ describe("custom array mappings", () => {
     test("when using callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .asArray()
           .usingMapper(getDateFromAttributes)
           .createNodeDataExtractor()(doc, xs)
@@ -79,7 +79,7 @@ describe("custom array mappings", () => {
     test("when using SingleNodeDataExtractorFnFactory, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .asArray()
           .usingMapper(new TestDateExtractor())
           .createNodeDataExtractor()(doc, xs)
@@ -91,7 +91,7 @@ describe("custom array mappings", () => {
     test("when using callback, but mandatory reference nodes not found", () => {
       expect(() =>
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .mandatory()
           .asArray()
           .usingMapper(getDateFromAttributes)
@@ -102,7 +102,7 @@ describe("custom array mappings", () => {
     test("when using SingleNodeDataExtractorFnFactory, but mandatory reference nodes not found", () => {
       expect(() =>
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .mandatory()
           .asArray()
           .usingMapper(new TestDateExtractor())
@@ -115,7 +115,7 @@ describe("custom array mappings", () => {
     test("when using callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .asArray()
           .usingMapper(getDateFromAttributes)
           .withDefault([Feb_26_2024])
@@ -126,7 +126,7 @@ describe("custom array mappings", () => {
     test("when using SingleNodeDataExtractorFnFactory, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Dates/MissingDate")
+          .toNodesArray("/Dates/MissingDate")
           .asArray()
           .usingMapper(new TestDateExtractor())
           .withDefault([Feb_26_2024])
@@ -143,7 +143,7 @@ describe("custom array mappings", () => {
       test("using callback, from attributes", () => {
         expect(
           map()
-            .toElementsArray("/Dates/Date")
+            .toNodesArray("/Dates/Date")
             .asArray()
             .usingMapper(getDateFromAttributes)
             .withConversion(conversionFn)
@@ -154,7 +154,7 @@ describe("custom array mappings", () => {
       test("using SingleNodeDataExtractorFnFactory, from elements", () => {
         expect(
           map()
-            .toElementsArray("/Dates/Date")
+            .toNodesArray("/Dates/Date")
             .asArray()
             .usingMapper(new TestDateExtractor())
             .withConversion(conversionFn)
@@ -167,7 +167,7 @@ describe("custom array mappings", () => {
       test("using callback, from attributes", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(getDateFromAttributes)
             .withConversion(conversionFn)
@@ -178,7 +178,7 @@ describe("custom array mappings", () => {
       test("using SingleNodeDataExtractorFnFactory, from elements", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(new TestDateExtractor())
             .withConversion(conversionFn)
@@ -191,7 +191,7 @@ describe("custom array mappings", () => {
       test("using callback, from attributes", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(getDateFromAttributes)
             .withDefault([Feb_26_2024])
@@ -203,7 +203,7 @@ describe("custom array mappings", () => {
       test("using SingleNodeDataExtractorFnFactory, from elements", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(new TestDateExtractor())
             .withDefault([Feb_26_2024])
@@ -217,7 +217,7 @@ describe("custom array mappings", () => {
       test("using callback, from attributes", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(getDateFromAttributes)
             .withConversion(conversionFn)
@@ -229,7 +229,7 @@ describe("custom array mappings", () => {
       test("using SingleNodeDataExtractorFnFactory, from elements", () => {
         expect(
           map()
-            .toElementsArray("/Dates/MissingDate")
+            .toNodesArray("/Dates/MissingDate")
             .asArray()
             .usingMapper(new TestDateExtractor())
             .withConversion(conversionFn)

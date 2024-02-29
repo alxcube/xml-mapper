@@ -32,7 +32,7 @@ describe("string mappings", () => {
     beforeEach(() => {
       execTest = (path, expected) => {
         expect(
-          map().toAttribute(path).asString().createNodeDataExtractor()(doc, xs)
+          map().toNode(path).asString().createNodeDataExtractor()(doc, xs)
         ).toBe(expected);
       };
     });
@@ -52,7 +52,7 @@ describe("string mappings", () => {
     beforeEach(() => {
       execTest = (path, expected) => {
         expect(
-          map().toElement(path).asString().createNodeDataExtractor()(doc, xs)
+          map().toNode(path).asString().createNodeDataExtractor()(doc, xs)
         ).toBe(expected);
       };
     });
@@ -110,7 +110,7 @@ describe("string mappings", () => {
     test("returning undefined, when attribute not found", () => {
       expect(
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .asString()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -119,7 +119,7 @@ describe("string mappings", () => {
     test("returning undefined, when element not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asString()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -139,7 +139,7 @@ describe("string mappings", () => {
     test("throwing Error, when mandatory attribute not found", () => {
       expect(() =>
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .mandatory()
           .asString()
           .createNodeDataExtractor()(doc, xs)
@@ -149,7 +149,7 @@ describe("string mappings", () => {
     test("throwing Error, when mandatory element not found", () => {
       expect(() =>
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .mandatory()
           .asString()
           .createNodeDataExtractor()(doc, xs)
@@ -171,7 +171,7 @@ describe("string mappings", () => {
     test("returning default value, when attribute not found", () => {
       expect(
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .asString()
           .withDefault("fallback")
           .createNodeDataExtractor()(doc, xs)
@@ -181,7 +181,7 @@ describe("string mappings", () => {
     test("returning default value, when element not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asString()
           .withDefault("fallback")
           .createNodeDataExtractor()(doc, xs)
@@ -205,7 +205,7 @@ describe("string mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElement("//StringWithExponentialNumber")
+          .toNode("//StringWithExponentialNumber")
           .asString()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -213,7 +213,7 @@ describe("string mappings", () => {
 
       expect(
         map()
-          .toAttribute("//StringWithExponentialNumber/@exp")
+          .toNode("//StringWithExponentialNumber/@exp")
           .asString()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -223,7 +223,7 @@ describe("string mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toAttribute("//StringElements/@missing-attribute")
+          .toNode("//StringElements/@missing-attribute")
           .asString()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -233,7 +233,7 @@ describe("string mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toAttribute("//StringElements/@missing-attribute")
+          .toNode("//StringElements/@missing-attribute")
           .asString()
           .withDefault("fallback")
           .withConversion(conversionFn)
@@ -244,7 +244,7 @@ describe("string mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toAttribute("//StringElements/@missing-attribute")
+          .toNode("//StringElements/@missing-attribute")
           .asString()
           .withConversion(conversionFn)
           .withDefault(10)

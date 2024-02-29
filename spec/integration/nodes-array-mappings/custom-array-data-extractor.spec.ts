@@ -50,7 +50,7 @@ describe("custom array data extraction", () => {
     test("returning sum of node values, using callback", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/Number")
+          .toNodesArray("/Numbers/Number")
           .callback(sumExtractor)
           .createNodeDataExtractor()(doc, xs)
       ).toBe(10);
@@ -59,7 +59,7 @@ describe("custom array data extraction", () => {
     test("returning product of node values, using NodesArrayDataExtractorFnFactory", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/Number")
+          .toNodesArray("/Numbers/Number")
           .callback(new TestProductExtractor())
           .createNodeDataExtractor()(doc, xs)
       ).toBe(24);
@@ -70,7 +70,7 @@ describe("custom array data extraction", () => {
     test("when using callback", () => {
       expect(
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .callback(sumExtractor)
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -79,7 +79,7 @@ describe("custom array data extraction", () => {
     test("when using NodesArrayDataExtractorFnFactory", () => {
       expect(
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .callback(new TestProductExtractor())
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -90,7 +90,7 @@ describe("custom array data extraction", () => {
     test("when using callback", () => {
       expect(() =>
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .mandatory()
           .callback(sumExtractor)
           .createNodeDataExtractor()(doc, xs)
@@ -100,7 +100,7 @@ describe("custom array data extraction", () => {
     test("when using NodesArrayDataExtractorFnFactory", () => {
       expect(() =>
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .mandatory()
           .callback(new TestProductExtractor())
           .createNodeDataExtractor()(doc, xs)
@@ -112,7 +112,7 @@ describe("custom array data extraction", () => {
     test("when using callback", () => {
       expect(
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .callback(sumExtractor)
           .withDefault(0)
           .createNodeDataExtractor()(doc, xs)
@@ -122,7 +122,7 @@ describe("custom array data extraction", () => {
     test("when using NodesArrayDataExtractorFnFactory", () => {
       expect(
         map()
-          .toElementsArray("/MissingNumbers/Number")
+          .toNodesArray("/MissingNumbers/Number")
           .callback(new TestProductExtractor())
           .withDefault(0)
           .createNodeDataExtractor()(doc, xs)
@@ -137,7 +137,7 @@ describe("custom array data extraction", () => {
       test("returning sum of node values, using callback", () => {
         expect(
           map()
-            .toElementsArray("/Numbers/Number")
+            .toNodesArray("/Numbers/Number")
             .callback(sumExtractor)
             .withConversion(conversionFn)
             .createNodeDataExtractor()(doc, xs)
@@ -147,7 +147,7 @@ describe("custom array data extraction", () => {
       test("returning product of node values, using NodesArrayDataExtractorFnFactory", () => {
         expect(
           map()
-            .toElementsArray("/Numbers/Number")
+            .toNodesArray("/Numbers/Number")
             .callback(new TestProductExtractor())
             .withConversion(conversionFn)
             .createNodeDataExtractor()(doc, xs)
@@ -159,7 +159,7 @@ describe("custom array data extraction", () => {
       test("when using callback", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(sumExtractor)
             .withConversion(conversionFn)
             .createNodeDataExtractor()(doc, xs)
@@ -169,7 +169,7 @@ describe("custom array data extraction", () => {
       test("when using NodesArrayDataExtractorFnFactory", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(new TestProductExtractor())
             .withConversion(conversionFn)
             .createNodeDataExtractor()(doc, xs)
@@ -181,7 +181,7 @@ describe("custom array data extraction", () => {
       test("when using callback", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(sumExtractor)
             .withDefault(0)
             .withConversion(conversionFn)
@@ -192,7 +192,7 @@ describe("custom array data extraction", () => {
       test("when using NodesArrayDataExtractorFnFactory", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(new TestProductExtractor())
             .withDefault(0)
             .withConversion(conversionFn)
@@ -205,7 +205,7 @@ describe("custom array data extraction", () => {
       test("when using callback", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(sumExtractor)
             .withConversion(conversionFn)
             .withDefault("")
@@ -216,7 +216,7 @@ describe("custom array data extraction", () => {
       test("when using NodesArrayDataExtractorFnFactory", () => {
         expect(
           map()
-            .toElementsArray("/MissingNumbers/Number")
+            .toNodesArray("/MissingNumbers/Number")
             .callback(new TestProductExtractor())
             .withConversion(conversionFn)
             .withDefault("")

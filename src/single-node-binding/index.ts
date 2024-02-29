@@ -1,5 +1,5 @@
 export * from "./data-extractors";
-export * from "./lookup";
+export * from "./BaseSingleNodeLookupBuilder";
 export * from "./SingleNodeDataExtractorFn";
 export * from "./SingleNodeDataExtractorFnFactory";
 export * from "./SingleNodeLookupBuilder";

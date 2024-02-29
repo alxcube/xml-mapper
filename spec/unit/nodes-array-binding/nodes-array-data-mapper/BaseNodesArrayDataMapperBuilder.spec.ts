@@ -2,23 +2,21 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   BaseNodesArrayDataMapperBuilder,
   BaseNodesArrayLookupBuilder,
-  ElementsArrayLookupFactory,
   StringExtractorFactory,
+  BaseLookupToDataExtractorBindingBuilder,
 } from "../../../../src";
-import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
 
 describe("BaseNodesArrayDataMapperBuilder class", () => {
-  let lookupBuilder: BaseNodesArrayLookupBuilder<Element[] | undefined>;
-  let dataMapperBuilder: BaseNodesArrayDataMapperBuilder<Element[] | undefined>;
+  let lookupBuilder: BaseNodesArrayLookupBuilder<Node[] | undefined>;
+  let dataMapperBuilder: BaseNodesArrayDataMapperBuilder<Node[] | undefined>;
 
   beforeEach(() => {
-    lookupBuilder = new BaseNodesArrayLookupBuilder<Element[] | undefined>(
-      new ElementsArrayLookupFactory(),
+    lookupBuilder = new BaseNodesArrayLookupBuilder<Node[] | undefined>(
       "//List/Item"
     );
-    dataMapperBuilder = new BaseNodesArrayDataMapperBuilder<
-      Element[] | undefined
-    >(lookupBuilder);
+    dataMapperBuilder = new BaseNodesArrayDataMapperBuilder<Node[] | undefined>(
+      lookupBuilder
+    );
   });
 
   describe("ofBooleans() method", () => {

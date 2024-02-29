@@ -43,36 +43,36 @@ describe("object mappings", () => {
     doc = parseXml(xml);
 
     userBlueprint = {
-      id: map().toAttribute("@id").mandatory().asNumber().named("id"),
+      id: map().toNode("@id").mandatory().asNumber().named("id"),
       isVerified: map()
-        .toAttribute("@verified")
+        .toNode("@verified")
         .mandatory()
         .asBoolean()
         .named("isVerified"),
       firstName: map()
-        .toElement("FirstName")
+        .toNode("FirstName")
         .mandatory()
         .asString()
         .named("firstName"),
       lastName: map()
-        .toElement("LastName")
+        .toNode("LastName")
         .mandatory()
         .asString()
         .named("lastName"),
       contactData: map()
-        .toElement("ContactData")
+        .toNode("ContactData")
         .mandatory()
         .asObject({
-          email: map().toElement("Email").asString().named("contactData.email"),
-          phone: map().toElement("Phone").asString().named("contactData.phone"),
+          email: map().toNode("Email").asString().named("contactData.email"),
+          phone: map().toNode("Phone").asString().named("contactData.phone"),
         })
         .named("contactData"),
     };
   });
 
   test("returning object values", () => {
-    const mapper1 = map().toElement("/Users/User[1]").asObject(userBlueprint);
-    const mapper2 = map().toElement("/Users/User[2]").asObject(userBlueprint);
+    const mapper1 = map().toNode("/Users/User[1]").asObject(userBlueprint);
+    const mapper2 = map().toNode("/Users/User[2]").asObject(userBlueprint);
 
     expect(mapper1.createNodeDataExtractor()(doc, xs)).toEqual({
       id: 123,
@@ -99,7 +99,7 @@ describe("object mappings", () => {
   test("returning undefined, when reference node not found", () => {
     expect(
       map()
-        .toElement("/Users/User[999]")
+        .toNode("/Users/User[999]")
         .asObject(userBlueprint)
         .createNodeDataExtractor()(doc, xs)
     ).toBeUndefined();
@@ -108,7 +108,7 @@ describe("object mappings", () => {
   test("throwing error, when mandatory reference node not found", () => {
     expect(() =>
       map()
-        .toElement("/Users/User[999]")
+        .toNode("/Users/User[999]")
         .mandatory()
         .asObject(userBlueprint)
         .createNodeDataExtractor()(doc, xs)
@@ -118,7 +118,7 @@ describe("object mappings", () => {
   test("returning default value, when reference node not found", () => {
     expect(
       map()
-        .toElement("/Users/User[999]")
+        .toNode("/Users/User[999]")
         .asObject(userBlueprint)
         .withDefault({
           id: 0,
@@ -143,7 +143,7 @@ describe("object mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElement("/Users/User[1]")
+          .toNode("/Users/User[1]")
           .asObject(userBlueprint)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -155,7 +155,7 @@ describe("object mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toElement("/Users/User[999]")
+          .toNode("/Users/User[999]")
           .asObject(userBlueprint)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -165,7 +165,7 @@ describe("object mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElement("/Users/User[999]")
+          .toNode("/Users/User[999]")
           .asObject(userBlueprint)
           .withDefault({
             id: 0,
@@ -182,7 +182,7 @@ describe("object mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElement("/Users/User[999]")
+          .toNode("/Users/User[999]")
           .asObject(userBlueprint)
           .withConversion(conversionFn)
           .withDefault("")

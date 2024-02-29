@@ -22,7 +22,7 @@ describe("number array mappings", () => {
     test("from attributes", () => {
       expect(
         map()
-          .toAttributesArray("/Numbers/Number/@value")
+          .toNodesArray("/Numbers/Number/@value")
           .asArray()
           .ofNumbers()
           .createNodeDataExtractor()(doc, xs)
@@ -32,7 +32,7 @@ describe("number array mappings", () => {
     test("from elements", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/Number")
+          .toNodesArray("/Numbers/Number")
           .asArray()
           .ofNumbers()
           .createNodeDataExtractor()(doc, xs)
@@ -44,7 +44,7 @@ describe("number array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("/Numbers/Number/@missing-value")
+          .toNodesArray("/Numbers/Number/@missing-value")
           .asArray()
           .ofNumbers()
           .createNodeDataExtractor()(doc, xs)
@@ -54,7 +54,7 @@ describe("number array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .asArray()
           .ofNumbers()
           .createNodeDataExtractor()(doc, xs)
@@ -66,7 +66,7 @@ describe("number array mappings", () => {
     test("when mandatory reference attributes not found", () => {
       expect(() =>
         map()
-          .toAttributesArray("/Numbers/Number/@missing-value")
+          .toNodesArray("/Numbers/Number/@missing-value")
           .mandatory()
           .asArray()
           .ofNumbers()
@@ -77,7 +77,7 @@ describe("number array mappings", () => {
     test("when mandatory reference elements not found", () => {
       expect(() =>
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .mandatory()
           .asArray()
           .ofNumbers()
@@ -90,7 +90,7 @@ describe("number array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("/Numbers/Number/@missing-value")
+          .toNodesArray("/Numbers/Number/@missing-value")
           .asArray()
           .ofNumbers()
           .withDefault([1])
@@ -101,7 +101,7 @@ describe("number array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .asArray()
           .ofNumbers()
           .withDefault([1])
@@ -117,7 +117,7 @@ describe("number array mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/Number")
+          .toNodesArray("/Numbers/Number")
           .asArray()
           .ofNumbers()
           .withConversion(conversionFn)
@@ -128,7 +128,7 @@ describe("number array mappings", () => {
     test("returning undefined, when got conversion callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .asArray()
           .ofNumbers()
           .withConversion(conversionFn)
@@ -139,7 +139,7 @@ describe("number array mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .asArray()
           .ofNumbers()
           .withDefault([1])
@@ -151,7 +151,7 @@ describe("number array mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElementsArray("/Numbers/MissingNumber")
+          .toNodesArray("/Numbers/MissingNumber")
           .asArray()
           .ofNumbers()
           .withConversion(conversionFn)

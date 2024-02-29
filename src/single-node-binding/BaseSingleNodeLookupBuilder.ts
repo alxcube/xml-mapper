@@ -1,10 +1,11 @@
-import type { XPathSelect } from "xpath";
+import { isNodeLike, type XPathSelect } from "xpath";
 import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
-} from "../../BaseLookupToDataExtractorBindingBuilder";
-import type { LookupToDataExtractorBindingBuilder } from "../../LookupToDataExtractorBindingBuilder";
-import type { ObjectBlueprint } from "../../ObjectBlueprint";
+} from "../BaseLookupToDataExtractorBindingBuilder";
+import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
+import type { ObjectBlueprint } from "../ObjectBlueprint";
+import { getTypeName } from "../utils";
 import {
   BooleanExtractorFactory,
   CustomDataExtractorFactory,
@@ -14,15 +15,14 @@ import {
   StringExtractorFactory,
   RecursiveObjectExtractorFactory,
   type RecursiveObjectFactory,
-} from "../data-extractors";
-import type { SingleNodeDataExtractorFn } from "../SingleNodeDataExtractorFn";
-import type { SingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
-import type { SingleNodeLookupBuilder } from "../SingleNodeLookupBuilder";
+} from "./data-extractors";
+import type { SingleNodeDataExtractorFn } from "./SingleNodeDataExtractorFn";
+import type { SingleNodeDataExtractorFnFactory } from "./SingleNodeDataExtractorFnFactory";
+import type { SingleNodeLookupBuilder } from "./SingleNodeLookupBuilder";
 import type {
   SingleNodeLookupFn,
   SingleNodeLookupResult,
-} from "../SingleNodeLookupFn";
-import type { SingleNodeLookupFactory } from "../SingleNodeLookupFactory";
+} from "./SingleNodeLookupFn";
 
 /**
  * Implementation of SingleNodeLookupBuilder interface.
@@ -34,12 +34,10 @@ export class BaseSingleNodeLookupBuilder<
   /**
    * BaseSingleNodeLookupBuilder constructor.
    *
-   * @param factory
    * @param path
    * @param isMandatory
    */
   constructor(
-    private readonly factory: SingleNodeLookupFactory<NodeLookupResult>,
     private readonly path: string,
     private readonly isMandatory = false
   ) {}
@@ -50,14 +48,21 @@ export class BaseSingleNodeLookupBuilder<
   buildNodeLookup(): SingleNodeLookupFn<NodeLookupResult> {
     const isMandatory = this.isMandatory;
     const path = this.path;
-    const lookupFn = this.factory.createSingleNodeLookup(path);
 
     return (contextNode: Node, xpathSelect: XPathSelect): NodeLookupResult => {
-      const result = lookupFn(contextNode, xpathSelect);
-      if (isMandatory && (result === undefined || result === null)) {
-        throw new RangeError(`Mandatory node was not found by path: ${path}`);
+      const result = xpathSelect(path, contextNode, true);
+      if (result === undefined || result === null) {
+        if (isMandatory) {
+          throw new RangeError(`Mandatory node was not found by path: ${path}`);
+        }
+        return undefined as NodeLookupResult;
       }
-      return result;
+      if (!isNodeLike(result)) {
+        throw new TypeError(
+          `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}. Lookup path: "${path}"`
+        );
+      }
+      return result as NodeLookupResult;
     };
   }
 
@@ -66,7 +71,6 @@ export class BaseSingleNodeLookupBuilder<
    */
   mandatory(): SingleNodeLookupBuilder<NonNullable<NodeLookupResult>> {
     return new BaseSingleNodeLookupBuilder(
-      this.factory,
       this.path,
       true
     ) as SingleNodeLookupBuilder<NonNullable<NodeLookupResult>>;
@@ -77,7 +81,6 @@ export class BaseSingleNodeLookupBuilder<
    */
   optional(): SingleNodeLookupBuilder<NodeLookupResult | undefined> {
     return new BaseSingleNodeLookupBuilder(
-      this.factory,
       this.path,
       false
     ) as SingleNodeLookupBuilder<NodeLookupResult | undefined>;

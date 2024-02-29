@@ -16,14 +16,14 @@ describe("mapping to object inference", () => {
   const recursiveObjectFactory: RecursiveObjectFactory<TestRecursiveObject> = (
     recursion
   ) => ({
-    title: map().toAttribute("").mandatory().asString(),
-    child: map().toElement("").asRecursiveObject(recursion),
+    title: map().toNode("").mandatory().asString(),
+    child: map().toNode("").asRecursiveObject(recursion),
   });
 
   test("regular mapping", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
         .createNodeDataExtractor()
@@ -35,7 +35,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .mandatory()
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
@@ -46,7 +46,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with default value", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
         .withDefault([defaultValue])
@@ -57,7 +57,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with default value", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .mandatory()
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
@@ -69,7 +69,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with conversion", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
         .withConversion(toJson)
@@ -80,7 +80,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with conversion", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .mandatory()
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
@@ -92,7 +92,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with conversion and default value", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
         .withConversion(toJson)
@@ -104,7 +104,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with conversion and default value", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .mandatory()
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
@@ -117,7 +117,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with setting conversion callback after default value", () => {
     expectTypeOf(
       map()
-        .toElementsArray("")
+        .toNodesArray("")
         .asArray()
         .ofRecursiveObjects(recursiveObjectFactory)
         .withDefault([defaultValue])

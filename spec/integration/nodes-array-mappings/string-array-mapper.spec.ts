@@ -22,7 +22,7 @@ describe("string array mappings", () => {
     test("from attributes array", () => {
       expect(
         map()
-          .toAttributesArray("/Users/User/@id")
+          .toNodesArray("/Users/User/@id")
           .asArray()
           .ofStrings()
           .createNodeDataExtractor()(doc, xs)
@@ -32,7 +32,7 @@ describe("string array mappings", () => {
     test("from elements array", () => {
       expect(
         map()
-          .toElementsArray("/Users/User")
+          .toNodesArray("/Users/User")
           .asArray()
           .ofStrings()
           .createNodeDataExtractor()(doc, xs)
@@ -44,7 +44,7 @@ describe("string array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("/Users/User/@missing-attribute")
+          .toNodesArray("/Users/User/@missing-attribute")
           .asArray()
           .ofStrings()
           .createNodeDataExtractor()(doc, xs)
@@ -54,7 +54,7 @@ describe("string array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .asArray()
           .ofStrings()
           .createNodeDataExtractor()(doc, xs)
@@ -66,7 +66,7 @@ describe("string array mappings", () => {
     test("when mandatory reference attributes not found", () => {
       expect(() =>
         map()
-          .toAttributesArray("/Users/User/@missing-attribute")
+          .toNodesArray("/Users/User/@missing-attribute")
           .mandatory()
           .asArray()
           .ofStrings()
@@ -77,7 +77,7 @@ describe("string array mappings", () => {
     test("when mandatory reference elements not found", () => {
       expect(() =>
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .mandatory()
           .asArray()
           .ofStrings()
@@ -90,7 +90,7 @@ describe("string array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("/Users/User/@missing-attribute")
+          .toNodesArray("/Users/User/@missing-attribute")
           .asArray()
           .ofStrings()
           .withDefault(["fallback"])
@@ -101,7 +101,7 @@ describe("string array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .asArray()
           .ofStrings()
           .withDefault(["fallback"])
@@ -116,7 +116,7 @@ describe("string array mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toAttributesArray("/Users/User/@id")
+          .toNodesArray("/Users/User/@id")
           .asArray()
           .ofStrings()
           .withConversion(conversionFn)
@@ -125,7 +125,7 @@ describe("string array mappings", () => {
 
       expect(
         map()
-          .toElementsArray("/Users/User")
+          .toNodesArray("/Users/User")
           .asArray()
           .ofStrings()
           .withConversion(conversionFn)
@@ -136,7 +136,7 @@ describe("string array mappings", () => {
     test("returning undefined, when got conversion callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .asArray()
           .ofStrings()
           .withConversion(conversionFn)
@@ -147,7 +147,7 @@ describe("string array mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .asArray()
           .ofStrings()
           .withDefault(["fallback"])
@@ -159,7 +159,7 @@ describe("string array mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElementsArray("/Users/User/MissingElement")
+          .toNodesArray("/Users/User/MissingElement")
           .asArray()
           .ofStrings()
           .withConversion(conversionFn)

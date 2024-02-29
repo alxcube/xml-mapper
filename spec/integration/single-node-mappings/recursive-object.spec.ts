@@ -30,15 +30,15 @@ describe("recursive object mappings", () => {
   beforeEach(() => {
     doc = parseXml(xml);
     recursiveObjectFactory = (recursion) => ({
-      title: map().toElement("Title").mandatory().asString(),
-      child: map().toElement("Child").asRecursiveObject(recursion),
+      title: map().toNode("Title").mandatory().asString(),
+      child: map().toNode("Child").asRecursiveObject(recursion),
     });
   });
 
   test("returning recursive object", () => {
     expect(
       map()
-        .toElement("/Root/Child")
+        .toNode("/Root/Child")
         .mandatory()
         .asRecursiveObject(recursiveObjectFactory)
         .createNodeDataExtractor()(doc, xs)
@@ -51,7 +51,7 @@ describe("recursive object mappings", () => {
   test("returning undefined, when reference node not found", () => {
     expect(
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .asRecursiveObject(recursiveObjectFactory)
         .createNodeDataExtractor()(doc, xs)
     ).toBeUndefined();
@@ -60,7 +60,7 @@ describe("recursive object mappings", () => {
   test("throwing error, when mandatory reference node not found", () => {
     expect(() =>
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .mandatory()
         .asRecursiveObject(recursiveObjectFactory)
         .createNodeDataExtractor()(doc, xs)
@@ -70,7 +70,7 @@ describe("recursive object mappings", () => {
   test("returning default value, when reference node not found", () => {
     expect(
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .asRecursiveObject(recursiveObjectFactory)
         .withDefault({ title: "Fallback" })
         .createNodeDataExtractor()(doc, xs)
@@ -89,7 +89,7 @@ describe("recursive object mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElement("/Root/Child")
+          .toNode("/Root/Child")
           .asRecursiveObject(recursiveObjectFactory)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -99,7 +99,7 @@ describe("recursive object mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asRecursiveObject(recursiveObjectFactory)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -109,7 +109,7 @@ describe("recursive object mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asRecursiveObject(recursiveObjectFactory)
           .withDefault({ title: "Fallback" })
           .withConversion(conversionFn)
@@ -120,7 +120,7 @@ describe("recursive object mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asRecursiveObject(recursiveObjectFactory)
           .withConversion(conversionFn)
           .withDefault("")

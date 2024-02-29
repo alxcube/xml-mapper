@@ -24,7 +24,7 @@ describe("boolean array mappings", () => {
     test("from attributes", () => {
       expect(
         map()
-          .toAttributesArray("//Booleans/Boolean/@value")
+          .toNodesArray("//Booleans/Boolean/@value")
           .asArray()
           .ofBooleans()
           .createNodeDataExtractor()(doc, xs)
@@ -34,7 +34,7 @@ describe("boolean array mappings", () => {
     test("from elements", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean")
+          .toNodesArray("//Booleans/Boolean")
           .asArray()
           .ofBooleans()
           .createNodeDataExtractor()(doc, xs)
@@ -46,7 +46,7 @@ describe("boolean array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("//Booleans/Boolean/@missing-bool")
+          .toNodesArray("//Booleans/Boolean/@missing-bool")
           .asArray()
           .ofBooleans()
           .createNodeDataExtractor()(doc, xs)
@@ -56,7 +56,7 @@ describe("boolean array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .asArray()
           .ofBooleans()
           .createNodeDataExtractor()(doc, xs)
@@ -68,7 +68,7 @@ describe("boolean array mappings", () => {
     test("when mandatory reference attributes not found", () => {
       expect(() =>
         map()
-          .toAttributesArray("//Booleans/Boolean/@missing-bool")
+          .toNodesArray("//Booleans/Boolean/@missing-bool")
           .mandatory()
           .asArray()
           .ofBooleans()
@@ -79,7 +79,7 @@ describe("boolean array mappings", () => {
     test("when mandatory reference elements not found", () => {
       expect(() =>
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .mandatory()
           .asArray()
           .ofBooleans()
@@ -92,7 +92,7 @@ describe("boolean array mappings", () => {
     test("when reference attributes not found", () => {
       expect(
         map()
-          .toAttributesArray("//Booleans/Boolean/@missing-bool")
+          .toNodesArray("//Booleans/Boolean/@missing-bool")
           .asArray()
           .ofBooleans()
           .withDefault([true])
@@ -103,7 +103,7 @@ describe("boolean array mappings", () => {
     test("when reference elements not found", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .asArray()
           .ofBooleans()
           .withDefault([true])
@@ -119,7 +119,7 @@ describe("boolean array mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean")
+          .toNodesArray("//Booleans/Boolean")
           .asArray()
           .ofBooleans()
           .withConversion(conversionFn)
@@ -130,7 +130,7 @@ describe("boolean array mappings", () => {
     test("returning undefined, when got conversion callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .asArray()
           .ofBooleans()
           .withConversion(conversionFn)
@@ -141,7 +141,7 @@ describe("boolean array mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .asArray()
           .ofBooleans()
           .withDefault([true])
@@ -153,7 +153,7 @@ describe("boolean array mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElementsArray("//Booleans/Boolean/MissingElement")
+          .toNodesArray("//Booleans/Boolean/MissingElement")
           .asArray()
           .ofBooleans()
           .withConversion(conversionFn)

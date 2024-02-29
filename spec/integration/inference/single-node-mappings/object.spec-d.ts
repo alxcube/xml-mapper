@@ -15,31 +15,27 @@ describe("mapping to object inference", () => {
   const defaultValue: TestObject = { str: "", num: 0, bool: false };
 
   const blueprint: ObjectBlueprint<TestObject> = {
-    str: map().toAttribute("").mandatory().asString(),
-    num: map().toElement("").mandatory().asNumber(),
+    str: map().toNode("").mandatory().asString(),
+    num: map().toNode("").mandatory().asNumber(),
     bool: map().toNode("").mandatory().asBoolean(),
   };
 
   test("regular mapping", () => {
     expectTypeOf(
-      map().toElement("").asObject(blueprint).createNodeDataExtractor()
+      map().toNode("").asObject(blueprint).createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<TestObject | undefined>>();
   });
 
   test("mandatory mapping", () => {
     expectTypeOf(
-      map()
-        .toElement("")
-        .mandatory()
-        .asObject(blueprint)
-        .createNodeDataExtractor()
+      map().toNode("").mandatory().asObject(blueprint).createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<TestObject>>();
   });
 
   test("regular mapping with default value", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .asObject(blueprint)
         .withDefault(defaultValue)
         .createNodeDataExtractor()
@@ -49,7 +45,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with default value", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .mandatory()
         .asObject(blueprint)
         .withDefault(defaultValue)
@@ -60,7 +56,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with conversion", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .asObject(blueprint)
         .withConversion(toJson)
         .createNodeDataExtractor()
@@ -70,7 +66,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with conversion", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .mandatory()
         .asObject(blueprint)
         .withConversion(toJson)
@@ -81,7 +77,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with conversion and default value", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .asObject(blueprint)
         .withConversion(toJson)
         .withDefault("")
@@ -92,7 +88,7 @@ describe("mapping to object inference", () => {
   test("mandatory mapping with conversion and default value", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .mandatory()
         .asObject(blueprint)
         .withConversion(toJson)
@@ -104,7 +100,7 @@ describe("mapping to object inference", () => {
   test("regular mapping with setting conversion callback after default value", () => {
     expectTypeOf(
       map()
-        .toElement("")
+        .toNode("")
         .asObject(blueprint)
         .withDefault(defaultValue)
         .withConversion(toJson)

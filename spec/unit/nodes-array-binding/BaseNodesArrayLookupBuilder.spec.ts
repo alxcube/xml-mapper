@@ -1,16 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
 import {
-  AnyNodesArrayLookupFactory,
-  AttributesArrayLookupFactory,
   BaseNodesArrayDataMapperBuilder,
   BaseNodesArrayLookupBuilder,
-  ElementsArrayLookupFactory,
   type NodesArrayDataExtractorFn,
   type NodesArrayDataExtractorFnFactory,
-} from "../../../../src";
-import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
-import { parseXml } from "../../../helper/parseXml";
+} from "../../../src";
+import { BaseLookupToDataExtractorBindingBuilder } from "../../../src";
+import { parseXml } from "../../helper/parseXml";
 
 describe("BaseNodesArrayLookupBuilder class", () => {
   const xml = `
@@ -24,18 +21,16 @@ describe("BaseNodesArrayLookupBuilder class", () => {
   `;
   let doc: Document;
   const xs = xpath.select;
-  let anyNodesArrayLookupFactory: AnyNodesArrayLookupFactory;
-  let elementsArrayLookupFactory: ElementsArrayLookupFactory;
-  let attributesArrayLookupFactory: AttributesArrayLookupFactory;
+
   const textNodesPath = "//List/Item/text()";
   const elementsPath = "//List/Item";
   const attributesPath = "//List/Item/@id";
   let textNodesLookupBuilder: BaseNodesArrayLookupBuilder<Node[] | undefined>;
   let elementsArrayLookupBuilder: BaseNodesArrayLookupBuilder<
-    Element[] | undefined
+    Node[] | undefined
   >;
   let attributesArrayLookupBuilder: BaseNodesArrayLookupBuilder<
-    Attr[] | undefined
+    Node[] | undefined
   >;
   const pathToNotExistingNodes = "//NotExisting";
   let unsuccessfulLookupBuilder: BaseNodesArrayLookupBuilder<
@@ -44,21 +39,19 @@ describe("BaseNodesArrayLookupBuilder class", () => {
 
   beforeEach(() => {
     doc = parseXml(xml);
-    anyNodesArrayLookupFactory = new AnyNodesArrayLookupFactory();
-    elementsArrayLookupFactory = new ElementsArrayLookupFactory();
-    attributesArrayLookupFactory = new AttributesArrayLookupFactory();
+
     textNodesLookupBuilder = new BaseNodesArrayLookupBuilder<
       Node[] | undefined
-    >(anyNodesArrayLookupFactory, textNodesPath);
+    >(textNodesPath);
     elementsArrayLookupBuilder = new BaseNodesArrayLookupBuilder<
-      Element[] | undefined
-    >(elementsArrayLookupFactory, elementsPath);
+      Node[] | undefined
+    >(elementsPath);
     attributesArrayLookupBuilder = new BaseNodesArrayLookupBuilder<
-      Attr[] | undefined
-    >(attributesArrayLookupFactory, attributesPath);
+      Node[] | undefined
+    >(attributesPath);
     unsuccessfulLookupBuilder = new BaseNodesArrayLookupBuilder<
       Node[] | undefined
-    >(anyNodesArrayLookupFactory, pathToNotExistingNodes);
+    >(pathToNotExistingNodes);
   });
 
   describe("mandatory() method", () => {

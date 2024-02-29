@@ -43,28 +43,28 @@ describe("object array mappings", () => {
     doc = parseXml(xml);
 
     userBlueprint = {
-      id: map().toAttribute("@id").mandatory().asNumber().named("id"),
+      id: map().toNode("@id").mandatory().asNumber().named("id"),
       isVerified: map()
-        .toAttribute("@verified")
+        .toNode("@verified")
         .mandatory()
         .asBoolean()
         .named("isVerified"),
       firstName: map()
-        .toElement("FirstName")
+        .toNode("FirstName")
         .mandatory()
         .asString()
         .named("firstName"),
       lastName: map()
-        .toElement("LastName")
+        .toNode("LastName")
         .mandatory()
         .asString()
         .named("lastName"),
       contactData: map()
-        .toElement("ContactData")
+        .toNode("ContactData")
         .mandatory()
         .asObject({
-          email: map().toElement("Email").asString().named("contactData.email"),
-          phone: map().toElement("Phone").asString().named("contactData.phone"),
+          email: map().toNode("Email").asString().named("contactData.email"),
+          phone: map().toNode("Phone").asString().named("contactData.phone"),
         })
         .named("contactData"),
     };
@@ -73,7 +73,7 @@ describe("object array mappings", () => {
   test("returning objects array", () => {
     expect(
       map()
-        .toElementsArray("/Users/User")
+        .toNodesArray("/Users/User")
         .asArray()
         .ofObjects(userBlueprint)
         .createNodeDataExtractor()(doc, xs)
@@ -101,7 +101,7 @@ describe("object array mappings", () => {
   test("returning undefined, when reference nodes not found", () => {
     expect(
       map()
-        .toElementsArray("/MissingUsers/User")
+        .toNodesArray("/MissingUsers/User")
         .asArray()
         .ofObjects(userBlueprint)
         .createNodeDataExtractor()(doc, xs)
@@ -111,7 +111,7 @@ describe("object array mappings", () => {
   test("throwing error, when mandatory reference nodes not found", () => {
     expect(() =>
       map()
-        .toElementsArray("/MissingUsers/User")
+        .toNodesArray("/MissingUsers/User")
         .mandatory()
         .asArray()
         .ofObjects(userBlueprint)
@@ -122,7 +122,7 @@ describe("object array mappings", () => {
   test("returning default value, when reference nodes not found", () => {
     expect(
       map()
-        .toElementsArray("/MissingUsers/User")
+        .toNodesArray("/MissingUsers/User")
         .asArray()
         .ofObjects(userBlueprint)
         .withDefault([
@@ -153,7 +153,7 @@ describe("object array mappings", () => {
     test("returning converted array", () => {
       expect(
         map()
-          .toElementsArray("/Users/User")
+          .toNodesArray("/Users/User")
           .asArray()
           .ofObjects(userBlueprint)
           .withConversion(conversionFn)
@@ -164,7 +164,7 @@ describe("object array mappings", () => {
     test("returning undefined, when got conversion callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/MissingUsers/User")
+          .toNodesArray("/MissingUsers/User")
           .asArray()
           .ofObjects(userBlueprint)
           .withConversion(conversionFn)
@@ -175,7 +175,7 @@ describe("object array mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElementsArray("/MissingUsers/User")
+          .toNodesArray("/MissingUsers/User")
           .asArray()
           .ofObjects(userBlueprint)
           .withDefault([
@@ -195,7 +195,7 @@ describe("object array mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElementsArray("/MissingUsers/User")
+          .toNodesArray("/MissingUsers/User")
           .asArray()
           .ofObjects(userBlueprint)
           .withConversion(conversionFn)

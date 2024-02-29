@@ -45,11 +45,11 @@ describe("recursive object array mappings", () => {
   beforeEach(() => {
     doc = parseXml(xml);
     recursiveObjectBlueprintFactory = (recursion) => ({
-      id: map().toAttribute("@id").mandatory().asNumber(),
-      name: map().toElement("Name").mandatory().asString(),
+      id: map().toNode("@id").mandatory().asNumber(),
+      name: map().toNode("Name").mandatory().asString(),
       level: () => recursion.getDepth(),
       subcategories: map()
-        .toElementsArray("Subcategories/Category")
+        .toNodesArray("Subcategories/Category")
         .asArray()
         .ofRecursiveObjects(recursion),
     });
@@ -58,7 +58,7 @@ describe("recursive object array mappings", () => {
   test("returning recursive objects array", () => {
     expect(
       map()
-        .toElementsArray("/Categories/Category")
+        .toNodesArray("/Categories/Category")
         .asArray()
         .ofRecursiveObjects(recursiveObjectBlueprintFactory)
         .createNodeDataExtractor()(doc, xs)
@@ -87,7 +87,7 @@ describe("recursive object array mappings", () => {
   test("returning undefined, when reference nodes not found", () => {
     expect(
       map()
-        .toElementsArray("/MissingCategories/Category")
+        .toNodesArray("/MissingCategories/Category")
         .asArray()
         .ofRecursiveObjects(recursiveObjectBlueprintFactory)
         .createNodeDataExtractor()(doc, xs)
@@ -97,7 +97,7 @@ describe("recursive object array mappings", () => {
   test("throwing error, when mandatory reference nodes not found", () => {
     expect(() =>
       map()
-        .toElementsArray("/MissingCategories/Category")
+        .toNodesArray("/MissingCategories/Category")
         .mandatory()
         .asArray()
         .ofRecursiveObjects(recursiveObjectBlueprintFactory)
@@ -108,7 +108,7 @@ describe("recursive object array mappings", () => {
   test("returning default value, when reference nodes not found", () => {
     expect(
       map()
-        .toElementsArray("/MissingCategories/Category")
+        .toNodesArray("/MissingCategories/Category")
         .asArray()
         .ofRecursiveObjects(recursiveObjectBlueprintFactory)
         .withDefault([{ id: 0, name: "Fallback", level: 0 }])
@@ -134,7 +134,7 @@ describe("recursive object array mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElementsArray("/Categories/Category")
+          .toNodesArray("/Categories/Category")
           .asArray()
           .ofRecursiveObjects(recursiveObjectBlueprintFactory)
           .withConversion(conversionFn)
@@ -145,7 +145,7 @@ describe("recursive object array mappings", () => {
     test("returning undefined, when got conversion callback, but reference nodes not found", () => {
       expect(
         map()
-          .toElementsArray("/MissingCategories/Category")
+          .toNodesArray("/MissingCategories/Category")
           .asArray()
           .ofRecursiveObjects(recursiveObjectBlueprintFactory)
           .withConversion(conversionFn)
@@ -156,7 +156,7 @@ describe("recursive object array mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElementsArray("/MissingCategories/Category")
+          .toNodesArray("/MissingCategories/Category")
           .asArray()
           .ofRecursiveObjects(recursiveObjectBlueprintFactory)
           .withDefault([{ id: 0, name: "", level: 0 }])
@@ -168,7 +168,7 @@ describe("recursive object array mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElementsArray("/MissingCategories/Category")
+          .toNodesArray("/MissingCategories/Category")
           .asArray()
           .ofRecursiveObjects(recursiveObjectBlueprintFactory)
           .withConversion(conversionFn)

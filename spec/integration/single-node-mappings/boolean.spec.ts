@@ -47,7 +47,7 @@ describe("boolean mappings", () => {
 
     beforeEach(() => {
       testAttribute = (path) =>
-        map().toAttribute(path).asBoolean().createNodeDataExtractor()(doc, xs);
+        map().toNode(path).asBoolean().createNodeDataExtractor()(doc, xs);
     });
 
     test("get boolean true from attribute with value 'true'", () => {
@@ -104,7 +104,7 @@ describe("boolean mappings", () => {
 
     beforeEach(() => {
       testElement = (path) =>
-        map().toElement(path).asBoolean().createNodeDataExtractor()(doc, xs);
+        map().toNode(path).asBoolean().createNodeDataExtractor()(doc, xs);
     });
 
     test("get boolean true from element with content 'True'", () => {
@@ -211,7 +211,7 @@ describe("boolean mappings", () => {
     test("get undefined, when attribute not found", () => {
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@missing-attribute")
+          .toNode("//BooleanAttributes/@missing-attribute")
           .asBoolean()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -220,7 +220,7 @@ describe("boolean mappings", () => {
     test("get undefined, when element not found", () => {
       expect(
         map()
-          .toElement("//BooleanElements/MissingElement")
+          .toNode("//BooleanElements/MissingElement")
           .asBoolean()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -240,7 +240,7 @@ describe("boolean mappings", () => {
     test("throwing Error, when mandatory attribute not found", () => {
       expect(() =>
         map()
-          .toAttribute("//BooleanAttributes/@missing-attribute")
+          .toNode("//BooleanAttributes/@missing-attribute")
           .mandatory()
           .asBoolean()
           .createNodeDataExtractor()(doc, xs)
@@ -250,7 +250,7 @@ describe("boolean mappings", () => {
     test("throwing Error, when mandatory element not found", () => {
       expect(() =>
         map()
-          .toElement("//BooleanElements/MissingElement")
+          .toNode("//BooleanElements/MissingElement")
           .mandatory()
           .asBoolean()
           .createNodeDataExtractor()(doc, xs)
@@ -271,7 +271,7 @@ describe("boolean mappings", () => {
   describe("returning default value, when reference node not found", () => {
     test("returning default value, when attribute not found", () => {
       const binding = map()
-        .toAttribute("//BooleanAttributes/@missing-attribute")
+        .toNode("//BooleanAttributes/@missing-attribute")
         .asBoolean();
       expect(binding.withDefault(true).createNodeDataExtractor()(doc, xs)).toBe(
         true
@@ -283,7 +283,7 @@ describe("boolean mappings", () => {
 
     test("returning default value, when element not found", () => {
       const binding = map()
-        .toElement("//BooleanElements/MissingElement")
+        .toNode("//BooleanElements/MissingElement")
         .asBoolean();
       expect(binding.withDefault(true).createNodeDataExtractor()(doc, xs)).toBe(
         true
@@ -313,7 +313,7 @@ describe("boolean mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@true-string")
+          .toNode("//BooleanAttributes/@true-string")
           .asBoolean()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -321,7 +321,7 @@ describe("boolean mappings", () => {
 
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@false-string")
+          .toNode("//BooleanAttributes/@false-string")
           .asBoolean()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -331,7 +331,7 @@ describe("boolean mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@missing-attribute")
+          .toNode("//BooleanAttributes/@missing-attribute")
           .asBoolean()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -341,7 +341,7 @@ describe("boolean mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@missing-attribute")
+          .toNode("//BooleanAttributes/@missing-attribute")
           .asBoolean()
           .withDefault(true)
           .withConversion(conversionFn)
@@ -352,7 +352,7 @@ describe("boolean mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toAttribute("//BooleanAttributes/@missing-attribute")
+          .toNode("//BooleanAttributes/@missing-attribute")
           .asBoolean()
           .withConversion(conversionFn)
           .withDefault("Yes")

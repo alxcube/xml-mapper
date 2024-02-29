@@ -55,44 +55,44 @@ interface User {
 }
 
 const mapper = createObjectMapper<User>({
-  id: map().toAttribute("/User/@id").mandatory().asNumber().named("id"),
+  id: map().toNode("/User/@id").mandatory().asNumber().named("id"),
   isVerified: map()
-    .toAttribute("/User/@verified")
+    .toNode("/User/@verified")
     .asBoolean()
     .named("isVerified")
     .withDefault(false),
   firstName: map()
-    .toElement("/User/FirstName")
+    .toNode("/User/FirstName")
     .mandatory()
     .asString()
     .named("firstName"),
   lastName: map()
-    .toElement("/User/LastName")
+    .toNode("/User/LastName")
     .mandatory()
     .asString()
     .named("lastName"),
   contacts: map()
-    .toElement("/User/ContactData")
+    .toNode("/User/ContactData")
     .asObject({
-      email: map().toElement("Email").asString().named("contacts.email"),
-      phone: map().toElement("Phone").asString().named("contacts.phone"),
+      email: map().toNode("Email").asString().named("contacts.email"),
+      phone: map().toNode("Phone").asString().named("contacts.phone"),
     })
     .named("contacts"),
   groups: map()
-    .toElementsArray("/User/Groups/Group")
+    .toNodesArray("/User/Groups/Group")
     .mandatory()
     .asArray()
     .ofObjects({
-      id: map().toAttribute("@id").mandatory().asNumber().named("groups.*.id"),
+      id: map().toNode("@id").mandatory().asNumber().named("groups.*.id"),
       title: map()
-        .toElement(".")
+        .toNode(".")
         .mandatory()
         .asString()
         .named("groups.*.title"),
     })
     .named("groups"),
   registeredAt: map()
-    .toElement("/User/RegistrationDate")
+    .toNode("/User/RegistrationDate")
     .mandatory()
     .callback((node, select) => {
       const year = select("number(@year)", node) as number;

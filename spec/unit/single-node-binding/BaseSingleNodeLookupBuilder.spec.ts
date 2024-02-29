@@ -1,14 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
 import {
-  AnyNodeLookupFactory,
   BaseSingleNodeLookupBuilder,
   RecursiveObjectExtractorFactory,
-  type SingleNodeLookupFactory,
   StringExtractorFactory,
-} from "../../../../src";
-import { BaseLookupToDataExtractorBindingBuilder } from "../../../../src/BaseLookupToDataExtractorBindingBuilder";
-import { parseXml } from "../../../helper/parseXml";
+  BaseLookupToDataExtractorBindingBuilder,
+} from "../../../src";
+import { parseXml } from "../../helper/parseXml";
 
 describe("BaseSingleNodeLookupBuilder class", () => {
   const xml = `
@@ -21,14 +19,12 @@ describe("BaseSingleNodeLookupBuilder class", () => {
   `;
   let doc: Document;
   const xs = xpath.select;
-  let factory: AnyNodeLookupFactory;
   const path = "//ElementThatDoesntExist";
   let builder: BaseSingleNodeLookupBuilder<Node | undefined>;
 
   beforeEach(() => {
     doc = parseXml(xml);
-    factory = new AnyNodeLookupFactory();
-    builder = new BaseSingleNodeLookupBuilder<Node | undefined>(factory, path);
+    builder = new BaseSingleNodeLookupBuilder<Node | undefined>(path);
   });
 
   describe("mandatory() method", () => {
@@ -55,11 +51,7 @@ describe("BaseSingleNodeLookupBuilder class", () => {
     let optionalBuilder: BaseSingleNodeLookupBuilder<Node | undefined>;
 
     beforeEach(() => {
-      mandatoryBuilder = new BaseSingleNodeLookupBuilder<Node>(
-        factory as SingleNodeLookupFactory<Node>,
-        path,
-        true
-      );
+      mandatoryBuilder = new BaseSingleNodeLookupBuilder<Node>(path, true);
       optionalBuilder =
         mandatoryBuilder.optional() as BaseSingleNodeLookupBuilder<
           Node | undefined

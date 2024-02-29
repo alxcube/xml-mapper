@@ -48,7 +48,7 @@ describe("callback mappings", () => {
     test("getting date from attributes using callback", () => {
       expect(
         map()
-          .toElement("//DateInAttributes")
+          .toNode("//DateInAttributes")
           .callback(getDateFromAttributes)
           .createNodeDataExtractor()(doc, xs)
       ).toEqual(new Date(2024, 1, 25));
@@ -57,7 +57,7 @@ describe("callback mappings", () => {
     test("getting date from elements using SingleNodeDataExtractorFnFactory", () => {
       expect(
         map()
-          .toElement("//DateInElements")
+          .toNode("//DateInElements")
           .callback(new TestDateExtractor())
           .createNodeDataExtractor()(doc, xs)
       ).toEqual(new Date(2024, 1, 25));
@@ -67,7 +67,7 @@ describe("callback mappings", () => {
   test("returning undefined, when reference node not found", () => {
     expect(
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .callback(getDateFromAttributes)
         .createNodeDataExtractor()(doc, xs)
     ).toBeUndefined();
@@ -76,7 +76,7 @@ describe("callback mappings", () => {
   test("throwing error, when mandatory reference node not found", () => {
     expect(() =>
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .mandatory()
         .callback(getDateFromAttributes)
         .createNodeDataExtractor()(doc, xs)
@@ -86,7 +86,7 @@ describe("callback mappings", () => {
   test("returning default value, when reference node not found", () => {
     expect(
       map()
-        .toElement("//MissingElement")
+        .toNode("//MissingElement")
         .callback(getDateFromAttributes)
         .withDefault(new Date(2020, 0, 1))
         .createNodeDataExtractor()(doc, xs)
@@ -99,7 +99,7 @@ describe("callback mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElement("//DateInAttributes")
+          .toNode("//DateInAttributes")
           .callback(getDateFromAttributes)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -107,7 +107,7 @@ describe("callback mappings", () => {
 
       expect(
         map()
-          .toElement("//DateInElements")
+          .toNode("//DateInElements")
           .callback(new TestDateExtractor())
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -117,7 +117,7 @@ describe("callback mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toElement("//MissingElement")
+          .toNode("//MissingElement")
           .callback(getDateFromAttributes)
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -127,7 +127,7 @@ describe("callback mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toElement("//MissingElement")
+          .toNode("//MissingElement")
           .callback(getDateFromAttributes)
           .withDefault(new Date())
           .withConversion(conversionFn)
@@ -138,7 +138,7 @@ describe("callback mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toElement("//MissingElement")
+          .toNode("//MissingElement")
           .callback(new TestDateExtractor())
           .withConversion(conversionFn)
           .withDefault(0)

@@ -1,15 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import xpath from "xpath";
 import {
-  AnyNodeLookupFactory,
-  AnyNodesArrayLookupFactory,
-  AttributeLookupFactory,
-  AttributesArrayLookupFactory,
   BaseNodesArrayLookupBuilder,
   BaseSingleNodeLookupBuilder,
   CustomDataExtractorFactory,
-  ElementLookupFactory,
-  ElementsArrayLookupFactory,
   type NodesArrayDataExtractorFnFactory,
   NodesArrayDataMapper,
   type NodesArrayLookupBuilder,
@@ -35,11 +29,11 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
   let doc: Document;
   const xs = xpath.select;
   let textNodeLookup: SingleNodeLookupBuilder<Node | undefined>;
-  let elementLookup: SingleNodeLookupBuilder<Element | undefined>;
-  let attributeLookup: SingleNodeLookupBuilder<Attr | undefined>;
+  let elementLookup: SingleNodeLookupBuilder<Node | undefined>;
+  let attributeLookup: SingleNodeLookupBuilder<Node | undefined>;
   let textNodesArrayLookup: NodesArrayLookupBuilder<Node[] | undefined>;
-  let elementsArrayLookup: NodesArrayLookupBuilder<Element[] | undefined>;
-  let attributesArrayLookup: NodesArrayLookupBuilder<Attr[] | undefined>;
+  let elementsArrayLookup: NodesArrayLookupBuilder<Node[] | undefined>;
+  let attributesArrayLookup: NodesArrayLookupBuilder<Node[] | undefined>;
   let unsuccessfulLookup: SingleNodeLookupBuilder<Node | undefined>;
   let unsuccessfulArrayLookup: NodesArrayLookupBuilder<Node[] | undefined>;
   let stringDataExtractorFactory: SingleNodeDataExtractorFnFactory<string>;
@@ -51,13 +45,13 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
     SingleNodeDataExtractorFnFactory<string>
   >;
   let elementBinding: BaseLookupToDataExtractorBindingBuilder<
-    SingleNodeLookupBuilder<Element | undefined>,
+    SingleNodeLookupBuilder<Node | undefined>,
     Element | undefined,
     string,
     SingleNodeDataExtractorFnFactory<string>
   >;
   let attributeBinding: BaseLookupToDataExtractorBindingBuilder<
-    SingleNodeLookupBuilder<Attr | undefined>,
+    SingleNodeLookupBuilder<Node | undefined>,
     Attr | undefined,
     string,
     SingleNodeDataExtractorFnFactory<string>
@@ -69,13 +63,13 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
     NodesArrayDataExtractorFnFactory<string[]>
   >;
   let elementsBinding: BaseLookupToDataExtractorBindingBuilder<
-    NodesArrayLookupBuilder<Element[] | undefined>,
+    NodesArrayLookupBuilder<Node[] | undefined>,
     Element[] | undefined,
     string[],
     NodesArrayDataExtractorFnFactory<string[]>
   >;
   let attributesBinding: BaseLookupToDataExtractorBindingBuilder<
-    NodesArrayLookupBuilder<Attr[] | undefined>,
+    NodesArrayLookupBuilder<Node[] | undefined>,
     Attr[] | undefined,
     string[],
     NodesArrayDataExtractorFnFactory<string[]>
@@ -95,36 +89,22 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
 
   beforeEach(() => {
     doc = parseXml(xml);
-    textNodeLookup = new BaseSingleNodeLookupBuilder(
-      new AnyNodeLookupFactory(),
-      "/Root/Element/text()"
-    );
-    elementLookup = new BaseSingleNodeLookupBuilder(
-      new ElementLookupFactory(),
-      "/Root/Element"
-    );
+    textNodeLookup = new BaseSingleNodeLookupBuilder("/Root/Element/text()");
+    elementLookup = new BaseSingleNodeLookupBuilder("/Root/Element");
     attributeLookup = new BaseSingleNodeLookupBuilder(
-      new AttributeLookupFactory(),
       "/Root/Element/@attribute"
     );
     textNodesArrayLookup = new BaseNodesArrayLookupBuilder(
-      new AnyNodesArrayLookupFactory(),
       "/Root/List/Item/text()"
     );
-    elementsArrayLookup = new BaseNodesArrayLookupBuilder(
-      new ElementsArrayLookupFactory(),
-      "/Root/List/Item"
-    );
+    elementsArrayLookup = new BaseNodesArrayLookupBuilder("/Root/List/Item");
     attributesArrayLookup = new BaseNodesArrayLookupBuilder(
-      new AttributesArrayLookupFactory(),
       "/Root/List/Item/@id"
     );
     unsuccessfulLookup = new BaseSingleNodeLookupBuilder(
-      new AnyNodeLookupFactory(),
       "/Path/To/Missing/Node"
     );
     unsuccessfulArrayLookup = new BaseNodesArrayLookupBuilder(
-      new AnyNodesArrayLookupFactory(),
       "/Path/To/Missing/Nodes"
     );
     stringDataExtractorFactory = new StringExtractorFactory();

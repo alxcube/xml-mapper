@@ -50,7 +50,7 @@ describe("number mappings", () => {
     beforeEach(() => {
       execTest = (path, expected) => {
         expect(
-          map().toAttribute(path).asNumber().createNodeDataExtractor()(doc, xs)
+          map().toNode(path).asNumber().createNodeDataExtractor()(doc, xs)
         ).toBe(expected);
       };
     });
@@ -102,7 +102,7 @@ describe("number mappings", () => {
     test("returning NaN", () => {
       expect(
         map()
-          .toAttribute("//NumberAttributes/@not-a-number")
+          .toNode("//NumberAttributes/@not-a-number")
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
       ).toBeNaN();
@@ -115,7 +115,7 @@ describe("number mappings", () => {
     beforeEach(() => {
       execTest = (path, expected) => {
         expect(
-          map().toElement(path).asNumber().createNodeDataExtractor()(doc, xs)
+          map().toNode(path).asNumber().createNodeDataExtractor()(doc, xs)
         ).toBe(expected);
       };
     });
@@ -167,7 +167,7 @@ describe("number mappings", () => {
     test("returning NaN", () => {
       expect(
         map()
-          .toElement("//NumberElements/NotANumber")
+          .toNode("//NumberElements/NotANumber")
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
       ).toBeNaN();
@@ -243,7 +243,7 @@ describe("number mappings", () => {
     test("returning undefined, when attribute not found", () => {
       expect(
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -252,7 +252,7 @@ describe("number mappings", () => {
     test("returning undefined, when element not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
       ).toBeUndefined();
@@ -272,7 +272,7 @@ describe("number mappings", () => {
     test("throwing Error, when mandatory attribute not found", () => {
       expect(() =>
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .mandatory()
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
@@ -282,7 +282,7 @@ describe("number mappings", () => {
     test("throwing Error, when mandatory element not found", () => {
       expect(() =>
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .mandatory()
           .asNumber()
           .createNodeDataExtractor()(doc, xs)
@@ -304,7 +304,7 @@ describe("number mappings", () => {
     test("returning default value, when attribute not found", () => {
       expect(
         map()
-          .toAttribute("/Root/@missing-attribute")
+          .toNode("/Root/@missing-attribute")
           .asNumber()
           .withDefault(12345)
           .createNodeDataExtractor()(doc, xs)
@@ -314,7 +314,7 @@ describe("number mappings", () => {
     test("returning default value, when element not found", () => {
       expect(
         map()
-          .toElement("/Root/MissingElement")
+          .toNode("/Root/MissingElement")
           .asNumber()
           .withDefault(12345)
           .createNodeDataExtractor()(doc, xs)
@@ -338,7 +338,7 @@ describe("number mappings", () => {
     test("returning converted value", () => {
       expect(
         map()
-          .toElement("//NumberElements/PositiveInt")
+          .toNode("//NumberElements/PositiveInt")
           .asNumber()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -346,7 +346,7 @@ describe("number mappings", () => {
 
       expect(
         map()
-          .toElement("//NumberElements/NegativeInt")
+          .toNode("//NumberElements/NegativeInt")
           .asNumber()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -354,7 +354,7 @@ describe("number mappings", () => {
 
       expect(
         map()
-          .toElement("//NumberElements/Infinity")
+          .toNode("//NumberElements/Infinity")
           .asNumber()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -364,7 +364,7 @@ describe("number mappings", () => {
     test("returning undefined, when got conversion callback, but reference node not found", () => {
       expect(
         map()
-          .toAttribute("//NumberAttributes/@missing-attribute")
+          .toNode("//NumberAttributes/@missing-attribute")
           .asNumber()
           .withConversion(conversionFn)
           .createNodeDataExtractor()(doc, xs)
@@ -374,7 +374,7 @@ describe("number mappings", () => {
     test("reset default value, when conversion callback was set after default value", () => {
       expect(
         map()
-          .toAttribute("//NumberAttributes/@missing-attribute")
+          .toNode("//NumberAttributes/@missing-attribute")
           .asNumber()
           .withDefault(0)
           .withConversion(conversionFn)
@@ -385,7 +385,7 @@ describe("number mappings", () => {
     test("return default value of converted type, when conversion callback was set and reference node not found", () => {
       expect(
         map()
-          .toAttribute("//NumberAttributes/@missing-attribute")
+          .toNode("//NumberAttributes/@missing-attribute")
           .asNumber()
           .withConversion(conversionFn)
           .withDefault("N/A")
