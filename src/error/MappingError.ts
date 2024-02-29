@@ -10,7 +10,7 @@ export class MappingError extends Error {
    */
   constructor(
     message: string,
-    public readonly cause?: Error | any
+    public readonly cause?: Error | unknown
   ) {
     super(message);
     this.name = "MappingError";

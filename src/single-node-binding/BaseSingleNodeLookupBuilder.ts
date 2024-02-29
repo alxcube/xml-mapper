@@ -219,4 +219,11 @@ export class BaseSingleNodeLookupBuilder<
       this.mappingName
     );
   }
+
+  /**
+   * @inheritDoc
+   */
+  getPath(): string {
+    return this.path;
+  }
 }

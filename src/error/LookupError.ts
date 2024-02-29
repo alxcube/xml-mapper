@@ -13,7 +13,7 @@ export class LookupError extends MappingError {
    */
   constructor(
     message: string,
-    cause?: Error | any,
+    cause?: Error | unknown,
     public readonly path?: string
   ) {
     super(message, cause);

@@ -12,6 +12,25 @@ describe("map() function", () => {
   it("should return BaseMappingBuilder instance", () => {
     expect(map()).toBeInstanceOf(BaseMappingBuilder);
   });
+
+  it("should populate given name, which should be contained in binding error message", () => {
+    expect(() =>
+      map("propName")
+        .toNode("//MissingNode")
+        .mandatory()
+        .asString()
+        .createNodeDataExtractor()(parseXml("<root/>"), xpath.select)
+    ).toThrow("propName: //MissingNode");
+
+    expect(() =>
+      map("arrayPropName")
+        .toNodesArray("//MissingNodesArray")
+        .mandatory()
+        .asArray()
+        .ofStrings()
+        .createNodeDataExtractor()(parseXml("<root/>"), xpath.select)
+    ).toThrow("arrayPropName: //MissingNodesArray");
+  });
 });
 
 describe("BaseMappingBuilder class", () => {

@@ -120,7 +120,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
   > {
     this.ensureIsValidBinding();
 
-    const name = this.name;
+    const name = this.getBindingName();
     const defaultValue = this.defaultValue;
     const lookupFn = this.getLookupFn();
     const dataExtractorFn = this.getDataExtractorFn();
@@ -136,7 +136,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
           return defaultValue;
         }
       } catch (e) {
-        throw new MappingError(`Error in ${name} binding lookup.`, e);
+        throw new MappingError(`Error in "${name}" binding lookup.`, e);
       }
 
       // Extract data from reference node(s).
@@ -147,7 +147,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
           xpathSelect
         );
       } catch (e) {
-        throw new MappingError(`Error in ${name} binding data extractor.`, e);
+        throw new MappingError(`Error in "${name}" binding data extractor.`, e);
       }
 
       if (conversionFn && extractedResult !== undefined) {
@@ -157,7 +157,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
           convertedResult = conversionFn(extractedResult);
         } catch (e) {
           throw new MappingError(
-            `Error in ${name} binding conversion callback.`,
+            `Error in "${name}" binding conversion callback.`,
             e
           );
         }
@@ -260,7 +260,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       return lookupBuilder.buildNodesArrayLookup();
     } catch (e) {
       throw new MappingError(
-        `Error in ${this.name} binding lookup builder.`,
+        `Error in "${this.getBindingName()}" binding lookup builder.`,
         e
       );
     }
@@ -279,7 +279,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       return dataExtractorFactory.createNodesArrayDataExtractor();
     } catch (e) {
       throw new MappingError(
-        `Error in ${this.name} binding data extractor factory.`,
+        `Error in "${this.getBindingName()}" binding data extractor factory.`,
         e
       );
     }
@@ -299,8 +299,18 @@ export class BaseLookupToDataExtractorBindingBuilder<
         isSingleNodeDataExtractorFnFactory(this.extractorFactory))
     ) {
       throw new MappingError(
-        `Node(s) lookup and data extractor types mismatch in binding ${this.name}`
+        `Node(s) lookup and data extractor types mismatch in binding "${this.getBindingName()}".`
       );
     }
+  }
+
+  /**
+   * Returns binding name, containing mapping name and reference node lookup expression.
+   *
+   * @private
+   */
+  private getBindingName(): string {
+    const name = this.name ? this.name : "Unnamed";
+    return `${name}: ${this.lookupBuilder.getPath()}`;
   }
 }

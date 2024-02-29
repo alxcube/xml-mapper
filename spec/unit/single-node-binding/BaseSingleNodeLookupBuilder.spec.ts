@@ -135,4 +135,10 @@ describe("BaseSingleNodeLookupBuilder class", () => {
       );
     });
   });
+
+  describe("getPath() method", () => {
+    it("should return xpath expression, used for node lookup", () => {
+      expect(builder.getPath()).toBe(path);
+    });
+  });
 });

@@ -45,6 +45,11 @@ export interface NodesArrayLookupBuilder<
   callback<C>(
     cb: NodesArrayDataExtractorFn<C> | NodesArrayDataExtractorFnFactory<C>
   ): LookupToDataExtractorBindingBuilder<NodesLookupResult, C>;
+
+  /**
+   * Returns xpath expression, used for nodes lookup.
+   */
+  getPath(): string;
 }
 
 /**

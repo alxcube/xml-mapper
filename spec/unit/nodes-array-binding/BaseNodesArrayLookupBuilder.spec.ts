@@ -104,4 +104,12 @@ describe("BaseNodesArrayLookupBuilder class", () => {
       );
     });
   });
+
+  describe("getPath() method", () => {
+    it("should return xpath expression, used for nodes lookup", () => {
+      expect(textNodesLookupBuilder.getPath()).toBe(textNodesPath);
+      expect(attributesArrayLookupBuilder.getPath()).toBe(attributesPath);
+      expect(elementsArrayLookupBuilder.getPath()).toBe(elementsPath);
+    });
+  });
 });

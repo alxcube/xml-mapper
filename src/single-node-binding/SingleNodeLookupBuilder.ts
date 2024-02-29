@@ -79,6 +79,11 @@ export interface SingleNodeLookupBuilder<
       | SingleNodeDataExtractorFn<CallbackReturnType>
       | SingleNodeDataExtractorFnFactory<CallbackReturnType>
   ): LookupToDataExtractorBindingBuilder<LookupResultType, CallbackReturnType>;
+
+  /**
+   * Returns xpath expression, used to find node.
+   */
+  getPath(): string;
 }
 
 /**

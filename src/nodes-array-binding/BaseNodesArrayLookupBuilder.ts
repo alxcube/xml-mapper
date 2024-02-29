@@ -140,4 +140,11 @@ export class BaseNodesArrayLookupBuilder<
       this.mappingName
     );
   }
+
+  /**
+   * @inheritDoc
+   */
+  getPath(): string {
+    return this.path;
+  }
 }
