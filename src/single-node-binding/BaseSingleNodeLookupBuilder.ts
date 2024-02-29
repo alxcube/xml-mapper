@@ -1,8 +1,9 @@
-import { isNodeLike, type XPathSelect } from "xpath";
+import { isNodeLike, type SelectedValue, type XPathSelect } from "xpath";
 import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
 } from "../BaseLookupToDataExtractorBindingBuilder";
+import { LookupError } from "../error";
 import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
 import { getTypeName } from "../utils";
@@ -52,18 +53,32 @@ export class BaseSingleNodeLookupBuilder<
     const path = this.path;
 
     return (contextNode: Node, xpathSelect: XPathSelect): NodeLookupResult => {
-      const result = xpathSelect(path, contextNode, true);
+      let result: SelectedValue;
+      try {
+        result = xpathSelect(path, contextNode, true);
+      } catch (e) {
+        throw new LookupError("Error in node lookup.", e, path);
+      }
+
       if (result === undefined || result === null) {
         if (isMandatory) {
-          throw new RangeError(`Mandatory node was not found by path: ${path}`);
+          throw new LookupError(
+            `Mandatory node is not found.`,
+            undefined,
+            path
+          );
         }
         return undefined as NodeLookupResult;
       }
+
       if (!isNodeLike(result)) {
-        throw new TypeError(
-          `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}. Lookup path: "${path}"`
+        throw new LookupError(
+          `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}.`,
+          undefined,
+          path
         );
       }
+
       return result as NodeLookupResult;
     };
   }

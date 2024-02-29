@@ -4,6 +4,7 @@ import {
   BaseNodesArrayLookupBuilder,
   BaseSingleNodeLookupBuilder,
   CustomDataExtractorFactory,
+  MappingError,
   type NodesArrayDataExtractorFnFactory,
   NodesArrayDataMapper,
   type NodesArrayLookupBuilder,
@@ -162,22 +163,26 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
       });
     });
 
-    it("should throw TypeError, when given SingleNodeLookupBuilder and NodesArrayDataExtractorFnFactory", () => {
+    it("should throw MappingError, when given SingleNodeLookupBuilder and NodesArrayDataExtractorFnFactory", () => {
       const errorBinding = new BaseLookupToDataExtractorBindingBuilder(
         elementLookup,
         // @ts-expect-error testing error case
         stringArrayMapper
       );
-      expect(() => errorBinding.createNodeDataExtractor()).toThrow(TypeError);
+      expect(() => errorBinding.createNodeDataExtractor()).toThrow(
+        MappingError
+      );
     });
 
-    it("should throw TypeError, when given NodesArrayLookupBuilder and SingleNodeDataExtractorFnFactory", () => {
+    it("should throw MappingError, when given NodesArrayLookupBuilder and SingleNodeDataExtractorFnFactory", () => {
       const errorBinding = new BaseLookupToDataExtractorBindingBuilder(
         elementsArrayLookup,
         // @ts-expect-error testing error case
         stringDataExtractorFactory
       );
-      expect(() => errorBinding.createNodeDataExtractor()).toThrow(TypeError);
+      expect(() => errorBinding.createNodeDataExtractor()).toThrow(
+        MappingError
+      );
     });
   });
 

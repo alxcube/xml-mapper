@@ -1,8 +1,9 @@
-import { isArrayOfNodes, type XPathSelect } from "xpath";
+import { isArrayOfNodes, type SelectReturnType, type XPathSelect } from "xpath";
 import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
 } from "../BaseLookupToDataExtractorBindingBuilder";
+import { LookupError } from "../error";
 import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import { getTypeName, isArrayLike } from "../utils";
 import { CustomArrayDataExtractorFactory } from "./data-extractors";
@@ -44,15 +45,23 @@ export class BaseNodesArrayLookupBuilder<
     const path = this.path;
 
     return (contextNode: Node, xpathSelect: XPathSelect): ArrayLookupResult => {
-      const result = xpathSelect(path, contextNode);
+      let result: SelectReturnType;
+      try {
+        result = xpathSelect(path, contextNode);
+      } catch (e) {
+        throw new LookupError("Error in nodes array lookup.", e, path);
+      }
+
       if (
         (isArrayLike(result) && !result.length) ||
         result === undefined ||
         result === null
       ) {
         if (isMandatory) {
-          throw new RangeError(
-            `Mandatory nodes array was not found by path: ${path}`
+          throw new LookupError(
+            `Mandatory nodes array was not found by path: ${path}`,
+            undefined,
+            path
           );
         }
         return undefined as ArrayLookupResult;
@@ -70,8 +79,10 @@ export class BaseNodesArrayLookupBuilder<
         reason = `got ${getTypeName(result)}`;
       }
 
-      throw new TypeError(
-        `Unexpected lookup result. Expected type Node[], but ${reason}. Lookup path: "${path}"`
+      throw new LookupError(
+        `Unexpected lookup result. Expected type Node[], but ${reason}.`,
+        undefined,
+        path
       );
     };
   }
