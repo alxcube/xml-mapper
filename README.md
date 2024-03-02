@@ -393,3 +393,176 @@ const blueprint: ObjectBlueprint<NonNullableObject> = {
     .withDefault([]),
 };
 ```
+
+Default value is returned when reference node(s) is not found, when extracted data is
+`undefined` or when converted data (see below) is `undefined`.
+
+### Converting extracted data
+
+You can use `.withConversion()` method to convert extracted value to other type. This
+method accepts a conversion callback, which should accept data of data extractor return
+type and return converted data.
+
+Default value type, set after setting conversion callback, should be of same type as
+conversion callback returns.
+
+If any default value was set before calling `.withConversion()` method, it is reset to
+`undefined`.
+
+```ts
+type YesNo = "yes" | "no";
+
+interface Example {
+  yesno: YesNo;
+  date?: Date;
+  num: number;
+}
+
+const blueprint: ObjectBlueprint<Example> = {
+  yesno: map()
+    .toNode("/Path/To/Boolean")
+    .asBoolean()
+    .withDefault(false) // this default value will be reset by .withConversion() call
+    .withConversion((val) => (val ? "yes" : "no"))
+    .withDefault("no"), // default value should have type, compatible with converted value
+  date: map()
+    .toNode("/Path/To/Date/String")
+    .asString()
+    .withConversion((strVal) => new Date(Date.parse(strVal))),
+  num: map()
+    .toNode("/Path/To/Exponential/Number")
+    .asString()
+    .withConversion(parseFloat)
+    .withDefault(0),
+};
+```
+
+## Available mappings
+
+### Single node mappings
+
+#### String
+
+Extracts string value from any node.
+
+```ts
+map().toNode("path").asString();
+```
+
+---
+
+#### Number
+
+Extracts number value from any node. Supported formats:
+
+- Numbers in decimal format: `0`, `-0`, `1`, `-1.23`;
+- Fractional numbers without an integer part: `.75`, `-.75`;
+- `Infinity` and `-Infinity` strings.
+
+When value is not numeric, returns `NaN`.
+
+```ts
+map().toNode("path").asNumber();
+```
+
+---
+
+#### Boolean
+
+Extracts boolean values. The following string values are cast to `false`:
+
+- `"false"` in any case;
+- `"null"` in any case;
+- empty string;
+- any numeric string, that equals to `0`: `"0"`, `"-0"`, `"0.00"`
+
+All other non-empty string values are cast to `true`.
+
+```ts
+map().toNode("path").asBoolean();
+```
+
+---
+
+#### Object
+
+Accepts `ObjectBlueprint` as argument. XPath expressions of mappings in such blueprint
+may be relative to reference (context) node.
+
+```ts
+map()
+  .toNode("path/to/context/node")
+  .asObject({
+    num: map().toNode("@numeric-attribute").asNumber(),
+    str: map().toNode("ChildElement").asString(),
+  });
+```
+
+#### Recursive object
+
+Accepts callback, which should return `ObjectBlueprint`. A single argument of type
+`RecursiveObjectFactoryScope`. You can use its `getDepth()` method inside callback
+to get recursion depth. This given argument should be passed to `.asRecursiveObject()`
+method in nested mapping definition.
+
+```ts
+const xml = `
+<Root>
+    <Child>
+        <Title>Level 0</Title>
+        <Child>
+            <Title>Level 1</Title>
+            <Child>
+                <Title>Level 2</Title>
+            </Child>
+        </Child>    
+    </Child>
+</Root>
+`;
+
+interface TestRecursion {
+  title: string;
+  level: number;
+  child?: TestRecursion;
+}
+
+const blueprint: ObjectBlueprint<{ recursiveObject: TestRecursion }> = {
+  recursiveObject: map()
+    .toNode("/Root/Child")
+    .mandatory()
+    .asRecursiveObject((recursion) => {
+      return {
+        title: map().toNode("Title").mandatory().asString(),
+        level: map().constant(recursion.getDepth()),
+        child: map().toNode("Child").asRecursiveObject(recursion),
+      };
+    })
+    .createNodeDataExtractor()(doc, xs),
+};
+```
+
+---
+
+#### Custom data extractor
+
+You can pass callback to `.callback()` method to extract custom data. Inferred type
+of mapping becomes return type of callback, so when mapping required interface
+property, give a default value to mapping if callback may return `undefined`.
+
+```ts
+import { isElement } from "xpath";
+
+map()
+  .toNode("/Path/To/Date")
+  .mandatory()
+  .callback((node, select) => {
+    if (!isElement(node)) {
+      return undefined;
+    }
+    const year = select("number(@year)", node) as number;
+    const month = select("number(@month)", node) as number;
+    const day = select("number(@day)", node) as number;
+    return new Date(year, month - 1, day);
+  })
+  .withDefault(new Date());
+```
