@@ -102,4 +102,15 @@ describe("mapping to string inference", () => {
         .createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<number[] | undefined>>();
   });
+
+  test("empty array as default value", () => {
+    expectTypeOf(
+      map()
+        .toNodesArray("")
+        .asArray()
+        .ofStrings()
+        .withDefault([])
+        .createNodeDataExtractor()
+    ).toEqualTypeOf<SingleNodeDataExtractorFn<string[]>>();
+  });
 });

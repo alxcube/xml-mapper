@@ -101,4 +101,15 @@ describe("mapping to number inference", () => {
         .createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<string | undefined>>();
   });
+
+  test("empty array as default value", () => {
+    expectTypeOf(
+      map()
+        .toNodesArray("")
+        .asArray()
+        .ofNumbers()
+        .withDefault([])
+        .createNodeDataExtractor()
+    ).toEqualTypeOf<SingleNodeDataExtractorFn<number[]>>();
+  });
 });

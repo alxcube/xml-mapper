@@ -33,7 +33,7 @@ export type DependentOfDefaultValueType<
   MainType,
   DefaultValueType extends MainType | undefined,
 > = MainType extends undefined
-  ? NonNullable<MainType> | DefaultValueType
+  ? Exclude<NonNullable<MainType> | DefaultValueType, never | never[]>
   : MainType;
 
 /**

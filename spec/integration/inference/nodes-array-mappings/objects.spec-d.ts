@@ -123,4 +123,15 @@ describe("mapping to object inference", () => {
         .createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<string | undefined>>();
   });
+
+  test("empty array as default value", () => {
+    expectTypeOf(
+      map()
+        .toNodesArray("")
+        .asArray()
+        .ofObjects(blueprint)
+        .withDefault([])
+        .createNodeDataExtractor()
+    ).toEqualTypeOf<SingleNodeDataExtractorFn<TestObject[]>>();
+  });
 });

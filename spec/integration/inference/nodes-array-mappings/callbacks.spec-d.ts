@@ -221,4 +221,15 @@ describe("mapping using callback type inference", () => {
         .createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<string | undefined>>();
   });
+
+  test("empty array as default value", () => {
+    expectTypeOf(
+      map()
+        .toNodesArray("")
+        .asArray()
+        .usingMapper(new DateExtractorFactory())
+        .withDefault([])
+        .createNodeDataExtractor()
+    ).toEqualTypeOf<SingleNodeDataExtractorFn<Date[]>>();
+  });
 });

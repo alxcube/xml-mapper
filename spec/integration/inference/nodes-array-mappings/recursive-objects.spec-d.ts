@@ -125,4 +125,15 @@ describe("mapping to object inference", () => {
         .createNodeDataExtractor()
     ).toEqualTypeOf<SingleNodeDataExtractorFn<string | undefined>>();
   });
+
+  test("empty array as default value", () => {
+    expectTypeOf(
+      map()
+        .toNodesArray("")
+        .asArray()
+        .ofRecursiveObjects(recursiveObjectFactory)
+        .withDefault([])
+        .createNodeDataExtractor()
+    ).toEqualTypeOf<SingleNodeDataExtractorFn<TestRecursiveObject[]>>();
+  });
 });
