@@ -47,7 +47,7 @@ describe("recursive object array mappings", () => {
     recursiveObjectBlueprintFactory = (recursion) => ({
       id: map().toNode("@id").mandatory().asNumber(),
       name: map().toNode("Name").mandatory().asString(),
-      level: () => recursion.getDepth(),
+      level: map().constant(recursion.getDepth()),
       subcategories: map()
         .toNodesArray("Subcategories/Category")
         .asArray()

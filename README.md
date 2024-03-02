@@ -441,7 +441,7 @@ const blueprint: ObjectBlueprint<Example> = {
 
 ### Single node mappings
 
-#### String
+#### asString()
 
 Extracts string value from any node.
 
@@ -451,7 +451,7 @@ map().toNode("path").asString();
 
 ---
 
-#### Number
+#### asNumber()
 
 Extracts number value from any node. Supported formats:
 
@@ -467,7 +467,7 @@ map().toNode("path").asNumber();
 
 ---
 
-#### Boolean
+#### asBoolean()
 
 Extracts boolean values. The following string values are cast to `false`:
 
@@ -484,7 +484,7 @@ map().toNode("path").asBoolean();
 
 ---
 
-#### Object
+#### asObject()
 
 Accepts `ObjectBlueprint` as argument. XPath expressions of mappings in such blueprint
 may be relative to reference (context) node.
@@ -498,7 +498,7 @@ map()
   });
 ```
 
-#### Recursive object
+#### asRecursiveObject()
 
 Accepts callback, which should return `ObjectBlueprint`. A single argument of type
 `RecursiveObjectFactoryScope`. You can use its `getDepth()` method inside callback
@@ -543,7 +543,7 @@ const blueprint: ObjectBlueprint<{ recursiveObject: TestRecursion }> = {
 
 ---
 
-#### Custom data extractor
+#### callback() - Custom data extractor
 
 You can pass callback to `.callback()` method to extract custom data. Inferred type
 of mapping becomes return type of callback, so when mapping required interface
@@ -565,4 +565,200 @@ map()
     return new Date(year, month - 1, day);
   })
   .withDefault(new Date());
+```
+
+### Array mappings
+
+There are 2 ways of mapping arrays of nodes: array mapper and custom array callback.
+
+Array mapper internally uses `.map()` method of `Array`, calling
+[SingleNodeDataExtractorFn](#singlenodedataextractorfn) for each node in lookup result.
+The result array is then filtered to eliminate all `undefined` values.
+For mapping array, `.asArray()` method should be called after setting lookup.
+
+#### asArray().ofStrings()
+
+Extracts array of strings from array of nodes.
+
+```ts
+map().toNodesArray("/Path/To/Nodes").asArray().ofStrings();
+```
+
+---
+
+#### asArray().ofNumbers()
+
+Extracts array of numbers from array of nodes.
+
+```ts
+map().toNodesArray("/Path/To/Nodes").asArray().ofNumbers();
+```
+
+---
+
+#### asArray().ofBooleans()
+
+Extracts array of boolean values from array of nodes.
+
+```ts
+map().toNodesArray("/Path/To/Nodes").asArray().ofBooleans();
+```
+
+---
+
+#### asArray().ofObjects()
+
+Accepts `ObjectBlueprint` as argument and extracts array of objects of given shape.
+
+```ts
+interface User {
+  id: number;
+  name: string;
+}
+
+map()
+  .toNodesArray("/Path/To/Node")
+  .asArray()
+  .ofObjects<User>({
+    id: map().toNode("@id").mandatory().asNumber(),
+    name: map().toNode("Name").mandatory().asString(),
+  });
+```
+
+---
+
+#### asArray().ofRecursiveObjects()
+
+Accepts callback, that should return `ObjectBlueprint`. Same rules as in single node
+`.asRecursiveObject()` mapping applied.
+
+```ts
+import { DOMParser } from "@xmldom/xmldom";
+
+const xml = `
+<Categories>
+    <Category id="1">
+        <Name>Category 1</Name>
+    </Category>
+    <Category id="2">
+        <Name>Category 2</Name>
+        <Subcategories>
+            <Category id="3">
+                <Name>Category 3</Name>
+                <Subcategories>
+                    <Category id="4">
+                        <Name>Category 4</Name>
+                    </Category>
+                    <Category id="5">
+                        <Name>Category 5</Name>
+                    </Category>
+                </Subcategories>
+            </Category>
+        </Subcategories>
+    </Category>
+    <Category id="6">
+        <Name>Category 6</Name>
+    </Category>
+</Categories>      
+`;
+
+interface Category {
+  id: number;
+  name: string;
+  level: number;
+  subcategories?: Category[];
+}
+
+const doc = new DOMParser.parseFromString(xml);
+
+const mapper = createObjectMapper<{ categories: Category[] }>({
+  categories: map("categories")
+    .toNodesArray("/Categories/Category")
+    .asArray()
+    .ofRecursiveObjects((recursion) => ({
+      id: map().toNode("@id").mandatory().asNumber(),
+      name: map().toNode("Name").mandatory().asString(),
+      level: map().constant(recursion.getDepth()), // Use constant recursion depth
+      subcategories: map()
+        .toNodesArray("Subcategories/Category")
+        .asArray()
+        .ofRecursiveObjects(recursion), // Close recursion
+    })),
+});
+
+console.log(mapper(doc));
+```
+
+---
+
+#### asArray().usingMapper()
+
+Accepts [SingleNodeDataExtractorFn](#singlenodedataextractorfn) callback and uses it
+to map nodes array.
+
+```ts
+import xpath, { type, XPathSelect } from "xpath";
+import { DOMParser } from "@xmldom/xmldom";
+import { map } from "@alxcube/xml-mapper";
+
+const xml = `
+<Dates>
+    <Date y="2024" m="2" d="25" />
+    <Date y="2024" m="2" d="26" />
+</Dates>
+`;
+
+const doc = new DOMParser.parseFromString(xml);
+
+function getDateFromAttributes(node: Node, xpathSelect: XPathSelect): Date {
+  return new Date(
+    xpathSelect("number(@y)", node) as number,
+    (xpathSelect("number(@m)", node) as number) - 1,
+    xpathSelect("number(@d)", node) as number
+  );
+}
+
+const mapper = map()
+  .toNodesArray("/Dates/Date")
+  .asArray()
+  .usingMapper(getDateFromAttributes)
+  .createNodeDataExtractor(); // Calling factory method explicitly to get SingleNodeDataExtractorFn
+
+console.log(mapper(doc, xpath.select));
+```
+
+---
+
+---
+
+Another way of mapping array of nodes is custom callback, in which you can do whatever
+you want with nodes.
+
+```ts
+import { DOMParser } from "@xmldom/xmldom";
+import xpath from "xpath";
+import { type NodesArrayDataExtractorFn, map } from "@alxcube/xml-mapper";
+
+const xml = `
+<Numbers>
+    <Number>1</Number>
+    <Number>2</Number>
+    <Number>3</Number>
+    <Number>4</Number> 
+</Numbers>
+`;
+const doc = new DOMParser().parseFromString(xml);
+
+const sumExtractor: NodesArrayDataExtractorFn<number> = (nodes, xpathSelect) =>
+  nodes.reduce(
+    (sum, node) => sum + (xpathSelect("number(.)", node) as number),
+    0
+  );
+
+const mapper = map()
+  .toNodesArray("/Numbers/Number")
+  .callback(sumExtractor)
+  .createNodeDataExtractor(); // Calling factory method explicitly to get SingleNodeDataExtractorFn
+
+console.log(mapper(doc, xpath.select)); // 10
 ```
