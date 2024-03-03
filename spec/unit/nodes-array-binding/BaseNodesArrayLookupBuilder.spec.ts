@@ -3,7 +3,6 @@ import xpath from "xpath";
 import {
   BaseNodesArrayDataMapperBuilder,
   BaseNodesArrayLookupBuilder,
-  LookupError,
   type NodesArrayDataExtractorFn,
   type NodesArrayDataExtractorFnFactory,
 } from "../../../src";
@@ -56,12 +55,12 @@ describe("BaseNodesArrayLookupBuilder class", () => {
   });
 
   describe("mandatory() method", () => {
-    it("should return new instance of BaseNodesArrayLookupBuilder, that returns NodesArrayLookupFn callback, that throws LookupError, when nodes was not found", () => {
+    it("should return new instance of BaseNodesArrayLookupBuilder, that returns NodesArrayLookupFn callback, that throws RangeError, when nodes was not found", () => {
       const mandatory = unsuccessfulLookupBuilder.mandatory();
       expect(mandatory).toBeInstanceOf(BaseNodesArrayLookupBuilder);
       expect(mandatory).not.toBe(unsuccessfulLookupBuilder);
       const lookupFn = mandatory.buildNodesArrayLookup();
-      expect(() => lookupFn(doc, xs)).toThrow(LookupError);
+      expect(() => lookupFn(doc, xs)).toThrow(RangeError);
     });
   });
 

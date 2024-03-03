@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createObjectMapper } from "../../../../src";
+import { createObjectMapper, MappingError } from "../../../../src";
 import { parseXml } from "../../../helper/parseXml";
 
 describe("createObjectMapper() function", () => {
@@ -40,5 +40,22 @@ describe("createObjectMapper() function", () => {
       stringValue: "str",
     });
     expect("undefinedValue" in obj).toBe(false);
+  });
+
+  it("should catch errors and throw MappingError with error mapping key in mappingPath", () => {
+    const mapper = createObjectMapper({
+      string: () => "string",
+      corrupted: () => {
+        throw new Error("Error in data extractor");
+      },
+    });
+
+    try {
+      mapper(dummyDoc);
+      expect.fail("Should throw");
+    } catch (e) {
+      expect(e).toBeInstanceOf(MappingError);
+      expect((e as MappingError).mappingPath).toEqual(["corrupted"]);
+    }
   });
 });

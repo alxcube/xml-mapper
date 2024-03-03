@@ -1,37 +1,58 @@
+import { joinMappingPath, toError } from "../utils";
+
 /**
- * Base mapping error class.
+ * Mapping error, used to track error in mappings tree.
  */
 export class MappingError extends Error {
   /**
+   * Creates MappingError, using thrown error and mapping path segment, where error was caught.
+   *
+   * @param thrown
+   * @param mappingPathSegment
+   */
+  static create(
+    thrown: Error | unknown,
+    mappingPathSegment: string | number
+  ): MappingError {
+    const cause = toError(thrown);
+    const mappingPath =
+      mappingPathSegment !== undefined ? [mappingPathSegment] : [];
+    return new MappingError(cause, mappingPath);
+  }
+
+  /**
    * MappingError constructor.
    *
-   * @param message
    * @param cause
+   * @param mappingPath
    */
   constructor(
-    message: string,
-    public readonly cause?: Error | unknown
+    public readonly cause: Error,
+    public readonly mappingPath: (string | number)[] = []
   ) {
-    super(message);
+    super(
+      `Error in mapping "${joinMappingPath(mappingPath)}", caused by ${cause}`
+    );
     this.name = "MappingError";
   }
 
   /**
-   * Returns initial error in bindings hierarchy.
+   * Used to add path segment to tracked error, while bubbling through mappings tree.
+   *
+   * @param mappingPathSegment
    */
-  getInitialCause(): Error | unknown | undefined {
-    if (!this.cause) {
-      return undefined;
-    }
+  popUp(mappingPathSegment: string | number): this {
+    this.mappingPath.unshift(mappingPathSegment);
+    this.rebuildMessage();
+    return this;
+  }
 
-    if (this.cause instanceof MappingError) {
-      const initialCause = this.cause.getInitialCause();
-      if (initialCause === undefined) {
-        return this.cause;
-      }
-      return initialCause;
-    }
-
-    return this.cause;
+  /**
+   * Rebuilds error message to contain updated mapping path.
+   *
+   * @private
+   */
+  private rebuildMessage(): void {
+    this.message = `Error in mapping "${joinMappingPath(this.mappingPath)}", caused by ${this.cause}`;
   }
 }

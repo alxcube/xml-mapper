@@ -3,7 +3,6 @@ import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
 } from "../BaseLookupToDataExtractorBindingBuilder";
-import { LookupError } from "../error";
 import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import { getTypeName, isArrayLike } from "../utils";
 import { CustomArrayDataExtractorFactory } from "./data-extractors";
@@ -49,7 +48,9 @@ export class BaseNodesArrayLookupBuilder<
       try {
         result = xpathSelect(path, contextNode);
       } catch (e) {
-        throw new LookupError("Error in nodes array lookup.", e, path);
+        throw new Error(
+          `Error in nodes array lookup: ${e}. Lookup path: "${path}"`
+        );
       }
 
       if (
@@ -58,10 +59,8 @@ export class BaseNodesArrayLookupBuilder<
         result === null
       ) {
         if (isMandatory) {
-          throw new LookupError(
-            `Mandatory nodes array was not found by path: ${path}`,
-            undefined,
-            path
+          throw new RangeError(
+            `Mandatory nodes array was not found. Lookup path: "${path}"`
           );
         }
         return undefined as ArrayLookupResult;
@@ -79,10 +78,8 @@ export class BaseNodesArrayLookupBuilder<
         reason = `got ${getTypeName(result)}`;
       }
 
-      throw new LookupError(
-        `Unexpected lookup result. Expected type Node[], but ${reason}.`,
-        undefined,
-        path
+      throw new TypeError(
+        `Unexpected lookup result. Expected type Node[], but ${reason}. Lookup path: "${path}"`
       );
     };
   }

@@ -1,4 +1,5 @@
 import type { XPathSelect } from "xpath";
+import { MappingError } from "../../error";
 import type { NodesArrayDataExtractorFn } from "../NodesArrayDataExtractorFn";
 import type { NodesArrayDataExtractorFnFactory } from "../NodesArrayDataExtractorFnFactory";
 import {
@@ -42,7 +43,17 @@ export class NodesArrayDataMapper<MappingFunctionReturnType>
       xpathSelect: XPathSelect
     ): NonNullable<MappingFunctionReturnType>[] => {
       return nodes
-        .map((node) => mappingFn(node, xpathSelect))
+        .map((node, index) => {
+          try {
+            return mappingFn(node, xpathSelect);
+          } catch (e) {
+            if (e instanceof MappingError) {
+              throw e.popUp(index);
+            } else {
+              throw MappingError.create(e, index);
+            }
+          }
+        })
         .filter(
           (value) => value !== undefined && value !== null
         ) as NonNullable<MappingFunctionReturnType>[];

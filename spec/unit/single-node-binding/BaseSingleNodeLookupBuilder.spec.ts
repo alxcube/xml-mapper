@@ -5,7 +5,6 @@ import {
   RecursiveObjectExtractorFactory,
   StringExtractorFactory,
   BaseLookupToDataExtractorBindingBuilder,
-  LookupError,
 } from "../../../src";
 import { parseXml } from "../../helper/parseXml";
 
@@ -41,9 +40,9 @@ describe("BaseSingleNodeLookupBuilder class", () => {
       expect(mandatoryBuilder).not.toBe(builder);
     });
 
-    it("should return builder of SingleNodeLookupFn, that throws LookupError, when node not found", () => {
+    it("should return builder of SingleNodeLookupFn, that throws RangeError, when node not found", () => {
       const lookupFn = mandatoryBuilder.buildNodeLookup();
-      expect(() => lookupFn(doc, xs)).toThrow(LookupError);
+      expect(() => lookupFn(doc, xs)).toThrow(RangeError);
     });
   });
 

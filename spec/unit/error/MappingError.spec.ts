@@ -1,40 +1,35 @@
-import { beforeEach, describe, expect, it, test } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { MappingError } from "../../../src";
 
 describe("MappingError class", () => {
-  let error: MappingError;
+  let cause: Error;
+  let mappingError: MappingError;
 
   beforeEach(() => {
-    error = new MappingError("test mapping error", new Error("test error"));
+    cause = new Error("Cause");
+    mappingError = MappingError.create(cause, "test");
   });
 
-  test("error data consistency", () => {
-    expect(error).toBeInstanceOf(Error);
-    expect(error.message).toBe("test mapping error");
-    expect(error.name).toBe("MappingError");
-    expect(error.cause).toBeInstanceOf(Error);
-    expect(error.stack).toBeTypeOf("string");
+  it("should generate error message with mapping path and cause", () => {
+    expect(mappingError.message).toMatch(
+      `Error in mapping "test", caused by Error: Cause`
+    );
   });
 
-  describe("getInitialCause() method", () => {
-    it("should return undefined, when 'cause' is not set", () => {
-      expect(new MappingError("").getInitialCause()).toBeUndefined();
-    });
+  it("should contain cause - initial error", () => {
+    expect(mappingError.cause).toBe(cause);
+  });
 
-    it("should return deepest cause, when it is not child of MappingError class", () => {
-      const initial = new Error("");
-      const level1 = new MappingError("", initial);
-      const level2 = new MappingError("", level1);
-      const level3 = new MappingError("", level2);
-      expect(level3.getInitialCause()).toBe(initial);
-    });
+  it("should contain mapping path array", () => {
+    expect(mappingError.mappingPath).toEqual(["test"]);
+  });
 
-    it("should return deepest cause, when it is child of MappingError class", () => {
-      const initial = new MappingError("");
-      const level1 = new MappingError("", initial);
-      const level2 = new MappingError("", level1);
-      const level3 = new MappingError("", level2);
-      expect(level3.getInitialCause()).toBe(initial);
+  describe("popUp() method", () => {
+    it("should add given segment to path, regenerate message and return self", () => {
+      const popped = mappingError.popUp(1);
+      expect(popped).toBe(mappingError);
+      expect(popped.message).toMatch(`Error in mapping "[1].test"`);
+      expect(popped.mappingPath).toEqual([1, "test"]);
     });
   });
 });

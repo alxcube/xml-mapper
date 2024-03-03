@@ -3,7 +3,6 @@ import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
 } from "../BaseLookupToDataExtractorBindingBuilder";
-import { LookupError } from "../error";
 import type { LookupToDataExtractorBindingBuilder } from "../LookupToDataExtractorBindingBuilder";
 import type { ObjectBlueprint } from "../ObjectBlueprint";
 import { getTypeName } from "../utils";
@@ -57,25 +56,21 @@ export class BaseSingleNodeLookupBuilder<
       try {
         result = xpathSelect(path, contextNode, true);
       } catch (e) {
-        throw new LookupError("Error in node lookup.", e, path);
+        throw new Error(`Error in node lookup: ${e}. Lookup path: "${path}"`);
       }
 
       if (result === undefined || result === null) {
         if (isMandatory) {
-          throw new LookupError(
-            `Mandatory node is not found.`,
-            undefined,
-            path
+          throw new RangeError(
+            `Mandatory node is not found. Lookup path: "${path}".`
           );
         }
         return undefined as NodeLookupResult;
       }
 
       if (!isNodeLike(result)) {
-        throw new LookupError(
-          `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}.`,
-          undefined,
-          path
+        throw new TypeError(
+          `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}. Lookup path: "${path}"`
         );
       }
 

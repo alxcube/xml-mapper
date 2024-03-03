@@ -1,4 +1,5 @@
 import xpath, { type XPathSelect } from "xpath";
+import { MappingError } from "../../error";
 import type { ObjectBlueprint } from "../../ObjectBlueprint";
 import { isSingleNodeDataExtractorFnFactory } from "../SingleNodeDataExtractorFnFactory";
 
@@ -17,11 +18,19 @@ export function createObjectMapper<ObjectType extends object>(
     const keys = Object.keys(blueprint) as (keyof ObjectType)[];
     for (const key of keys) {
       const extractor = blueprint[key];
-      const value = isSingleNodeDataExtractorFnFactory(extractor)
-        ? extractor.createNodeDataExtractor()(node, xpathSelect)
-        : extractor(node, xpathSelect);
-      if (value !== undefined) {
-        result[key] = value;
+      try {
+        const value = isSingleNodeDataExtractorFnFactory(extractor)
+          ? extractor.createNodeDataExtractor()(node, xpathSelect)
+          : extractor(node, xpathSelect);
+        if (value !== undefined) {
+          result[key] = value;
+        }
+      } catch (e) {
+        if (e instanceof MappingError) {
+          throw e.popUp(String(key));
+        } else {
+          throw MappingError.create(e, String(key));
+        }
       }
     }
     return result as ObjectType;

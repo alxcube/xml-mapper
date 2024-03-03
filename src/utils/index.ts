@@ -5,4 +5,6 @@ export * from "./isComment";
 export * from "./isElement";
 export * from "./isNode";
 export * from "./isText";
+export * from "./joinMappingPath";
 export * from "./stringToBoolean";
+export * from "./toError";

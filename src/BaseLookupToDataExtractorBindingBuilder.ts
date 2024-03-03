@@ -1,5 +1,5 @@
 import type { XPathSelect } from "xpath";
-import { BindingError, MappingError } from "./error";
+import { MappingError } from "./error";
 import type {
   ConversionFn,
   DependentOfConvertedType,
@@ -120,7 +120,6 @@ export class BaseLookupToDataExtractorBindingBuilder<
   > {
     this.ensureIsValidBinding();
 
-    const fullBindingName = this.getBindingName();
     const defaultValue = this.defaultValue;
     const lookupFn = this.getLookupFn();
     const dataExtractorFn = this.getDataExtractorFn();
@@ -136,11 +135,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
           return defaultValue;
         }
       } catch (e) {
-        throw new BindingError(
-          `Error in "${fullBindingName}" binding lookup.`,
-          fullBindingName,
-          e
-        );
+        throw new Error(`Error in binding lookup: ${e}.`);
       }
 
       // Extract data from reference node(s).
@@ -151,17 +146,11 @@ export class BaseLookupToDataExtractorBindingBuilder<
           xpathSelect
         );
       } catch (e) {
-        const initialErrorMessage = this.getInitialErrorMessage(e);
-        if (e instanceof BindingError) {
-          const bindingNamePath = `${fullBindingName} > ${e.bindingName}`;
-          const message = `Error in binding "${bindingNamePath}": ${initialErrorMessage}`;
-          throw new BindingError(message, bindingNamePath, e);
+        if (e instanceof MappingError) {
+          throw e;
+        } else {
+          throw new Error(`Error in binding data extractor: ${e}`);
         }
-        throw new BindingError(
-          `Error in "${fullBindingName}" binding data extractor: ${initialErrorMessage}`,
-          fullBindingName,
-          e
-        );
       }
 
       if (conversionFn && extractedResult !== undefined) {
@@ -170,11 +159,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
         try {
           convertedResult = conversionFn(extractedResult);
         } catch (e) {
-          throw new BindingError(
-            `Error in "${fullBindingName}" binding conversion callback.`,
-            fullBindingName,
-            e
-          );
+          throw new Error(`Error in binding conversion callback: ${e}`);
         }
 
         // Return converted result or default value, if converted result is undefined.
@@ -274,11 +259,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       }
       return lookupBuilder.buildNodesArrayLookup();
     } catch (e) {
-      throw new BindingError(
-        `Error in "${this.getBindingName()}" binding lookup builder.`,
-        this.getBindingName(),
-        e
-      );
+      throw new Error(`Error in binding lookup builder: ${e}`);
     }
   }
 
@@ -294,11 +275,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       }
       return dataExtractorFactory.createNodesArrayDataExtractor();
     } catch (e) {
-      throw new BindingError(
-        `Error in "${this.getBindingName()}" binding data extractor factory.`,
-        this.getBindingName(),
-        e
-      );
+      throw new Error(`Error in binding data extractor factory: ${e}`);
     }
   }
 
@@ -315,38 +292,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       (isNodesArrayLookupBuilder(this.lookupBuilder) &&
         isSingleNodeDataExtractorFnFactory(this.extractorFactory))
     ) {
-      throw new BindingError(
-        `Node(s) lookup and data extractor types mismatch in binding "${this.getBindingName()}".`,
-        this.getBindingName()
-      );
+      throw new TypeError(`Node(s) lookup and data extractor types mismatch.`);
     }
-  }
-
-  /**
-   * Returns binding name, containing mapping name and reference node lookup expression.
-   *
-   * @private
-   */
-  private getBindingName(): string {
-    const name = this.name ? this.name : "Unnamed";
-    return `${name}: ${this.lookupBuilder.getPath()}`;
-  }
-
-  /**
-   * Returns initial error message for error.
-   *
-   * @param e
-   * @private
-   */
-  private getInitialErrorMessage(e: Error | unknown): string {
-    let initialError;
-    if (e instanceof MappingError) {
-      initialError = e.getInitialCause() || e;
-    } else {
-      initialError = e;
-    }
-    return initialError instanceof Error
-      ? initialError.message
-      : String(initialError);
   }
 }

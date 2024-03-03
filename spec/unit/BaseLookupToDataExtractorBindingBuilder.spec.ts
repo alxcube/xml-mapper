@@ -1,10 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import xpath from "xpath";
 import {
   BaseNodesArrayLookupBuilder,
   BaseSingleNodeLookupBuilder,
   CustomDataExtractorFactory,
-  MappingError,
   type NodesArrayDataExtractorFnFactory,
   NodesArrayDataMapper,
   type NodesArrayLookupBuilder,
@@ -163,26 +162,22 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
       });
     });
 
-    it("should throw MappingError, when given SingleNodeLookupBuilder and NodesArrayDataExtractorFnFactory", () => {
+    it("should throw Error, when given SingleNodeLookupBuilder and NodesArrayDataExtractorFnFactory", () => {
       const errorBinding = new BaseLookupToDataExtractorBindingBuilder(
         elementLookup,
         // @ts-expect-error testing error case
         stringArrayMapper
       );
-      expect(() => errorBinding.createNodeDataExtractor()).toThrow(
-        MappingError
-      );
+      expect(() => errorBinding.createNodeDataExtractor()).toThrow();
     });
 
-    it("should throw MappingError, when given NodesArrayLookupBuilder and SingleNodeDataExtractorFnFactory", () => {
+    it("should throw, when given NodesArrayLookupBuilder and SingleNodeDataExtractorFnFactory", () => {
       const errorBinding = new BaseLookupToDataExtractorBindingBuilder(
         elementsArrayLookup,
         // @ts-expect-error testing error case
         stringDataExtractorFactory
       );
-      expect(() => errorBinding.createNodeDataExtractor()).toThrow(
-        MappingError
-      );
+      expect(() => errorBinding.createNodeDataExtractor()).toThrow();
     });
   });
 
@@ -362,42 +357,6 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
         .withDefault(999);
 
       expect(binding.createNodeDataExtractor()(doc, xs)).toBe(999);
-    });
-
-    it("should throw error, containing binding name, when error occurs in lookup", () => {
-      const errorBinding = new BaseLookupToDataExtractorBindingBuilder(
-        unsuccessfulLookup.mandatory(),
-        stringDataExtractorFactory,
-        undefined,
-        undefined,
-        "Binding Name"
-      );
-      expect(() => errorBinding.createNodeDataExtractor()(doc, xs)).toThrow(
-        "Binding Name"
-      );
-    });
-
-    it("should throw error, containing binding name, when error occurs in data extractor factory", () => {
-      vi.spyOn(
-        stringDataExtractorFactory,
-        "createNodeDataExtractor"
-      ).mockImplementation(() => {
-        throw "test error";
-      });
-      expect(() =>
-        elementBinding.named("Binding Name").createNodeDataExtractor()(doc, xs)
-      ).toThrow("Binding Name");
-    });
-
-    it("should throw error, containing binding name, when error occurs in conversion callback", () => {
-      const binding = elementBinding
-        .named("Binding Name")
-        .withConversion(() => {
-          throw "test error";
-        });
-      expect(() => binding.createNodeDataExtractor()(doc, xs)).toThrow(
-        "Binding Name"
-      );
     });
   });
 });
