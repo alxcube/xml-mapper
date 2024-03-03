@@ -10,7 +10,6 @@ export default mergeConfig(
       exclude: [...configDefaults.exclude, "spec/*"],
       root: fileURLToPath(new URL("./", import.meta.url)),
       browser: { enabled: false, name: "chrome" },
-      setupFiles: ["./spec/setup.vitest.ts"],
     },
   })
 );
