@@ -756,3 +756,11 @@ const mapper = map()
 
 console.log(mapper(doc, xpath.select)); // 10
 ```
+
+## Debugging
+
+Mappers, created `createObjectMapper()` helper throws special kind of errors -
+`MappingError`. This error objects are verbose and have failed mapping path in its
+`message` text. Additionally, there is `mappingPath` property, of type `(string | number)[]`,
+which is mapping path segments array, and `cause` property, which contains initial
+error object.
