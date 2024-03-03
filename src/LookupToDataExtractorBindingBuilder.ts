@@ -122,20 +122,6 @@ export interface LookupToDataExtractorBindingBuilder<
   >;
 
   /**
-   * Adds name to binding, which will appear in error messages.
-   *
-   * @param name
-   */
-  named(
-    name: string
-  ): LookupToDataExtractorBindingBuilder<
-    LookupResultType,
-    DataExtractorReturnType,
-    ConversionFnReturnType,
-    DefaultValueType
-  >;
-
-  /**
    * Sets conversion callback, which will be called with data extraction result (only when it is not undefined).
    *
    * @param conversionCallback

@@ -181,25 +181,6 @@ describe("BaseLookupToDataExtractorBindingBuilder class", () => {
     });
   });
 
-  describe("named() method", () => {
-    it("should return new instance of BaseLookupToDataExtractorBindingBuilder", () => {
-      [
-        textNodeBinding,
-        elementBinding,
-        attributeBinding,
-        textNodesBinding,
-        elementsBinding,
-        attributesBinding,
-        emptySingleNodeBinding,
-        emptyNodesArrayBinding,
-      ].forEach((builder) => {
-        const named = builder.named("BindingName");
-        expect(named).toBeInstanceOf(BaseLookupToDataExtractorBindingBuilder);
-        expect(named).not.toBe(builder);
-      });
-    });
-  });
-
   describe("withDefault() method", () => {
     it("should return new instance of BaseLookupToDataExtractorBindingBuilder", () => {
       [

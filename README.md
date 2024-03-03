@@ -63,33 +63,30 @@ interface User {
 
 // Define mapper function with 'createObjectMapper()'
 const userMapper = createObjectMapper<User>({
-  id: map("id") // Give mapping a name, which would help in debugging
+  id: map()
     .toNode("/User/@id") // Search for 'id' attribute in User element
     .mandatory() // Make sure that reference node is present in xml.
     .asNumber(), // Use attribute value as number,
-  isVerified: map("isVerified")
-    .toNode("/User/@verified")
-    .asBoolean()
-    .withDefault(false), // Assign default value in case of reference node is not found
-  firstName: map("firstName").toNode("/User/FirstName").mandatory().asString(),
-  lastName: map("lastName").toNode("/User/LastName").mandatory().asString(),
-  contacts: map("contacts")
+  isVerified: map().toNode("/User/@verified").asBoolean().withDefault(false), // Assign default value in case of reference node is not found
+  firstName: map().toNode("/User/FirstName").mandatory().asString(),
+  lastName: map().toNode("/User/LastName").mandatory().asString(),
+  contacts: map()
     .toNode("/User/ContactData") // Search for Element node
     .asObject({
-      email: map("email")
+      email: map()
         .toNode("Email") // Nested objects xpath expression can be relative to reference element
         .asString(),
-      phone: map("phone").toNode("Phone").asString(),
+      phone: map().toNode("Phone").asString(),
     }),
-  groups: map("groups")
+  groups: map()
     .toNodesArray("/User/Groups/Group") // Search for array of elements
     .mandatory()
     .asArray()
     .ofObjects({
-      id: map("id").toNode("@id").mandatory().asNumber(),
-      title: map("id").toNode(".").mandatory().asString(),
+      id: map().toNode("@id").mandatory().asNumber(),
+      title: map().toNode(".").mandatory().asString(),
     }),
-  registeredAt: map("registeredAt")
+  registeredAt: map()
     .toNode("/User/RegistrationDate")
     .mandatory()
     .callback((node, select) => {
@@ -288,7 +285,7 @@ import { createObjectMapper, map } from "@alxcube/xml-mapper";
 const xml = `<Link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://example.com"/>`;
 const doc = new DOMParser().parseFromString(xml);
 const mapper = createObjectMapper({
-  url: map("url").toNode("/Link@xlink:href").asString(),
+  url: map().toNode("/Link@xlink:href").asString(),
 });
 const select = xpath.useNamespaces({
   xlink: "http://www.w3.org/1999/xlink",
@@ -298,10 +295,7 @@ const result = mapper(doc, select);
 
 ### Defining `ObjectBlueprint`
 
-For object blueprint definition, `map()` helper is used. It accepts optional string
-argument - mapping name, which can be omitted, but it is recommended to give mapping
-a name, identical to object blueprint property being mapped -- this may be helpful
-for debugging, when error occurs somewhere in mappings tree.
+For object blueprint definition, `map()` helper is used.
 
 Single mapping consists of two main steps: definition of reference node(s) lookup
 and definition of return type:
@@ -672,7 +666,7 @@ interface Category {
 const doc = new DOMParser.parseFromString(xml);
 
 const mapper = createObjectMapper<{ categories: Category[] }>({
-  categories: map("categories")
+  categories: map()
     .toNodesArray("/Categories/Category")
     .asArray()
     .ofRecursiveObjects((recursion) => ({

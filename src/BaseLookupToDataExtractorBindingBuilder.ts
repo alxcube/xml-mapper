@@ -94,7 +94,6 @@ export class BaseLookupToDataExtractorBindingBuilder<
    * @param extractorFactory
    * @param conversionFn
    * @param defaultValue
-   * @param name
    */
   constructor(
     private readonly lookupBuilder: LookupBuilderType,
@@ -103,8 +102,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       DataExtractorReturnType,
       ConversionFnReturnType
     >,
-    private readonly defaultValue?: DefaultValueType,
-    private readonly name?: string
+    private readonly defaultValue?: DefaultValueType
   ) {}
 
   /**
@@ -181,26 +179,6 @@ export class BaseLookupToDataExtractorBindingBuilder<
   /**
    * @inheritDoc
    */
-  named(
-    name: string
-  ): LookupToDataExtractorBindingBuilder<
-    LookupReturnType,
-    DataExtractorReturnType,
-    ConversionFnReturnType,
-    DefaultValueType
-  > {
-    return new BaseLookupToDataExtractorBindingBuilder(
-      this.lookupBuilder,
-      this.extractorFactory,
-      this.conversionFn,
-      this.defaultValue,
-      name
-    );
-  }
-
-  /**
-   * @inheritDoc
-   */
   withConversion<GivenConversionFnReturnType>(
     conversionCallback: ConversionFn<
       DataExtractorReturnType,
@@ -215,8 +193,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       this.lookupBuilder,
       this.extractorFactory,
       conversionCallback,
-      undefined,
-      this.name
+      undefined
     );
   }
 
@@ -242,8 +219,7 @@ export class BaseLookupToDataExtractorBindingBuilder<
       this.lookupBuilder,
       this.extractorFactory,
       this.conversionFn,
-      defaultValue,
-      this.name
+      defaultValue
     );
   }
 

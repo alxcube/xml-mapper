@@ -31,11 +31,9 @@ export class BaseNodesArrayDataMapperBuilder<
    * BaseNodesArrayDataMapperBuilder constructor.
    *
    * @param lookupBuilder
-   * @param mappingName
    */
   constructor(
-    private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>,
-    private readonly mappingName = ""
+    private readonly lookupBuilder: NodesArrayLookupBuilder<ArrayLookupResult>
   ) {}
 
   /**
@@ -52,10 +50,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         boolean[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 
@@ -73,10 +68,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         number[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 
@@ -93,10 +85,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         ObjectType[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 
@@ -114,10 +103,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         string[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 
@@ -139,10 +125,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         RecursiveObjectType[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 
@@ -164,10 +147,7 @@ export class BaseNodesArrayDataMapperBuilder<
       ) as unknown as DataExtractorFactoryTypeDependentOfLookupResult<
         ArrayLookupResult,
         NonNullable<MappingFunctionReturnType>[]
-      >,
-      undefined,
-      undefined,
-      this.mappingName
+      >
     );
   }
 }

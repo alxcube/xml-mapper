@@ -43,30 +43,17 @@ describe("object mappings", () => {
     doc = parseXml(xml);
 
     userBlueprint = {
-      id: map().toNode("@id").mandatory().asNumber().named("id"),
-      isVerified: map()
-        .toNode("@verified")
-        .mandatory()
-        .asBoolean()
-        .named("isVerified"),
-      firstName: map()
-        .toNode("FirstName")
-        .mandatory()
-        .asString()
-        .named("firstName"),
-      lastName: map()
-        .toNode("LastName")
-        .mandatory()
-        .asString()
-        .named("lastName"),
+      id: map().toNode("@id").mandatory().asNumber(),
+      isVerified: map().toNode("@verified").mandatory().asBoolean(),
+      firstName: map().toNode("FirstName").mandatory().asString(),
+      lastName: map().toNode("LastName").mandatory().asString(),
       contactData: map()
         .toNode("ContactData")
         .mandatory()
         .asObject({
-          email: map().toNode("Email").asString().named("contactData.email"),
-          phone: map().toNode("Phone").asString().named("contactData.phone"),
-        })
-        .named("contactData"),
+          email: map().toNode("Email").asString(),
+          phone: map().toNode("Phone").asString(),
+        }),
     };
   });
 
