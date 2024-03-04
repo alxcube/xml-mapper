@@ -2,7 +2,12 @@
   "name": "@alxcube/xml-mapper",
   "version": "1.0.0",
   "description": "Library designed for mapping XML documents to JavaScript objects using a declarative builder with XPath expressions.",
-  "keywords": ["xml", "xml mapper", "xml parser", "xpath"],
+  "keywords": [
+    "xml",
+    "xml mapper",
+    "xml parser",
+    "xpath"
+  ],
   "type": "module",
   "main": "./dist/xml-mapper.umd.cjs",
   "module": "./dist/xml-mapper.js",
@@ -24,10 +29,12 @@
   "author": "Alexander Alexandrov <alxcube@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alxcube/xml-mapper.git"
+    "url": "git+https://github.com/alxcube/xml-mapper.git"
   },
   "license": "MIT",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
