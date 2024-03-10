@@ -1,4 +1,4 @@
-import { isArrayOfNodes, type SelectReturnType, type XPathSelect } from "xpath";
+import xpath, { type SelectReturnType, type XPathSelect } from "xpath";
 import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
@@ -64,7 +64,7 @@ export class BaseNodesArrayLookupBuilder<
         return undefined as ArrayLookupResult;
       }
 
-      if (isArrayOfNodes(result)) {
+      if (xpath.isArrayOfNodes(result)) {
         return result as ArrayLookupResult;
       }
 

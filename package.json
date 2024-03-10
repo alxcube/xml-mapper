@@ -1,6 +1,6 @@
 {
   "name": "@alxcube/xml-mapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library designed for mapping XML documents to JavaScript objects using a declarative builder with XPath expressions.",
   "keywords": [
     "xml",

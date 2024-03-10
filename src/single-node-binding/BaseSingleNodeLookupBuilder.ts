@@ -1,4 +1,4 @@
-import { isNodeLike, type SelectedValue, type XPathSelect } from "xpath";
+import xpath, { type SelectedValue, type XPathSelect } from "xpath";
 import {
   BaseLookupToDataExtractorBindingBuilder,
   type DataExtractorFactoryTypeDependentOfLookupResult,
@@ -66,7 +66,7 @@ export class BaseSingleNodeLookupBuilder<
         return undefined as NodeLookupResult;
       }
 
-      if (!isNodeLike(result)) {
+      if (!xpath.isNodeLike(result)) {
         throw new TypeError(
           `Unexpected lookup result. Expected Node, but got ${getTypeName(result)}. Lookup path: "${path}"`
         );
